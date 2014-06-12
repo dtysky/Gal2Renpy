@@ -1,3 +1,5 @@
+#-*-coding:utf-8-*- 
+
 import re
 import os
 import codecs
@@ -9,14 +11,15 @@ MessageBox = lambda x:user32.MessageBoxA(0, x, 'Error', 0)
 class MyFS():
 
 	def __init__(self):
-	def open(path):
+		pass
+	def open(self,path):
 		self.fs=codecs.open(path,'r','utf-8')
 		self.path=path
 		self.linepos=0
-	def readline():
-		self.linepos++
+	def readline(self):
+		self.linepos+=1
 		return self.fs.readline()
-	def error(e):
+	def error(self,e):
 		MessageBox(e+'\n'+'file : '+self.path+'\n'+'line : '+str(self.linepos))
 		os.exit()
 
@@ -131,16 +134,17 @@ def Sp2Script(Flag,Transition,Content,Fs):
 	elif Flag=='ch':
 		sls=Content.splitlines()
 		for sl in sls:
-			
+			pass
 
 
 
 #Change normal texts to script
-def Text2Script(Str,Mode):
+def Text2Script(Text,Mode):
 	pass
 
 
 def CreatDefine(Name,Mode):
+	pass
 
 
 #Transition
