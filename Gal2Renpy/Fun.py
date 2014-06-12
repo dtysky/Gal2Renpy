@@ -1,7 +1,7 @@
 #-*-coding:utf-8-*- 
 
 import re
-import os
+import sys
 import codecs
 from ctypes import *
 user32 = windll.LoadLibrary('user32.dll') 
@@ -21,7 +21,7 @@ class MyFS():
 		return self.fs.readline()
 	def error(self,e):
 		MessageBox(e+'\n'+'file : '+self.path+'\n'+'line : '+str(self.linepos))
-		os.exit()
+		sys.exit(0)
 
 
 #Return next block
@@ -88,7 +88,9 @@ def Sp2Script(Flag,Transition,Content,Fs):
 		return 'label '+Content.replace('，','')+' :\n'
 
 	elif Flag=='bg':
-		s=Content.split('：')
+		s=''
+		for tmp in Content.split('：'):
+			s+=tmp
 		sr=s.split('，')
 		rn=''
 		if BgMain.get(sr[0])==None:
@@ -108,7 +110,7 @@ def Sp2Script(Flag,Transition,Content,Fs):
 				Fs.error('This transition does not exist !')
 			else:
 				rn+='with '+TransImage[Transition]+'\n'
-		return 'wr\n'+rn
+		return 'wr\nNone'+rn
 
 	elif Flag=='bgm':
 		rn=''
@@ -121,7 +123,7 @@ def Sp2Script(Flag,Transition,Content,Fs):
 				Fs.error('This effect does not exist ！')
 			else:
 				rn='with '+TransSound[Transition]+'\n'
-		return 'wr\n'+rn
+		return 'wr\n\t'+rn
 
 	elif Flag=='mode':
 		if Content=='None':
@@ -132,9 +134,45 @@ def Sp2Script(Flag,Transition,Content,Fs):
 			return 'mode\nADV'
 
 	elif Flag=='ch':
-		sls=Content.splitlines()
-		for sl in sls:
-			pass
+		rn=None
+		[n,e,f,c,p,l]=[None,None,None,None,None,None]
+		for sl in Content.splitlines():
+			tmp=re.match(r'(\S+)\s+(\S+)',sl)
+			if tmp==None:
+				Fs.error('Please check your syntax ！')
+			else:
+				ch=tmp.group(1)
+				attrs=tmp.group(2)
+				if ChrName.get(ch)==None:
+					Fs.error('This charecter does not exist !')
+				else:
+					c=ChrName[ch]
+				for attr in attrs.split('，'):
+					ttmp=attr.split('：')
+					if ChrKeyword.get(ttmp[0])==None:
+						Fs.error("This charecter's attribute does not exist !")
+					else:
+						if eval(ChrKeyword[ttmp[0]]).get(ttmp[1])==None:
+							Fs.error("This "+ChrKeyword[ttmp[0]]+" does not exist !")
+						else:
+							eval(ttmp[0]+'='+ChrKeyword[ttmp[0]])[ttmp[1]]
+			rn='show '+n+c+p+' at '+l+'\n'
+			if e!=None:
+				rn+='with '+e+'\n'
+		return 'wr\n\t'+rn
+
+	#elif Flag=='ef':
+		#pass
+
+	else:
+		Fs.error('This flag does not exist !')
+
+
+
+
+
+
+
 
 
 
@@ -146,7 +184,3 @@ def Text2Script(Text,Mode):
 def CreatDefine(Name,Mode):
 	pass
 
-
-#Transition
-def Transition(Name,Num,ThEle,ThPos,OtEle):
-	pass

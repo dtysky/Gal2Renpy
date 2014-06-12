@@ -9,4 +9,8 @@ BgmPath='./data/bgm/'
 fs=MyFS()
 fs.open('Chapter-00.gal')
 
+#不允许空行
+
+#人物信息识别时需要补全
+
 

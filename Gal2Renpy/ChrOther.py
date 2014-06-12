@@ -1,20 +1,31 @@
+#Chareter keywords
+ChrKeyword={
+	"e": "ChrEffect",
+	"f": "ChrFace",
+	"c": "ChrClothes"
+	"p": "ChrPose",
+	"l": "ChrPostion"
+
+}
+
 #Chareter Effect
-ChrEffect=
-{
+ChrEffect={
 	
 }
 
 
 #Chareter Clothes
-ChrClothes=
-{
+ChrClothes={
 	
 }
 
 
+#Chareter Pose
+ChrPose={
+}
+
 #Chareter Center Position
-ChrPos
-{
+ChrPosition={
 	#Size A
 	"A1": "Grid(1,7)" ,
 
