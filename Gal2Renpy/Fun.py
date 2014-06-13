@@ -1,27 +1,4 @@
-#-*-coding:utf-8-*- 
-
-import re
-import sys
-import codecs
-from ctypes import *
-user32 = windll.LoadLibrary('user32.dll') 
-
-MessageBox = lambda x:user32.MessageBoxA(0, x, 'Error', 0) 
-
-class MyFS():
-
-	def __init__(self):
-		pass
-	def open(self,path):
-		self.fs=codecs.open(path,'r','utf-8')
-		self.path=path
-		self.linepos=0
-	def readline(self):
-		self.linepos+=1
-		return self.fs.readline()
-	def error(self,e):
-		MessageBox(e+'\n'+'file : '+self.path+'\n'+'line : '+str(self.linepos))
-		sys.exit(0)
+import Gal2Renpy.imilb
 
 
 #Return next block
@@ -72,17 +49,29 @@ def RBlock(Fs):
 			Fs.error('''Error! Please check the "<>"" !''')
 
 	else:
-		head='text'
-		flag='None'
+		tmp=re.match(r'(\S+)\s+(\S+)')
+		if tmp==None:
+			flag='None'
+			content=s
+			if ('【' in s) & ('】' in s):
+				head='say'
+			else:
+				head='text'
+		else:
+			if ChrName.get(tmp.group(1))==None:
+				Fs.error('This charecter doen not exist !')
+			else:
+				head='say'
+				flag=ChrName[tmp.group(1)]
+				content=tmp.group(2)
 		transition='None'
-		content=s
 
 	return [head,flag,transition,content]
 
 
 
 #Return a string which changing special texts to Script
-def Sp2Script(Flag,Transition,Content,Mode,Fs):
+def Sp2Script(Flag,Transition,Content,Fs):
 
 	if Flag=='sc':
 		return 'label '+Content.replace('，','')+' :\n'
@@ -125,34 +114,6 @@ def Sp2Script(Flag,Transition,Content,Mode,Fs):
 				rn='with '+TransSound[Transition]+'\n'
 		return '\t'+rn
 
-	elif Flag=='ch':
-		rn=None
-		[n,e,f,c,p,l]=[None,None,None,None,None,None]
-		for sl in Content.splitlines():
-			tmp=re.match(r'(\S+)\s+(\S+)',sl)
-			if tmp==None:
-				Fs.error('Please check your syntax ！')
-			else:
-				ch=tmp.group(1)
-				attrs=tmp.group(2)
-				if ChrName.get(ch)==None:
-					Fs.error('This charecter does not exist !')
-				else:
-					c=ChrName[ch]
-				for attr in attrs.replace('，',',').split(','):
-					ttmp=attr.replace('：',':')split(':')
-					if ChrKeyword.get(ttmp[0])==None:
-						Fs.error("This charecter's attribute does not exist !")
-					else:
-						if eval(ChrKeyword[ttmp[0]]).get(ttmp[1])==None:
-							Fs.error("This "+ChrKeyword[ttmp[0]]+" does not exist !")
-						else:
-							eval(ttmp[0]+'='+ChrKeyword[ttmp[0]])[ttmp[1]]
-			rn='show '+n+c+p+Mode+' at '+l+'\n'
-			if e!=None:
-				rn+='with '+e+'\n'
-		return '\t'+rn
-
 	elif Flag=='ef':
 		rn=''
 		ef=Transition.replace('，',',').split(',')
@@ -179,20 +140,8 @@ def Sp2Script(Flag,Transition,Content,Mode,Fs):
 			Fs.error('This effect does not exist !')
 
 	else:
-		Fs.error('This flag does not exist !')
+		Fs.error('This flag does not exist or be supported in this fun !')
 
-
-
-
-
-
-
-
-
-
-#Change normal texts to script
-def Text2Script(Text,Mode):
-	pass
 
 
 def CreatDefine(Name,Mode):
