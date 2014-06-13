@@ -40,7 +40,7 @@ def RBlock(Fs):
 			sr=re.match(r'<(\S+)>\s*(\S+)\s*</\S+>',s)
 			head='sp'
 			flag=sr.group(1)
-			transition='null'
+			transition='None'
 			content=sr.group(2)
 		elif re.match(r'<\S+\s+\S+>',s):
 			sr=re.match(r'<(\S+)\s+(\S+)>',s)
@@ -59,7 +59,7 @@ def RBlock(Fs):
 			sr=re.match(r'<(\S+)>',s)
 			head='sp'
 			flag=sr.group(1)
-			transition='null'
+			transition='None'
 			while 1:
 				s=Fs.readline()
 				if (s[0]=='<') & (s[1]=='/'):
@@ -73,8 +73,8 @@ def RBlock(Fs):
 
 	else:
 		head='text'
-		flag='null'
-		transition='null'
+		flag='None'
+		transition='None'
 		content=s
 
 	return [head,flag,transition,content]
@@ -82,16 +82,16 @@ def RBlock(Fs):
 
 
 #Return a string which changing special texts to Script
-def Sp2Script(Flag,Transition,Content,Fs):
+def Sp2Script(Flag,Transition,Content,Mode,Fs):
 
 	if Flag=='sc':
 		return 'label '+Content.replace('，','')+' :\n'
 
 	elif Flag=='bg':
 		s=''
-		for tmp in Content.split('：'):
+		for tmp in Content..replace('：',':').split(':'):
 			s+=tmp
-		sr=s.split('，')
+		sr=s.replace('，',',').split(',')
 		rn=''
 		if BgMain.get(sr[0])==None:
 			Fs.error('This Bg does not exist ！')
@@ -105,12 +105,12 @@ def Sp2Script(Flag,Transition,Content,Fs):
 				rn='show bg '+BgMain[sr[0]]+'\n'
 			else:
 				Fs.error('Unsupport two and more subscenes ！')
-		if Transition!='null':
+		if Transition!='None':
 			if TransImage.get(Transition)==None:
 				Fs.error('This transition does not exist !')
 			else:
 				rn+='with '+TransImage[Transition]+'\n'
-		return 'wr\nNone'+rn
+		return 'None'+rn
 
 	elif Flag=='bgm':
 		rn=''
@@ -118,20 +118,12 @@ def Sp2Script(Flag,Transition,Content,Fs):
 			Fs.error('This Bgm does not exist ！')
 		else:
 			rn='play music '+BgmPath+Bgm[Content]+'\n'
-		if Transition!='null':
+		if Transition!='None':
 			if TransSound.get(Transition)==None:
 				Fs.error('This effect does not exist ！')
 			else:
 				rn='with '+TransSound[Transition]+'\n'
-		return 'wr\n\t'+rn
-
-	elif Flag=='mode':
-		if Content=='None':
-			return 'hide window\n'
-		elif Content=='Re':
-			return 'show window\n'
-		elif Content=='ADV':
-			return 'mode\nADV'
+		return '\t'+rn
 
 	elif Flag=='ch':
 		rn=None
@@ -147,8 +139,8 @@ def Sp2Script(Flag,Transition,Content,Fs):
 					Fs.error('This charecter does not exist !')
 				else:
 					c=ChrName[ch]
-				for attr in attrs.split('，'):
-					ttmp=attr.split('：')
+				for attr in attrs.replace('，',',').split(','):
+					ttmp=attr.replace('：',':')split(':')
 					if ChrKeyword.get(ttmp[0])==None:
 						Fs.error("This charecter's attribute does not exist !")
 					else:
@@ -156,13 +148,35 @@ def Sp2Script(Flag,Transition,Content,Fs):
 							Fs.error("This "+ChrKeyword[ttmp[0]]+" does not exist !")
 						else:
 							eval(ttmp[0]+'='+ChrKeyword[ttmp[0]])[ttmp[1]]
-			rn='show '+n+c+p+' at '+l+'\n'
+			rn='show '+n+c+p+Mode+' at '+l+'\n'
 			if e!=None:
 				rn+='with '+e+'\n'
-		return 'wr\n\t'+rn
+		return '\t'+rn
 
-	#elif Flag=='ef':
-		#pass
+	elif Flag=='ef':
+		rn=''
+		ef=Transition.replace('，',',').split(',')
+		if ef[0] in EffectSp:
+			for s in Content.splitlines():
+				rn+='\tcall label('
+				for efc in range(2,len(ef)+1):
+					if ef[efc]=='this':
+						if ef[1]=='Text':
+							rn+="'"+s+"'"
+						else:
+							if Graph.get(s)!=None
+								rn+=s
+							else:
+								Fs.error('This graph does not exist !')
+					else:
+						rn+=ef[efc]
+					if efc==len(ef):
+						rn+=')\n'
+					else:
+						rn+=', '
+			return rn
+		else:
+			Fs.error('This effect does not exist !')
 
 	else:
 		Fs.error('This flag does not exist !')
