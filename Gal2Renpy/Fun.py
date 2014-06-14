@@ -5,7 +5,9 @@ import Gal2Renpy.imilb
 def RBlock(Fs):
 	[head,flag,transition,content]=['','','','']
 	s=Fs.readline()
-	if re.match(r'<.*>',s)!=None:
+	if s==None:
+		head='end'
+	elif re.match(r'<.*>',s)!=None:
 
 		if re.match(r'<\S+\s+\S+>.*</\S+>',s)!=None:
 			sr=re.match(r'<(\S+)\s*(\S+)>\s*(.*)\s*</\S+>',s)
@@ -49,28 +51,37 @@ def RBlock(Fs):
 			Fs.error('''Error! Please check the "<>"" !''')
 
 	else:
-		tmp=re.match(r'(\S+)\s+(\S+)')
+		tmp=re.match(r'(\S+)\s+【(\S+)】',s)
 		if tmp==None:
-			flag='None'
-			content=s
-			if ('【' in s) & ('】' in s):
-				head='say'
-			else:
+			tmp=re.match(r'【(.*)】',s)
+			if tmp==None:
 				head='text'
+				flag='None'
+				transition='None'
+				content='\t'+s
+			else:
+				head='words'
+				if ChrName['Saying']==None:
+					Fs.error('No speaker !')
+				else:
+					flag=ChrName['Saying']
+				transition='think'
+				content=tmp
 		else:
 			if ChrName.get(tmp.group(1))==None:
 				Fs.error('This charecter doen not exist !')
 			else:
-				head='say'
+				head='words'
 				flag=ChrName[tmp.group(1)]
+				transition='say'
 				content=tmp.group(2)
-		transition='None'
+				ChrName['Saying']=flag
 
 	return [head,flag,transition,content]
 
 
 
-#Return a string which changing special texts to Script
+#Return a string which changing special texts to scripts
 def Sp2Script(Flag,Transition,Content,Fs):
 
 	if Flag=='sc':

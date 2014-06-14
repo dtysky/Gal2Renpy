@@ -8,5 +8,6 @@ ChrName=
 	"暮": "Logos" ,
 	"晓": "Poem" ,
 	"散夜": "Existent" ,
-	"无名": "Void" 
+	"无名": "Void" ,
+	"Saying": None
 }

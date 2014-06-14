@@ -24,10 +24,10 @@ class Chr():
 			self.name=Name
 			#'new' will be true if the attributes has been changed
 			self.attrs={'e':None,'f':None,'c':None,'p':None,'l':None,'new':False}
-		elif len(Text)==2:
+		elif len(Text)==3:
 			self.name=Text[0]
 			self.attrs={'e':None,'f':None,'c':None,'p':None,'l':None,'new':False}
-			self.rfattrs(Text[1],Fs)
+			self.rfattrs(Text[1],Text[2])
 		#Text,Say or Think,Mode,Is refreshed
 		self.say={'Text':None,'Style':None,'Mode':None,'new':False}
 	#Refresh attributes in this charecter
@@ -47,6 +47,7 @@ class Chr():
 		self.say['Text']=Text
 		self.say['Style']=Style
 		self.say['Mode']=Mode
+		self.say['new']=True
 	#Creat scripts which are related to charecters
 	def show():
 		rn=''
