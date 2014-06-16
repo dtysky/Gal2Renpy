@@ -1,0 +1,1 @@
+BgmPath='data/bgm/'
