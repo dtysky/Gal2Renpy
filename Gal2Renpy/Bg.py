@@ -1,26 +1,19 @@
+#-*-coding:utf-8-*- 
+
 #Main Scence
-BgMain=
-{
-	"家": "Home" ,
+BgMain={
+	u"白": 'White',
+	u"家": "Home" ,
 }
 
 
 #Sub Scence
-
-#Home
-BgHome=
-{
+BgSub={
+	#Home
 	"房间": "01" ,
 }
 
-#School
-BgSchool=
-{
-	
-}
-
 #Weather
-BgWeather=
-{
+BgWeather={
 	"晴": "A" ,
 }

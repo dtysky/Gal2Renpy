@@ -1,55 +1,26 @@
+#-*-coding:utf-8-*- 
+
 #Charecter Face
 
 #寒苍
-FaceDream=
-{
-	
-}
+ChrFace={
+	#寒苍
 
-#晗樱
-FaceSun=
-{
-	
-}
+	#晗樱
 
-#苓苏
-FaceFlower=
-{
-	
-}
+	#苓苏
 
-#雏末
-FaceMoon=
-{
-	
-}
+	#雏末
 
-#弗莱士
-FaceStar=
-{
-	
-}
+	#弗莱士
 
-#暮
-FaceLogos=
-{
-	
-}
+	#暮
 
-#晓
-FacePoem=
-{
-	
-}
+	#晓
 
-#散夜
-FaceExistent=
-{
-	
-}
+	#散夜
 
-#无名
-FaceVoid=
-{
-	
+	#无名
+
+
 }

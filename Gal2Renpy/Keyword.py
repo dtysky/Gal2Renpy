@@ -1,3 +1,5 @@
+#-*-coding:utf-8-*- 
+
 Keywords=[
 	"sc",
 	"tree",

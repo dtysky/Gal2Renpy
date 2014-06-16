@@ -1,11 +1,11 @@
+#-*-coding:utf-8-*- 
+
 #Bgm
-BgmD=
-{
+Bgm={
 	"Peotic Being~OrgVer.~" : "01.ogg" ,
 }
 
 #Effect
-SoundEffect=
-{
+SoundEffect={
 	
 }
