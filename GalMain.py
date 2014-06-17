@@ -103,7 +103,10 @@ if TestMode==True:
 					Fo.write(ChrName[Flag][2].show())
 
 				elif Head=='text':
-					Fo.write('    '+Content)
+					if Mode=='A':
+						Fo.write('    '+Content)
+					else:
+						Fo.write('    s '+"'"+Content+"'")
 
 				else:
 					pass
