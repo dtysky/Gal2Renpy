@@ -23,19 +23,7 @@ def DHash(Dict):
 		else:
 			dh+=hash(str(tmp))+hash(str(Dict[tmp]))
 	return dh
-
-def eq(Da,Db):
-	if Da==Db:
-		return True
-	else:
-		return False
-
-def seth(a,b):
-	a=b
-	return
-
-
-
+	
 #Return next block
 def RBlock(Fs):
 	[head,flag,transition,content]=['','','','']
@@ -209,10 +197,10 @@ def CreatDefine():
  	DictHash=pickle.load(FileHash)
  	FileHash.close()
  	for HashName in DictHash:
- 		if eq(DictHash[HashName],DHash(eval(HashName))):
+ 		if DictHash[HashName]==DHash(eval(HashName)):
  			pass
  		else:
- 			seth(DictHash[HashName],DHash(eval(HashName)))
+ 			DictHash[HashName]=DHash(eval(HashName))
 			rn=''
  			if  HashName=='ChrName':
  				fo=codecs.open(ScriptPath+'define/name.rpy','w')
