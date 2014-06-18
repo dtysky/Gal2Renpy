@@ -14,18 +14,17 @@ Keywords=[
 	"cg",
 	"ef",
 	"mode",
-	"test",
-	"skip"
+	"test"
 ]
 
 # AllHash={
-# 	'ChrName': None,
-# 	'ChrFace': None,
-# 	'ChrClothes': None,
-# 	'ChrPose': None,
-# 	'ChrPosition': None,
-# 	'BgMain': None,
-# 	'BgSub': None,
-# 	'BgWeather': None
+# 	'ChrName': 0,
+# 	'ChrFace': 0,
+# 	'ChrClothes': 0,
+# 	'ChrPose': 0,
+# 	'ChrPosition': 0,
+# 	'BgMain': 0,
+# 	'BgSub': 0,
+# 	'BgWeather': 0
 
 # }

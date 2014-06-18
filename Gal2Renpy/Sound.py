@@ -5,7 +5,7 @@ Bgm={
 	"Peotic Being~OrgVer.~" : "01.ogg" ,
 }
 
-#Effect
-SoundEffect={
+#Sound
+SoundE={
 	
 }

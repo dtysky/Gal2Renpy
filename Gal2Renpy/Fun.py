@@ -183,6 +183,30 @@ def Sp2Script(Flag,Transition,Content,Fs):
 		else:
 			Fs.error('This effect does not exist !')
 
+	elif Flag=='sound':
+		rn=''
+		if SoundE.get(Content)==None:
+			Fs.error('This Sound does not exist !')
+		else:
+			rn='play sound '+'''"'''+SoundPath+SoundE[Content]+'''"\n'''
+		if Transition!='None':
+			if Trans.get(Transition)==None:
+				Fs.error('This effect does not exist !')
+			else:
+				rn='with '+Trans[Transition]+'\n'
+		return '    '+rn
+
+	elif Flag=='switch':
+		rn='    menu:\n'
+		if Transition=='nomal':
+			for sw in Content.splitlines():
+				tmp=replace('：',':').split(':')
+				rn+='        '+"'"+tmp[0]+"':\n"
+				rn+='            call '+tmp[1]+'\n'
+		else:
+			Fs.error('This Mode does not be supported !')
+		return rn
+
 	elif Flag=='renpy':
 		return '    '+Content+'\n'
 
