@@ -19,13 +19,13 @@ Keywords=[
 ]
 
 # AllHash={
-# 	'ChrName': [None,ChrName],
-# 	'ChrFace': [None,ChrFace],
-# 	'ChrClothes': [None,ChrClothes],
-# 	'ChrPose': [None,ChrPose],
-# 	'ChrPosition': [None,ChrPosition],
-# 	'BgMain': [None,BgMain],
-# 	'BgSub': [None,BgSub],
-# 	'BgWeather': [None,BgWeather]
+# 	'ChrName': None,
+# 	'ChrFace': None,
+# 	'ChrClothes': None,
+# 	'ChrPose': None,
+# 	'ChrPosition': None,
+# 	'BgMain': None,
+# 	'BgSub': None,
+# 	'BgWeather': None
 
 # }
