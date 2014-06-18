@@ -1,8 +1,5 @@
 #-*-coding:utf-8-*- 
 
-#Don't change!
-
-#Keywords
 Keywords=[
 	"sc",
 	"tree",
@@ -17,15 +14,17 @@ Keywords=[
 	"test",
 	"skip"
 ]
+<<<<<<< HEAD
 
-# AllHash={
-# 	'ChrName': [None,ChrName],
-# 	'ChrFace': [None,ChrFace],
-# 	'ChrClothes': [None,ChrClothes],
-# 	'ChrPose': [None,ChrPose],
-# 	'ChrPosition': [None,ChrPosition],
-# 	'BgMain': [None,BgMain],
-# 	'BgSub': [None,BgSub],
-# 	'BgWeather': [None,BgWeather]
+# DList={
+# 	'ChrName': ChrName,
+# 	'ChrFace': ChrFace,
+# 	'ChrClothes': ChrClothes,
+# 	'ChrPose': ChrPose,
+# 	'BgMain': BgMain,
+# 	'BgSub': BgSub,
+# 	'BgWeather': BgWeather
 
 # }
+=======
+>>>>>>> parent of ec314ae... 还剩 选择支、文件循环哈希值判断

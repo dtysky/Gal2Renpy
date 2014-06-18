@@ -1,3 +1,103 @@
+<<<<<<< HEAD
+=======
+#-*-coding:utf-8-*- 
+
+import numpy
+import re
+import codecs
+from ctypes import *
+from Keyword import *
+from Class import *
+from ChrFace import *
+from ChrOther import *
+from Sound import *
+from Bg import *
+from Effect import *
+from Path import *
+
+#Return next block
+def RBlock(Fs):
+	[head,flag,transition,content]=['','','','']
+	s=Fs.readline()
+	if s=='':
+		head='end'
+	elif s=='\r\n':
+		head='None'
+	elif re.match(r'<.*>',s)!=None:
+
+		if re.match(r'<\S+\s+\S+>.+</\S+>',s)!=None:
+			sr=re.match(r'<(\S+)(.+)>(.*)\s*</\S+>',s)
+			head='sp'
+			flag=sr.group(1)
+			transition=sr.group(2)
+			content=sr.group(3)
+		elif re.match(r'<\S+>.*</\S+>',s)!=None:
+			sr=re.match(r'<(\S+)>(.+)</\S+>',s)
+			head='sp'
+			flag=sr.group(1)
+			transition='None'
+			content=sr.group(2)
+		elif re.match(r'<\S+\s+\S+>',s)!=None:
+			sr=re.match(r'<(\S+)\s+(\S+)>',s)
+			head='sp'
+			flag=sr.group(1)
+			transition=sr.group(2)
+			while 1:
+				s=Fs.readline()
+				if (s[0]=='<') & (s[1]=='/'):
+					break
+				elif s[0]=='<':
+					Fs.error('''Error! Please check the "</"" !''')
+				else:
+					content+=re.match('\s*(.+)',s).group(1)+'\n'
+		elif re.match(r'<\S+>',s)!=None:
+			sr=re.match(r'<(\S+)>',s)
+			head='sp'
+			flag=sr.group(1)
+			transition='None'
+			while 1:
+				s=Fs.readline()
+				if (s[0]=='<') & (s[1]=='/'):
+					break
+				elif s[0]=='<':
+					Fs.error('''Error! Please check the "</"" !''')
+				else:
+					content+=re.match('\s*(.+)',s).group(1)+'\n'
+		else:
+			Fs.error('''Error! Please check the "<>"" !''')
+
+	else:
+		tmp=re.match(ur'(\S+)\s+【(.*)】',s)
+		if tmp==None:
+			tmp=re.match(ur'【(.*)】',s)
+			if tmp==None:
+				head='text'
+				flag='None'
+				transition='None'
+				content='''"'''+s+'''"'''
+			else:
+				head='words'
+				if ChrName['Saying']==None:
+					Fs.error('No speaker !')
+				else:
+					flag=ChrName['Saying']
+				transition='think'
+				content=tmp
+		else:
+			if ChrName.get(tmp.group(1))==None:
+				Fs.error('This charecter doen not exist !')
+			else:
+				head='words'
+				flag=tmp.group(1)
+				transition='say'
+				content=tmp.group(2)
+				ChrName['Saying']=flag
+
+	return [head,flag,transition,content]
+
+
+
+>>>>>>> c3cceeea64196bbe63dafbe5db7f02d30176eaa8
 #Return a string which changing special texts to scripts
 def Sp2Script(Flag,Transition,Content,Fs):
 
@@ -83,7 +183,9 @@ def Sp2Script(Flag,Transition,Content,Fs):
 
 
 #Creat ren'py define script
+#I failed to use the hash if there is a dict which contains some dicts
 def CreatDefine():
+<<<<<<< HEAD
  	ChrDone=False
  	BgDone=False
  	FileHash=open('Gal2Renpy/HashDict','r')
@@ -137,3 +239,47 @@ def CreatDefine():
  	FileHash=open('Gal2Renpy/HashDict','w')
  	pickle.dump(DictHash,FileHash)
  	FileHash.close()
+=======
+	if  ChrName['new']:
+		rn=''
+		fo=codecs.open(ScriptPath+'define/name.rpy','w')
+		for Name in ChrName:
+			if (Name!='Saying') & (Name!='new'):
+				rn+='define '+ChrName[Name][0]+'A = Character('+"'"+Name+"',color='"+ChrName[Name][1]+"')\n"
+				rn+='define '+ChrName[Name][0]+'V = Character('+"'"+Name+"',color='"+ChrName[Name][1]+"', kind=nvl)\n"
+		rn+="define n = Character(None, kind=nvl)"
+		fo.write(rn)
+		fo.close()
+
+	elif ChrClothes['new'] | ChrPose['new'] | ChrFace['new']:
+		rn=''
+		if ChrDone==False:
+			fo=codecs.open(ScriptPath+'define/char.rpy','w')
+			for Name in ChrName:
+				if Name!='Saying':
+					if ChrClothes.get(Name)!=None:
+						for Clothes in ChrClothes[Name]:
+							if ChrPose.get(Name)!=None:
+								for Poes in ChrPose[Name]:
+									if ChrFace.get(Name)!=None:
+										for Face in ChrFace[Name]:
+											rn+='image '+ChrName[Name][0]+ChrClothes[Name][Clothes]+ChrPose[Name][Poes]+ChrFace[Name][Face]+' = '+"'"+ChrPath+ChrName[Name][0]+'/'+ChrName[Name][0]+ChrClothes[Name][Clothes]+ChrPose[Name][Poes]+ChrFace[Name][Face] +".png'\n"
+			fo.write(rn)
+			fo.close()
+
+	elif BgMain['new'] | BgSub['new'] | BgWeather['new']:
+		rn=''
+		if BgDone==False:
+			fo=codecs.open(ScriptPath+'define/bg.rpy','w')
+			for Bg in BgMain:
+				if BgSub.get(Bg)!=None:
+					for Sub in BgSub[Bg]:
+						if BgWeather.get(Bg)!=None:
+							for Wh in BgWeather[Bg]:
+								rn+='image bg '+BgMain[Bg]+BgSub[Bg][Sub]+BgWeather[Bg][Wh]+' = '+"'"+BgPath+'/'+BgMain[Bg]+BgSub[Bg][Sub]+BgWeather[Bg][Wh]+".png'\n"
+			fo.write(rn)
+			fo.close()
+
+	else:
+		pass
+>>>>>>> c3cceeea64196bbe63dafbe5db7f02d30176eaa8
