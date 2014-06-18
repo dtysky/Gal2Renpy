@@ -38,14 +38,17 @@ class MyFS():
 class Chr():
 	#One or two arguments 
 	def __init__(self,*Text):
-		if len(Text)==1:
+		if len(Text)==2:
 			self.name=Text[0]
+			self.orgname=Text[1]
 			#'new' will be true if the attributes has been changed
 			self.attrs={'e':None,'f':None,'c':None,'p':None,'l':None,'new':False}
-		elif len(Text)==3:
+			self.complete=False
+		elif len(Text)==4:
 			self.name=Text[0]
+			self.orgname=Text[1]
 			self.attrs={'e':None,'f':None,'c':None,'p':None,'l':None,'new':False}
-			self.rfattrs(Text[1],Text[2])
+			self.rfattrs(Text[2],Text[4])
 		#Text,Say or Think,Mode,Is refreshed
 		self.say={'Text':None,'Style':None,'Mode':None,'new':False}
 	#Refresh attributes in this charecter
@@ -55,10 +58,10 @@ class Chr():
 			if ChrKeyword.get(ttmp[0])==None:
 				Fs.error("This charecter's attribute does not exist !")
 			else:
-				if ChrKeyword[ttmp[0]].get(ttmp[1])==None:
+				if ChrKeyword[ttmp[0]][self.orgname].get(ttmp[1])==None:
 					Fs.error("This "+ChrKeyword[ttmp[0]]+" does not exist !")
 				else:
-					self.attrs[ttmp[0]]=ChrKeyword[ttmp[0]][ttmp[1]]
+					self.attrs[ttmp[0]]=ChrKeyword[ttmp[0]][self.orgname][ttmp[1]]
 			self.attrs['new']=True
 	#Refresh next word by this charecter
 	def rftext(self,Text,Style,Mode):
@@ -70,6 +73,12 @@ class Chr():
 	def show(self):
 		rn=''
 		if self.attrs['new']:
+			if self.complete==False:
+				for attr in self.attrs:
+					if self.attrs[attr]==None:
+						MessageBox("This charecter's attributes are not complete !")
+						sys.exit(0)
+					self.complete==True
 			rn+='    show '+self.name+self.attrs['c']+self.attrs['p']+self.attrs['f']
 			rn+=' at '+self.attrs['l']+'\n'
 			rn+='    with '+self.attrs['e']+'\n'

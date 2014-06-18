@@ -4,11 +4,8 @@ from Effect import *
 from ChrFace import *
 
 #Chareter Name
-#Set the key 'new' value to 'True' if you change this dict !
-#Add an 'u' in front of key or value if you use Chinese !
+#Add a 'u' in front of key or value if you use Chinese !
 ChrName={
-	'new': False ,
-	"Saying": None ,
 	u"寒苍": ["Dream","#000000",None] ,
 	u"晗樱": ["Soul","#000000",None] ,
 	u"苓苏": ["Flower","#000000",None] ,
@@ -17,16 +14,15 @@ ChrName={
 	u"暮": ["Logos","#000000",None] ,
 	u"晓": ["Poem","#000000",None] ,
 	u"散夜": ["Existent","#000000",None] ,
-	u"无名": ["Void","#000001",None] ,
+	u"无名": ["Void","#000000",None] ,
+	u"Saying": None
 }
 
 
 #Chareter Clothes
 #You must give them a default value at least !
-#Set the key 'new' value to 'True' if you change this dict !
-#Add an 'u' in front of key or value if you use Chinese !
+#Add a 'u' in front of key or value if you use Chinese !
 ChrClothes={
-	'new': False ,
 	#寒苍
 	u'寒苍': {
 		u'校服': 'A',
@@ -37,10 +33,8 @@ ChrClothes={
 
 #Chareter Pose
 #You must give them a default value at least !
-#Set the key 'new' value to 'True' if you change this dict !
-#Add an 'u' in front of key or value if you use Chinese !
+#Add a 'u' in front of key or value if you use Chinese !
 ChrPose={
-	'new': False ,
 	#寒苍
 	u'寒苍': {
 		u'普通': 'A',
@@ -49,7 +43,8 @@ ChrPose={
 }
 
 #Chareter Center Position
-#Add an 'u' in front of key or value if you use Chinese !
+#You must give them a default value at least !
+#Add a 'u' in front of key or value if you use Chinese !
 ChrPosition={
 	#Size A
 	"A1": "Grid(1,7)" ,
