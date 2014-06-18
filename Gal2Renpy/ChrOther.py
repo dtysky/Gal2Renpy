@@ -6,6 +6,7 @@ from ChrFace import *
 #Chareter Name
 #Add a 'u' in front of key or value if you use Chinese !
 ChrName={
+	u"Saying": None ,
 	u"寒苍": ["Dream","#000000",None] ,
 	u"晗樱": ["Soul","#000000",None] ,
 	u"苓苏": ["Flower","#000000",None] ,
@@ -15,7 +16,6 @@ ChrName={
 	u"晓": ["Poem","#000000",None] ,
 	u"散夜": ["Existent","#000000",None] ,
 	u"无名": ["Void","#000000",None] ,
-	u"Saying": None
 }
 
 

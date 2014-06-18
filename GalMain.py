@@ -1,40 +1,66 @@
 #-*-coding:utf-8-*- 
 
-import numpy
 import re
 import sys
 import os
 import codecs
+import pickle
 from ctypes import *
 from Gal2Renpy.Class import *
 from Gal2Renpy.Fun import *
 from Gal2Renpy.ChrOther import *
+from Gal2Renpy.User import *
 
-TestMode=True
 Begin=None
 
 Mode='A'
-sout=None
 
 Fs=MyFS()
-Fs.open('Chapter-00.gal')
 
 ChrNow=[]
+FileNow=[]
 
 #特效必须做成label!
 
-#每次读文件之前先判断是否改动过！
 CreatDefine()
+
+FileHash=open('Gal2Renpy/HashFile','r')
+HashFile=pickle.load(FileHash)
+FileHash.close()
+
+#Only a file had been changed will process it
+for root,dirs,files in os.walk(TextPath):
+    for f in files:
+        if os.path.splitext(f)[1]!='.gal':
+        	pass
+        else:
+        	if HashFile.get(root+'/'+f)==None:
+        		Fs.open(root+'/'+f)
+        		HashFile[root+'/'+f]=Fs.hash()
+        		Fs.close()
+        		FileNow.append(root+'/'+f)
+        	else:
+        		Fs.open(root+'/'+f)
+        		if Fs.hash()==HashFile[root+'/'+f]:
+        			pass
+        		else:
+        			HashFile[root+'/'+f]=Fs.hash()
+        			FileNow.append(root+'/'+f)
+        			Fs.close()
+FileHash=open('Gal2Renpy/HashFile','w')
+pickle.dump(HashFile,FileHash)
+FileHash.close()
+
 
 if TestMode==True:
 	if os.path.exists('../script/script.rpy'):
-		os.rename('../script/script.rpy','../script/script.rpyx')
+		os.remove('../script/script.rpy')
 		if os.path.exists('../script/script.rpyc'):
-			os.rename('../script/script.rpyc','../script/script.rpycx')
+			os.remove('../script/script.rpyc')
 	Fo=codecs.open('../script/test.rpy','w')
 	Fo.write('label start:\n')
-	#循环读文件
-	for i in range(1):
+	for path in FileNow:
+		Fs.open(path)
 		Begin=False
 		while 1:
 			[Head,Flag,Transition,Content]=RBlock(Fs)
@@ -51,8 +77,6 @@ if TestMode==True:
 				elif Content=='End':
 					if Begin==False:
 						Fs.error('Your test module does not been created !')
-					else:
-						Begin=False
 					Fs.close()
 					break
 				else:
@@ -113,19 +137,28 @@ if TestMode==True:
 
 
 else:
-	#循环读文件
+	FileList=open('Gal2Renpy/ListFile','r')
+	ListFile=pickle.load(FileList)
+	FileList.close()
+	for path in FileNow:
+		Fs.open(path)
+
 		while 1:
-			
 			[Head,Flag,Transition,Content]=RBlock(Fs)
 			if Head=='end':
 				Fo.write('    return')
 				Fs.close()
+				Fo.flush()
 				Fo.close()
 				break
 
 			if Head=='sp':
 				
 				if Flag=='sc':
+					if Content in ListFile:
+						pass
+					else:
+						ListFile.append(Content)
 					Fo.open('./script/text/'+Content+'.rpy','r')
 					Fo.write('label '+Content+' :\n')
 
@@ -172,6 +205,18 @@ else:
 				Fo.write('    '+Content)
 		else:
 			pass
+	if os.path.exists('../script/test.rpy'):
+		os.remove('../script/test.rpy')
+	Fo=codecs.open('../script/script.rpy','w')
+	Fo.write('label start:\n')
+	for File in ListFile:
+		Fo.write('    call '+File+'\n')
+	Fo.close()
+	FileList=open('Gal2Renpy/ListFile','w')
+	pickle.dump(ListFile,FileList)
+	FileList.close()
+
+
 
 
 

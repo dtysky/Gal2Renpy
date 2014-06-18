@@ -30,6 +30,8 @@ class MyFS():
 	def error(self,e):
 		MessageBox(e+'\n'+'file : '+self.path+'\n'+'line : '+str(self.linepos))
 		sys.exit(0)
+	def hash(self):
+		return hash(self.fs)
 	def close(self):
 		self.fs.close()
 

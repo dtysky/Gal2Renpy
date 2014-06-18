@@ -1,6 +1,5 @@
 #-*-coding:utf-8-*- 
 
-import numpy
 import re
 import codecs
 import pickle
@@ -12,7 +11,7 @@ from ChrOther import *
 from Sound import *
 from Bg import *
 from Effect import *
-from Path import *
+from User import *
 
 #Return hash for a dict which may contain a dict as its value
 def DHash(Dict):
