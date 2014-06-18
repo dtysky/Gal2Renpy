@@ -24,7 +24,6 @@ ChrNow=[]
 #特效必须做成label!
 
 #每次读文件之前先判断是否改动过！
-CreatDefine()
 
 if TestMode==True:
 	if os.path.exists('../script/script.rpy'):
@@ -82,10 +81,10 @@ if TestMode==True:
 								if ChrName[name][0] in ChrNow:
 									pass
 								else:
-									ChrName[name][2]=Chr(ChrName[name][0],name,attrs,Fs)
+									ChrName[name][1]=Chr(ChrName[name][0],attrs,Fs)
 									ChrNow.append(ChrName[name][0])
-									ChrName[name][2].rfattrs(attrs,Fs)
-							Fo.write(ChrName[name][2].show())
+									ChrName[name][1].rfattrs(attrs,Fs)
+							Fo.write(ChrName[name][1].show())
 
 					elif Flag=='sc':
 						pass
@@ -94,13 +93,13 @@ if TestMode==True:
 						Fo.write(Sp2Script(Flag,Transition,Content,Fs))
 
 				elif Head=='words':
-					if ChrName[Flag][0] in ChrNow:
+					if Flag[0] in ChrNow:
 						pass
 					else:
-						ChrName[Flag][2]=Chr(ChrName[Flag][0],Flag)
-						ChrNow.append(ChrName[Flag][0])
-					ChrName[Flag][2].rftext(Content,Transition,Mode)
-					Fo.write(ChrName[Flag][2].show())
+						Flag[1]=Chr(Flag[0])
+						ChrNow.append(Flag[0])
+					Flag[1].rftext(Content,Transition,Mode)
+					Fo.write(Flag[1].show())
 
 				elif Head=='text':
 					if Mode=='A':
@@ -154,22 +153,22 @@ else:
 								if ChrName[name][0] in ChrNow:
 									pass
 								else:
-									ChrName[name][2]=Chr(ChrName[name][0],name,attrs,Fs)
+									ChrName[name][1]=Chr(ChrName[name][0],attrs,Fs)
 									ChrNow.append(ChrName[name][0])
-									ChrName[name][2].rfattrs(attrs,Fs)
-							Fo.write(ChrName[name][2].show())
+									ChrName[name][1].rfattrs(attrs,Fs)
+							Fo.write(ChrName[name][1].show())
 
 				else:
 					Fo.write(Sp2Script(Flag,Transition,Content,Fs))
 
 			elif Head=='words':
-				if ChrName[Flag][0] in ChrNow:
+				if Flag[0] in ChrNow:
 					pass
 				else:
-					ChrName[Flag][2]=Chr(ChrName[Flag][0],Flag)
-					ChrNow.append(ChrName[Flag][0])
-				ChrName[Flag][2].rftext(Content,Transition,Mode)
-				Fo.write(ChrName[Flag][2].show())
+					Flag[1]=Chr(Flag[0])
+					ChrNow.append(Flag[0])
+				Flag[1].rftext(Content,Transition,Mode)
+				Fo.write(Flag[1].show())
 
 			elif Head=='text':
 				Fo.write('    '+Content)

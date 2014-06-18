@@ -1,8 +1,5 @@
 #-*-coding:utf-8-*- 
 
-#Don't change!
-
-#Keywords
 Keywords=[
 	"sc",
 	"tree",
@@ -17,6 +14,7 @@ Keywords=[
 	"test",
 	"skip"
 ]
+<<<<<<< HEAD
 
 # DList={
 # 	'ChrName': ChrName,
@@ -28,3 +26,5 @@ Keywords=[
 # 	'BgWeather': BgWeather
 
 # }
+=======
+>>>>>>> parent of ec314ae... 还剩 选择支、文件循环哈希值判断
