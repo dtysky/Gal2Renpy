@@ -52,21 +52,19 @@ for root,dirs,files in os.walk(TextPath):
 
 #Update HashFile and ListFile 
 for f in FileNew:
+	Fs.open(f,'rb')
 	if HashFile.get(f)==None:
-		Fs.open(f)
 		HashFile[f]=Fs.hash()
 		ListFile[f]=[]
-		Fs.close()
 		FileNow.append(f)
 	else:
-		Fs.open(f)
 		if Fs.hash()==HashFile[f]:
 			pass
 		else:
 			HashFile[f]=Fs.hash()
 			ListFile[f]=[]
 			FileNow.append(f)
-			Fs.close()
+	Fs.close()
 
 #Delete some invailed keys in HashFile and ListFile 
 for f in HashFile:
@@ -89,7 +87,7 @@ if TestMode==True:
 	Fo=codecs.open('../script/test.rpy','w')
 	Fo.write('label start:\n')
 	for path in FileNow:
-		Fs.open(path)
+		Fs.open(path,'r')
 		Begin=False
 		while 1:
 			[Head,Flag,Transition,Content]=RBlock(Fs,Begin)
@@ -168,7 +166,7 @@ if TestMode==True:
 else:
 
 	for path in FileNow:
-		Fs.open(path)
+		Fs.open(path,'r')
 
 		while 1:
 			[Head,Flag,Transition,Content]=RBlock(Fs,True)

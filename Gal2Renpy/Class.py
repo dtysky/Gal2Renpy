@@ -7,6 +7,7 @@ import codecs
 from Keyword import *
 from ChrFace import *
 from ChrOther import *
+import hashlib
 user32 = windll.LoadLibrary('user32.dll')
 
 MessageBox = lambda x:user32.MessageBoxA(0, x, 'Error', 0) 
@@ -15,9 +16,9 @@ class MyFS():
 
 	def __init__(self):
 		pass
-	def open(self,path):
+	def open(self,path,mode):
 		if os.path.exists(path):
-			self.fs=codecs.open(path,'r','utf-8')
+			self.fs=codecs.open(path,mode,'utf-8')
 			self.path=path
 			self.linepos=0
 		else:
@@ -31,7 +32,16 @@ class MyFS():
 		MessageBox(e+'\n'+'file : '+self.path+'\n'+'line : '+str(self.linepos))
 		sys.exit(0)
 	def hash(self):
-		return hash(self.fs)
+		md5obj=hashlib.md5()
+		while 1:
+			f=self.fs.read(8096)
+			if not f:
+				break
+			else:
+				md5obj.update(f)
+		hash=md5obj.hexdigest() 
+		self.fs.seek(0)
+		return hash
 	def close(self):
 		self.fs.close()
 
