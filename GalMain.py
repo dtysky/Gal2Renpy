@@ -1,3 +1,6 @@
+#Writing to future me:
+#You have only two chioces: rewriting, or closing
+
 #-*-coding:utf-8-*- 
 
 import re
@@ -19,6 +22,7 @@ Fs=MyFS()
 
 ChrNow=[]
 FileNow=[]
+FileNew=[]
 
 #特效必须做成label!
 
@@ -27,6 +31,16 @@ CreatDefine()
 FileHash=open('Gal2Renpy/HashFile','r')
 HashFile=pickle.load(FileHash)
 FileHash.close()
+FileList=open('Gal2Renpy/ListFile','r')
+ListFile=pickle.load(FileList)
+FileList.close()
+
+#Ensure HashFile and ListFile are synchronous
+if len(HashFile)==len(ListFile):
+	pass
+else:
+	HashFile.clear()
+	ListFile.clear()
 
 #Only a file had been changed will process it
 for root,dirs,files in os.walk(TextPath):
@@ -34,23 +48,38 @@ for root,dirs,files in os.walk(TextPath):
         if os.path.splitext(f)[1]!='.gal':
         	pass
         else:
-        	if HashFile.get(root+'/'+f)==None:
-        		Fs.open(root+'/'+f)
-        		HashFile[root+'/'+f]=Fs.hash()
-        		Fs.close()
-        		FileNow.append(root+'/'+f)
-        	else:
-        		Fs.open(root+'/'+f)
-        		if Fs.hash()==HashFile[root+'/'+f]:
-        			pass
-        		else:
-        			HashFile[root+'/'+f]=Fs.hash()
-        			FileNow.append(root+'/'+f)
-        			Fs.close()
+        	FileNew.append(root+'/'+f)
+
+#Update HashFile and ListFile 
+for f in FileNew:
+	if HashFile.get(f)==None:
+		Fs.open(f)
+		HashFile[f]=Fs.hash()
+		ListFile[f]=[]
+		Fs.close()
+		FileNow.append(f)
+	else:
+		Fs.open(f)
+		if Fs.hash()==HashFile[f]:
+			pass
+		else:
+			HashFile[f]=Fs.hash()
+			ListFile[f]=[]
+			FileNow.append(f)
+			Fs.close()
+
+#Delete some invailed keys in HashFile and ListFile 
+for f in HashFile:
+	if f in FileNew:
+		pass
+	else:
+		del HashFile[f]
+		del ListFile[f]
+
+
 FileHash=open('Gal2Renpy/HashFile','w')
 pickle.dump(HashFile,FileHash)
 FileHash.close()
-
 
 if TestMode==True:
 	if os.path.exists('../script/script.rpy'):
@@ -63,7 +92,7 @@ if TestMode==True:
 		Fs.open(path)
 		Begin=False
 		while 1:
-			[Head,Flag,Transition,Content]=RBlock(Fs)
+			[Head,Flag,Transition,Content]=RBlock(Fs,Begin)
 			if Head=='end':
 				Fo.flush()
 				Fs.close()
@@ -137,14 +166,12 @@ if TestMode==True:
 
 
 else:
-	FileList=open('Gal2Renpy/ListFile','r')
-	ListFile=pickle.load(FileList)
-	FileList.close()
+
 	for path in FileNow:
 		Fs.open(path)
 
 		while 1:
-			[Head,Flag,Transition,Content]=RBlock(Fs)
+			[Head,Flag,Transition,Content]=RBlock(Fs,True)
 			if Head=='end':
 				Fo.write('    return')
 				Fs.close()
@@ -155,10 +182,10 @@ else:
 			if Head=='sp':
 				
 				if Flag=='sc':
-					if Content in ListFile:
-						pass
+					if Transition=='None':
+						ListFile[path].append(Content)
 					else:
-						ListFile.append(Content)
+						pass
 					Fo.open('./script/text/'+Content+'.rpy','r')
 					Fo.write('label '+Content+' :\n')
 
@@ -205,16 +232,20 @@ else:
 				Fo.write('    '+Content)
 		else:
 			pass
+			
 	if os.path.exists('../script/test.rpy'):
 		os.remove('../script/test.rpy')
 	Fo=codecs.open('../script/script.rpy','w')
 	Fo.write('label start:\n')
-	for File in ListFile:
-		Fo.write('    call '+File+'\n')
+	for f in sorted(ListFile):
+		for Sc in ListFile[f]:
+			Fo.write('    call '+Sc+'\n')
+
 	Fo.close()
-	FileList=open('Gal2Renpy/ListFile','w')
-	pickle.dump(ListFile,FileList)
-	FileList.close()
+
+FileList=open('Gal2Renpy/ListFile','w')
+pickle.dump(ListFile,FileList)
+FileList.close()
 
 
 

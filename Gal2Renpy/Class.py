@@ -21,7 +21,7 @@ class MyFS():
 			self.path=path
 			self.linepos=0
 		else:
-			MessageBox('The file '+path+' doen not exist !')
+			MessageBox('The file '+path+' does not exist !')
 			sys.exit(0)
 
 	def readline(self):

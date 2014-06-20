@@ -24,7 +24,7 @@ def DHash(Dict):
 	return dh
 	
 #Return next block
-def RBlock(Fs):
+def RBlock(Fs,Allow):
 	[head,flag,transition,content]=['','','','']
 	s=Fs.readline()
 	if s=='':
@@ -34,13 +34,13 @@ def RBlock(Fs):
 	elif re.match(r'<.*>',s)!=None:
 
 		if re.match(r'<\S+\s+\S+>.+</\S+>',s)!=None:
-			sr=re.match(r'<(\S+)(.+)>(.*)\s*</\S+>',s)
+			sr=re.match(r'<(\S+)\s*(.+)>\s*(.*)\s*</\S+>',s)
 			head='sp'
 			flag=sr.group(1)
 			transition=sr.group(2)
 			content=sr.group(3)
 		elif re.match(r'<\S+>.*</\S+>',s)!=None:
-			sr=re.match(r'<(\S+)>(.+)</\S+>',s)
+			sr=re.match(r'<(\S+)>\s*(.+)\s*</\S+>',s)
 			head='sp'
 			flag=sr.group(1)
 			transition='None'
@@ -75,32 +75,37 @@ def RBlock(Fs):
 			Fs.error('''Error! Please check the "<>"" !''')
 
 	else:
-		tmp=re.match(ur'(\S+)\s+【(.*)】',s)
-		if tmp==None:
-			tmp=re.match(ur'【(.*)】',s)
+		if Allow:
+			tmp=re.match(ur'(\S+)\s+【(.*)】',s)
 			if tmp==None:
-				head='text'
-				flag='None'
-				transition='None'
-				content='''"'''+s+'''"'''
-			else:
-				head='words'
-				if ChrName['Saying']==None:
-					Fs.error('No speaker !')
+				tmp=re.match(ur'【(.*)】',s)
+				if tmp==None:
+					head='text'
+					flag='None'
+					transition='None'
+					content="'"+s+"'"
 				else:
-					flag=ChrName['Saying']
-				transition='think'
-				content=tmp
-		else:
-			if ChrName.get(tmp.group(1))==None:
-				Fs.error('This charecter doen not exist !')
+					head='words'
+					if ChrName['Saying']==None:
+						Fs.error('No speaker !')
+					else:
+						flag=ChrName['Saying']
+					transition='think'
+					content=tmp
 			else:
-				head='words'
-				flag=tmp.group(1)
-				transition='say'
-				content=tmp.group(2)
-				ChrName['Saying']=flag
-
+				if ChrName.get(tmp.group(1))==None:
+					Fs.error('This charecter doen not exist !')
+				else:
+					head='words'
+					flag=tmp.group(1)
+					transition='say'
+					content=tmp.group(2)
+					ChrName['Saying']=flag
+		else:
+			head='None'
+			flag='None'
+			transition='None'
+			content='None'
 	return [head,flag,transition,content]
 
 
@@ -195,7 +200,7 @@ def Sp2Script(Flag,Transition,Content,Fs):
 				rn='with '+Trans[Transition]+'\n'
 		return '    '+rn
 
-	elif Flag=='switch':
+	elif Flag=='sw':
 		rn='    menu:\n'
 		if Transition=='nomal':
 			for sw in Content.splitlines():
