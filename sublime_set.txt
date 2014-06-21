@@ -5,8 +5,9 @@ key:
 ]
 
 
-build:
 
+
+Gal.sublime-build:
 
 {
 	"windows":
@@ -16,3 +17,7 @@ build:
     "encoding":"cp936"
 }
 
+
+Gal.sublime-settings:
+
+打开文件后点击右下角的Plain Text，在出现的文件格式中选择open all with current extension as…  ->"需要显示的语法类型"。这样以后打开这个类型的文件就会自动进行语法高亮了。

@@ -6,7 +6,7 @@
 	"ScriptPath":"E:/Follow_wings/FW/game/script/" ,
 
 	"Comment3":"//Your '.gal' text path, please use absolute path",
-	"TextPath":"E:/Follow_wings/FW/game/txt/" ,
+	"TextPath":"D:/Poetic_Being/梦见星空之诗 - Aria der Freiheit und des Seins/TXT" ,
 
 	"Comment4":"//Your game data path, you can use absolute path or a path which relative to your game dir",
 	"ChrPath":"data/char/" ,
