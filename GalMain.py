@@ -4,8 +4,6 @@
 #You have only two chioces: rewriting, or closing
 
 
-#主函数
-
 import re
 import sys
 import os

@@ -29,8 +29,10 @@ class MyFS():
 		self.linepos+=1
 		return self.fs.readline()
 	def error(self,e):
-		MessageBox(e.encode('utf-8')+'\n'+'file : '+self.path+'\n'+'line : '+str(self.linepos))
+		MessageBox(e+'\r\n'+'file : '+self.path.encode('gbk')+'\r\n'+'line : '+str(self.linepos))
 		sys.exit(0)
+	def error2(self,e):
+		MessageBox(e+'\r\n'+'file : '+self.path.encode('gbk')+'\r\n'+'line : '+str(self.linepos))
 	def hash(self):
 		md5obj=hashlib.md5()
 		while 1:

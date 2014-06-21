@@ -208,8 +208,11 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 	elif Flag=='renpy':
 		return '    '+Content+'\n'
 
+	elif Flag=='test':
+		Fs.error2('This flag does not exist or be supported in this Mode,ignoring... ')
+
 	else:
-		Fs.error('This flag does not exist or be supported in this fun !')
+		Fs.error('This flag does not exist or be supported in this Fun !')
 
 #Creat ren'py define script
 def CreatDefine(US):
