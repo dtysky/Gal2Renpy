@@ -1,0 +1,18 @@
+key:
+
+[
+	{ "keys": ["alt+s"], "command": "build" }
+]
+
+
+build:
+
+
+{
+	"windows":
+    {
+        "cmd": ["E:\\Follow_wings\\FW\\game\\Gal2Renpy\\run.bat"]
+    },
+    "encoding":"cp936"
+}
+

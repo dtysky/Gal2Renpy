@@ -1,8 +1,10 @@
+#coding:utf-8
+
 #Writing to future me:
 #You have only two chioces: rewriting, or closing
 
-#-*-coding:utf-8-*- 
 
+#主函数
 
 import re
 import sys
@@ -23,7 +25,6 @@ ChrNow=[]
 FileNow=[]
 FileAll=[]
 
-#特效必须做成label!
 US=User()
 CreatDefine(US)
 
@@ -115,7 +116,7 @@ if US.TestMode==True:
 						elif Content=='NVL':
 							Mode='N'
 						else:
-							Fs.error('This mode does not exist ！')
+							Fs.error('This mode does not exist !')
 
 					elif Flag=='ch':
 						for ch in Content.splitlines():
