@@ -1,0 +1,16 @@
+{
+	"Comment1":"//Seting True when you want to use TestMode, if not , seting False", 
+	"TestMode":"True" ,
+
+	"Comment2":"//Your '.rpy' Script path, please use absolute path",
+	"ScriptPath":"E:/Follow wings/FW/game/script/" ,
+
+	"Comment3":"//Your '.gal' text path, please use absolute path",
+	"TextPath":"E:/Follow wings/FW/game/txt/" ,
+
+	"Comment4":"//Your game data path, you can use absolute path or a path which relative to your game dir",
+	"ChrPath":"data/char/" ,
+	"BgPath":"data/bg/" ,
+	"BgmPath":"data/bgm/" 
+
+}

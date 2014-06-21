@@ -1,0 +1,31 @@
+
+{
+	"BgMain":{
+		"白": "White",
+		"家": "Home" 
+	},
+
+	"Comment1":"//You must give them a default value at least !",
+	"BgSub":{
+		"家":{
+			"房间": "01" 
+		},
+
+		"白":{
+			"default": "01"
+		}
+	},
+
+	"Comment2":"//You must give them a default value at least !",
+	"BgWeather":{
+		
+		"家":{
+			"晴": "A" 
+		},
+
+		"白":{
+			"default": "A"
+		}
+	}
+
+}

@@ -3,14 +3,10 @@
 import re
 import codecs
 import pickle
+import json
 from ctypes import *
 from Keyword import *
 from Class import *
-from ChrFace import *
-from ChrOther import *
-from Sound import *
-from Bg import *
-from Effect import *
 from User import *
 
 #Return hash for a dict which may contain a dict as its value
@@ -18,10 +14,52 @@ def DHash(Dict):
 	dh=0
 	for tmp in Dict:
 		if isinstance(Dict[tmp],dict):
-			dh+=hash(str(tmp))+hash(str(sorted(Dict[tmp],key=lambda d: d[0])))
+			dh+=hash(tmp)+hash(str(sorted(Dict[tmp],key=lambda d: d[0])))
 		else:
-			dh+=hash(str(tmp))+hash(str(Dict[tmp]))
+			dh+=hash(tmp)+hash(str(Dict[tmp]))
 	return dh
+
+#Init dictionaries
+def InitD():
+	global ChrName,ChrClothes,ChrPose,ChrPosition,BgMain,BgSub,BgWeather,ChrFace
+	global EffectSp,Trans,Bgm,SoundE,ScriptPath,TextPath,ChrPath,BgPath,BgmPath
+	global TestMode
+	#Bg
+	jtmp=json.load(open(sys.path[0]+'/game/Gal2Renpy/User/Bg.json','r'))
+	BgMain=jtmp['BgMain']
+	BgSub=jtmp['BgSub']
+	BgWeather=jtmp['BgWeather']
+	#ChrFace
+	ChrFace=json.load(open(sys.path[0]+'/game/Gal2Renpy/User/ChrFace.json','r'))
+	#ChrOther
+	jtmp=json.load(open(sys.path[0]+'/game/Gal2Renpy/User/ChrOther.json','r'))
+	ChrName=jtmp['ChrName']
+	for ch in sorted(ChrName):
+		ChrName[ch].append(None)
+	ChrName['Saying']= None 
+	ChrClothes=jtmp['ChrClothes']
+	ChrPose=jtmp['ChrPose']
+	ChrPosition=jtmp['ChrPosition']
+	#Effect
+	jtmp=json.load(open(sys.path[0]+'/game/Gal2Renpy/User/Effect.json','r'))
+	EffectSp=jtmp['EffectSp']
+	Trans=jtmp['Trans']
+	#Sound
+	jtmp=json.load(open(sys.path[0]+'/game/Gal2Renpy/User/Sound.json','r'))
+	Bgm=jtmp['Bgm']
+	SoundE=jtmp['SoundE']
+	#Path,Mode
+	jtmp=json.load(open(sys.path[0]+'/game/Gal2Renpy/User/PathMode.json','r'))
+	ScriptPath=jtmp['ScriptPath']
+	ChrPath=jtmp['ChrPath']
+	BgPath=jtmp['BgPath']
+	BgmPath=jtmp['BgmPath']
+	TextPath=jtmp['TextPath']
+	if jtmp['TestMode']=='True':
+		TestMode=True
+	else:
+		TestMode=False
+
 	
 #Return next block
 def RBlock(Fs,Allow):
@@ -113,24 +151,24 @@ def RBlock(Fs,Allow):
 #Return a string which changing special texts to scripts
 def Sp2Script(Flag,Transition,Content,Fs):
 
+
 	if Flag=='sc':
 		return 'label '+Content.replace('，','')+' :\n'
 
 	elif Flag=='bg':
-		#Weather
 		tmp=Content.replace('：',':').split(':')
 		sr=tmp[0].replace('，',',').split(',')
-		if len(tmp)==1:
-			w=BgWeather[sr[0]]['default']
-		else:
-			if BgWeather[sr[0]].get(tmp[1])==None:
-				Fs.error('This Weather does not exist !')
-			else:
-				w=BgWeather[sr[0]].get[tmp[1]]
 		rn=''
 		if BgMain.get(sr[0])==None:
 			Fs.error('This Bg does not exist !')
 		else:
+			if len(tmp)==1:
+				w=BgWeather[sr[0]]['default']
+			else:
+				if BgWeather[sr[0]].get(tmp[1])==None:
+					Fs.error('This Weather does not exist !')
+				else:
+					w=BgWeather[sr[0]].get[tmp[1]]
 			if len(sr)==2:
 				if BgSub[sr[0]].get(sr[1])==None:
 					Fs.error('This SubBg does not exist !')
@@ -204,9 +242,9 @@ def Sp2Script(Flag,Transition,Content,Fs):
 		rn='    menu:\n'
 		if Transition=='nomal':
 			for sw in Content.splitlines():
-				tmp=replace('：',':').split(':')
+				tmp=sw.replace('：',':').split(':')
 				rn+='        '+"'"+tmp[0]+"':\n"
-				rn+='            call '+tmp[1]+'\n'
+				rn+='            call '+tmp[1].lstrip()+'\n'
 		else:
 			Fs.error('This Mode does not be supported !')
 		return rn
@@ -219,9 +257,12 @@ def Sp2Script(Flag,Transition,Content,Fs):
 
 #Creat ren'py define script
 def CreatDefine():
+	f=codecs.open('E:/Follow wings/FW/game/script/debug.txt','w','utf-8')
+	f.write(TextPath+'\r\n'+ScriptPath)
+	f.close()
  	ChrDone=False
  	BgDone=False
- 	FileHash=open('Gal2Renpy/HashDict','r')
+ 	FileHash=open(sys.path[0]+'/game/Gal2Renpy/Gal2Renpy/HashDict','r')
  	DictHash=pickle.load(FileHash)
  	FileHash.close()
  	for HashName in DictHash:
@@ -231,7 +272,7 @@ def CreatDefine():
  			DictHash[HashName]=DHash(eval(HashName))
 			rn=''
  			if  HashName=='ChrName':
- 				fo=codecs.open(ScriptPath+'define/name.rpy','w')
+ 				fo=codecs.open(ScriptPath+'define/name.rpy','w','utf-8')
  				for Name in ChrName:
  					if Name!='Saying':
  						rn+='define '+ChrName[Name][0]+'A = Character('+"'"+Name+"',color='"+ChrName[Name][1]+"')\n"
@@ -241,7 +282,7 @@ def CreatDefine():
 
 			elif (HashName=='ChrClothes') | (HashName=='ChrPose') | (HashName=='ChrFace'):
 				if ChrDone==False:
-					fo=codecs.open(ScriptPath+'define/char.rpy','w')
+					fo=codecs.open(ScriptPath+'define/char.rpy','w','utf-8')
 					for Name in ChrName:
 						if Name!='Saying':
 							if ChrClothes.get(Name)!=None:
@@ -257,7 +298,7 @@ def CreatDefine():
  
  			elif (HashName=='Bg') | (HashName=='BgSub') | (HashName=='BgWeather'):
  				if BgDone==False:
- 					fo=codecs.open(ScriptPath+'define/bg.rpy','w')
+ 					fo=codecs.open(ScriptPath+'define/bg.rpy','w','utf-8')
  					for Bg in BgMain:
  						if BgSub.get(Bg)!=None:
  							for Sub in BgSub[Bg]:
@@ -269,6 +310,6 @@ def CreatDefine():
  					fo.close()
   
   
- 	FileHash=open('Gal2Renpy/HashDict','w')
+ 	FileHash=open(sys.path[0]+'/game/Gal2Renpy/Gal2Renpy/HashDict','w')
  	pickle.dump(DictHash,FileHash)
  	FileHash.close()

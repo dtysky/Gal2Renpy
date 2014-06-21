@@ -1,15 +1,22 @@
-ScriptPath='../script/'
-TextPath='../txt/'
-ChrPath='data/char/'
-BgPath='data/bg/'
-BgmPath='data/bgm/'
+#-*-coding:utf-8-*- 
+
+ChrName={}
+ChrClothes={}
+ChrPose={}
+ChrPosition={}
+BgMain={}
+BgSub={}
+BgWeather={}
+ChrFace={}
+EffectSp=[]
+Trans={}
+Bgm={}
+SoundE={}
+
+ScriptPath=''
+TextPath=''
+ChrPath=''
+BgPath=''
+BgmPath=''
 
 TestMode=True
-
-#Scence
-Scence={
-	'Cp0': [
-
-		'Sc0'
-	]
-}

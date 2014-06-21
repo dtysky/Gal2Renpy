@@ -2,20 +2,32 @@
 
 #Don't change!
 
+from User import *
+
 #Keywords
 Keywords=[
 	"sc",
-	"tree",
-	"sw",
+	"sw",	#a part
 	"chr",
 	"bg",
 	"bgm",
 	"sound"
-	"cg",
-	"ef",
+	"cg",	#not
+	"vd"	#not
+	"ef",	#a part
 	"mode",
 	"test"
 ]
+
+#Chareter keywords, don't change !
+ChrKeyword={
+	"t": Trans,
+	"f": ChrFace,
+	"c": ChrClothes,
+	"p": ChrPose,
+	"l": ChrPosition
+
+}
 
 # AllHash={
 # 	'ChrName': 0,

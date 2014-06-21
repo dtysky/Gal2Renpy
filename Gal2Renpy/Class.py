@@ -5,8 +5,7 @@ import os
 from ctypes import *
 import codecs
 from Keyword import *
-from ChrFace import *
-from ChrOther import *
+from User import *
 import hashlib
 user32 = windll.LoadLibrary('user32.dll')
 
@@ -38,7 +37,7 @@ class MyFS():
 			if not f:
 				break
 			else:
-				md5obj.update(f)
+				md5obj.update(f.encode('utf-8'))
 		hash=md5obj.hexdigest() 
 		self.fs.seek(0)
 		return hash
