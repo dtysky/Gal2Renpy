@@ -21,7 +21,7 @@ Fs=MyFS()
 
 ChrNow=[]
 FileNow=[]
-FileNew=[]
+FileAll=[]
 
 #特效必须做成label!
 US=User()
@@ -48,10 +48,10 @@ for root,dirs,files in os.walk(US.TextPath):
         if os.path.splitext(f)[1]!='.gal':
         	pass
         else:
-        	FileNew.append(root+'/'+f)
+        	FileAll.append(root+'/'+f)
 
 #Add files which will be processed
-for f in FileNew:
+for f in FileAll:
 	Fs.open(f,'rb')
 	if HashFile.get(f)==None:
 		FileNow.append(f)
@@ -64,16 +64,12 @@ for f in FileNew:
 
 #Delete some invailed keys in HashFile and ListFile 
 for f in sorted(HashFile):
-	if f in FileNew:
+	if f in FileAll:
 		pass
 	else:
 		del HashFile[f]
 		del ListFile[f]
 
-
-FileHash=open('Gal2Renpy/HashFile','w')
-pickle.dump(HashFile,FileHash)
-FileHash.close()
 
 if US.TestMode==True:
 	if os.path.exists(US.ScriptPath+'script.rpy'):
@@ -172,7 +168,7 @@ else:
 		while 1:
 			[Head,Flag,Transition,Content]=RBlock(Fs,Allow,US)
 			if Head=='end':
-				HashFile[f]=Fs.hash()
+				HashFile[path]=Fs.hash()
 				if Allow:
 					ListFile[path].append(pathtmp)
 				if Allow:
@@ -255,6 +251,10 @@ else:
 	FileList=open('Gal2Renpy/ListFile','w')
 	pickle.dump(ListFile,FileList)
 	FileList.close()
+
+FileHash=open('Gal2Renpy/HashFile','w')
+pickle.dump(HashFile,FileHash)
+FileHash.close()
 
 
 
