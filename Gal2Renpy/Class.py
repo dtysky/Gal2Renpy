@@ -2,10 +2,10 @@
 import re
 import sys
 import os
+import json
 from ctypes import *
 import codecs
 from Keyword import *
-from User import *
 import hashlib
 user32 = windll.LoadLibrary('user32.dll')
 
@@ -28,7 +28,7 @@ class MyFS():
 		self.linepos+=1
 		return self.fs.readline()
 	def error(self,e):
-		MessageBox(e+'\n'+'file : '+self.path+'\n'+'line : '+str(self.linepos))
+		MessageBox(e.encode('utf-8')+'\n'+'file : '+self.path+'\n'+'line : '+str(self.linepos))
 		sys.exit(0)
 	def hash(self):
 		md5obj=hashlib.md5()
@@ -43,6 +43,54 @@ class MyFS():
 		return hash
 	def close(self):
 		self.fs.close()
+
+#User's source
+class User():
+	def __init__(self):
+		#Bg
+		jtmp=json.load(open('User/Bg.json','r'))
+		self.BgMain=jtmp['BgMain']
+		self.BgSub=jtmp['BgSub']
+		self.BgWeather=jtmp['BgWeather']
+		#ChrFace
+		self.ChrFace=json.load(open('User/ChrFace.json','r'))
+		#ChrOther
+		jtmp=json.load(open('User/ChrOther.json','r'))
+		self.ChrName=jtmp['ChrName']
+		for ch in sorted(self.ChrName):
+			self.ChrName[ch].append(None)
+		self.ChrName['Saying']= None 
+		self.ChrClothes=jtmp['ChrClothes']
+		self.ChrPose=jtmp['ChrPose']
+		self.ChrPosition=jtmp['ChrPosition']
+		#Effect
+		jtmp=json.load(open('User/Effect.json','r'))
+		self.EffectSp=jtmp['EffectSp']
+		self.Trans=jtmp['Trans']
+		#Sound
+		jtmp=json.load(open('User/Sound.json','r'))
+		self.Bgm=jtmp['Bgm']
+		self.SoundE=jtmp['SoundE']
+		#Path,Mode
+		jtmp=json.load(open('User/PathMode.json','r'))
+		self.ScriptPath=jtmp['ScriptPath']
+		self.ChrPath=jtmp['ChrPath']
+		self.BgPath=jtmp['BgPath']
+		self.BgmPath=jtmp['BgmPath']
+		self.TextPath=jtmp['TextPath']
+		if jtmp['TestMode']=='True':
+			self.TestMode=True
+		else:
+			self.TestMode=False
+		#Chareter keywords!
+		self.ChrKeyword={
+			"t": self.Trans,
+			"f": self.ChrFace,
+			"c": self.ChrClothes,
+			"p": self.ChrPose,
+			"l": self.ChrPosition
+
+		}
 
 
 #A class for charecter
@@ -63,16 +111,16 @@ class Chr():
 		#Text,Say or Think,Mode,Is refreshed
 		self.say={'Text':None,'Style':None,'Mode':None,'new':False}
 	#Refresh attributes in this charecter
-	def rfattrs(self,Attrs,Fs):
+	def rfattrs(self,Attrs,US,Fs):
 		for attr in Attrs.replace('，',',').split(','):
 			ttmp=attr.replace('：',':').split(':')
-			if ChrKeyword.get(ttmp[0])==None:
+			if US.ChrKeyword.get(ttmp[0])==None:
 				Fs.error("This charecter's attribute does not exist !")
 			else:
-				if ChrKeyword[ttmp[0]][self.orgname].get(ttmp[1])==None:
-					Fs.error("This "+ChrKeyword[ttmp[0]]+" does not exist !")
+				if US.ChrKeyword[ttmp[0]][self.orgname].get(ttmp[1])==None:
+					Fs.error("This "+US.ChrKeyword[ttmp[0]]+" does not exist !")
 				else:
-					self.attrs[ttmp[0]]=ChrKeyword[ttmp[0]][self.orgname][ttmp[1]]
+					self.attrs[ttmp[0]]=US.ChrKeyword[ttmp[0]][self.orgname][ttmp[1]]
 			self.attrs['new']=True
 	#Refresh next word by this charecter
 	def rftext(self,Text,Style,Mode):

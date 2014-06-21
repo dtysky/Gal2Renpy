@@ -2,8 +2,6 @@
 
 #Don't change!
 
-from User import *
-
 #Keywords
 Keywords=[
 	"sc",
@@ -19,15 +17,6 @@ Keywords=[
 	"test"
 ]
 
-#Chareter keywords, don't change !
-ChrKeyword={
-	"t": Trans,
-	"f": ChrFace,
-	"c": ChrClothes,
-	"p": ChrPose,
-	"l": ChrPosition
-
-}
 
 # AllHash={
 # 	'ChrName': 0,

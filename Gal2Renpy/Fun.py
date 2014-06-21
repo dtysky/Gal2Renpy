@@ -3,11 +3,9 @@
 import re
 import codecs
 import pickle
-import json
 from ctypes import *
 from Keyword import *
 from Class import *
-from User import *
 
 #Return hash for a dict which may contain a dict as its value
 def DHash(Dict):
@@ -18,51 +16,9 @@ def DHash(Dict):
 		else:
 			dh+=hash(tmp)+hash(str(Dict[tmp]))
 	return dh
-
-#Init dictionaries
-def InitD():
-	global ChrName,ChrClothes,ChrPose,ChrPosition,BgMain,BgSub,BgWeather,ChrFace
-	global EffectSp,Trans,Bgm,SoundE,ScriptPath,TextPath,ChrPath,BgPath,BgmPath
-	global TestMode
-	#Bg
-	jtmp=json.load(open(sys.path[0]+'/game/Gal2Renpy/User/Bg.json','r'))
-	BgMain=jtmp['BgMain']
-	BgSub=jtmp['BgSub']
-	BgWeather=jtmp['BgWeather']
-	#ChrFace
-	ChrFace=json.load(open(sys.path[0]+'/game/Gal2Renpy/User/ChrFace.json','r'))
-	#ChrOther
-	jtmp=json.load(open(sys.path[0]+'/game/Gal2Renpy/User/ChrOther.json','r'))
-	ChrName=jtmp['ChrName']
-	for ch in sorted(ChrName):
-		ChrName[ch].append(None)
-	ChrName['Saying']= None 
-	ChrClothes=jtmp['ChrClothes']
-	ChrPose=jtmp['ChrPose']
-	ChrPosition=jtmp['ChrPosition']
-	#Effect
-	jtmp=json.load(open(sys.path[0]+'/game/Gal2Renpy/User/Effect.json','r'))
-	EffectSp=jtmp['EffectSp']
-	Trans=jtmp['Trans']
-	#Sound
-	jtmp=json.load(open(sys.path[0]+'/game/Gal2Renpy/User/Sound.json','r'))
-	Bgm=jtmp['Bgm']
-	SoundE=jtmp['SoundE']
-	#Path,Mode
-	jtmp=json.load(open(sys.path[0]+'/game/Gal2Renpy/User/PathMode.json','r'))
-	ScriptPath=jtmp['ScriptPath']
-	ChrPath=jtmp['ChrPath']
-	BgPath=jtmp['BgPath']
-	BgmPath=jtmp['BgmPath']
-	TextPath=jtmp['TextPath']
-	if jtmp['TestMode']=='True':
-		TestMode=True
-	else:
-		TestMode=False
-
 	
 #Return next block
-def RBlock(Fs,Allow):
+def RBlock(Fs,Allow,US):
 	[head,flag,transition,content]=['','','','']
 	s=Fs.readline()
 	if s=='':
@@ -124,21 +80,21 @@ def RBlock(Fs,Allow):
 					content="'"+s+"'"
 				else:
 					head='words'
-					if ChrName['Saying']==None:
+					if US.ChrName['Saying']==None:
 						Fs.error('No speaker !')
 					else:
-						flag=ChrName['Saying']
+						flag=US.ChrName['Saying']
 					transition='think'
 					content=tmp
 			else:
-				if ChrName.get(tmp.group(1))==None:
+				if US.ChrName.get(tmp.group(1))==None:
 					Fs.error('This charecter doen not exist !')
 				else:
 					head='words'
 					flag=tmp.group(1)
 					transition='say'
 					content=tmp.group(2)
-					ChrName['Saying']=flag
+					US.ChrName['Saying']=flag
 		else:
 			head='None'
 			flag='None'
@@ -149,59 +105,59 @@ def RBlock(Fs,Allow):
 
 
 #Return a string which changing special texts to scripts
-def Sp2Script(Flag,Transition,Content,Fs):
+def Sp2Script(Flag,Transition,Content,US,Fs):
 
 
 	if Flag=='sc':
-		return 'label '+Content.replace('，','')+' :\n'
+		return 'label '+Content.replace('，',',').replace(',','')+' :\n'
 
 	elif Flag=='bg':
 		tmp=Content.replace('：',':').split(':')
 		sr=tmp[0].replace('，',',').split(',')
 		rn=''
-		if BgMain.get(sr[0])==None:
+		if US.BgMain.get(sr[0])==None:
 			Fs.error('This Bg does not exist !')
 		else:
 			if len(tmp)==1:
-				w=BgWeather[sr[0]]['default']
+				w=US.BgWeather[sr[0]]['default']
 			else:
-				if BgWeather[sr[0]].get(tmp[1])==None:
+				if US.BgWeather[sr[0]].get(tmp[1])==None:
 					Fs.error('This Weather does not exist !')
 				else:
-					w=BgWeather[sr[0]].get[tmp[1]]
+					w=US.BgWeather[sr[0]].get[tmp[1]]
 			if len(sr)==2:
-				if BgSub[sr[0]].get(sr[1])==None:
+				if US.BgSub[sr[0]].get(sr[1])==None:
 					Fs.error('This SubBg does not exist !')
 				else:
-					rn='    scene bg '+BgMain[sr[0]]+BgSub[sr[0]][sr[1]]+w+'\n'
+					rn='    scene bg '+US.BgMain[sr[0]]+US.BgSub[sr[0]][sr[1]]+w+'\n'
 			elif len(sr)==1:
-				rn='    scene bg '+BgMain[sr[0]]+BgSub[sr[0]]['default']+w+'\n'
+				rn='    scene bg '+US.BgMain[sr[0]]+US.BgSub[sr[0]]['default']+w+'\n'
 			else:
 				Fs.error('Unsupport two and more subscenes !')
 		if Transition!='None':
-			if Trans.get(Transition)==None:
+			if US.Trans.get(Transition)==None:
 				Fs.error('This transition does not exist !')
 			else:
-				rn+='    with '+Trans[Transition]+'\n'
+				rn+='    with '+US.Trans[Transition]+'\n'
 		return rn
 
 	elif Flag=='bgm':
 		rn=''
-		if Bgm.get(Content)==None:
-			Fs.error('This Bgm does not exist !')
+		if US.Bgm.get(Content)==None:
+			Fs.error('This US.Bgm does not exist !')
 		else:
-			rn='play music '+'''"'''+BgmPath+Bgm[Content]+'''"\n'''
+			rn='play music '+'''"'''+US.BgmPath+US.Bgm[Content]+'''"\n'''
 		if Transition!='None':
-			if Trans.get(Transition)==None:
+			if US.Trans.get(Transition)==None:
 				Fs.error('This effect does not exist !')
 			else:
-				rn='with '+Trans[Transition]+'\n'
+				rn='with '+US.Trans[Transition]+'\n'
 		return '    '+rn
 
 	elif Flag=='ef':
 		rn=''
 		ef=Transition.replace('，',',').split(',')
-		if ef[0] in EffectSp:
+		if ef[0] in US.EffectSp:
 			for s in Content.splitlines():
 				rn+='    call '+ef[0]+'('
 				for efc in range(2,len(ef)+1):
@@ -227,15 +183,15 @@ def Sp2Script(Flag,Transition,Content,Fs):
 
 	elif Flag=='sound':
 		rn=''
-		if SoundE.get(Content)==None:
+		if US.SoundE.get(Content)==None:
 			Fs.error('This Sound does not exist !')
 		else:
-			rn='play sound '+'''"'''+SoundPath+SoundE[Content]+'''"\n'''
+			rn='play sound '+'''"'''+SoundPath+US.SoundE[Content]+'''"\n'''
 		if Transition!='None':
-			if Trans.get(Transition)==None:
+			if US.Trans.get(Transition)==None:
 				Fs.error('This effect does not exist !')
 			else:
-				rn='with '+Trans[Transition]+'\n'
+				rn='with '+US.Trans[Transition]+'\n'
 		return '    '+rn
 
 	elif Flag=='sw':
@@ -256,60 +212,57 @@ def Sp2Script(Flag,Transition,Content,Fs):
 		Fs.error('This flag does not exist or be supported in this fun !')
 
 #Creat ren'py define script
-def CreatDefine():
-	f=codecs.open('E:/Follow wings/FW/game/script/debug.txt','w','utf-8')
-	f.write(TextPath+'\r\n'+ScriptPath)
-	f.close()
+def CreatDefine(US):
  	ChrDone=False
  	BgDone=False
- 	FileHash=open(sys.path[0]+'/game/Gal2Renpy/Gal2Renpy/HashDict','r')
+ 	FileHash=open('Gal2Renpy/HashDict','r')
  	DictHash=pickle.load(FileHash)
  	FileHash.close()
  	for HashName in DictHash:
- 		if DictHash[HashName]==DHash(eval(HashName)):
+ 		if DictHash[HashName]==DHash(eval('US.'+HashName)):
  			pass
  		else:
- 			DictHash[HashName]=DHash(eval(HashName))
+ 			DictHash[HashName]=DHash(eval('US.'+HashName))
 			rn=''
- 			if  HashName=='ChrName':
- 				fo=codecs.open(ScriptPath+'define/name.rpy','w','utf-8')
- 				for Name in ChrName:
+ 			if  HashName=='US.ChrName':
+ 				fo=codecs.open(US.ScriptPath+'define/name.rpy','w','utf-8')
+ 				for Name in US.ChrName:
  					if Name!='Saying':
- 						rn+='define '+ChrName[Name][0]+'A = Character('+"'"+Name+"',color='"+ChrName[Name][1]+"')\n"
-						rn+='define '+ChrName[Name][0]+'V = Character('+"'"+Name+"',color='"+ChrName[Name][1]+"')\n"
+ 						rn+='define '+US.ChrName[Name][0]+'A = Character('+"'"+Name+"',color='"+US.ChrName[Name][1]+"')\n"
+						rn+='define '+US.ChrName[Name][0]+'V = Character('+"'"+Name+"',color='"+US.ChrName[Name][1]+"')\n"
 				fo.write(rn)
 				fo.close()
 
-			elif (HashName=='ChrClothes') | (HashName=='ChrPose') | (HashName=='ChrFace'):
+			elif (HashName=='US.ChrClothes') | (HashName=='US.ChrPose') | (HashName=='US.ChrFace'):
 				if ChrDone==False:
-					fo=codecs.open(ScriptPath+'define/char.rpy','w','utf-8')
-					for Name in ChrName:
+					fo=codecs.open(US.ScriptPath+'define/char.rpy','w','utf-8')
+					for Name in US.ChrName:
 						if Name!='Saying':
-							if ChrClothes.get(Name)!=None:
-								for Clothes in ChrClothes[Name]:
-									if ChrPose.get(Name)!=None:
- 										for Poes in ChrPose[Name]:
- 											if ChrFace.get(Name)!=None:
- 												for Face in ChrFace[Name]:
- 													rn+='image '+ChrName[Name][0]+ChrClothes[Name][Clothes]+ChrPose[Name][Poes]+ChrFace[Name][Face]+' = '+"'"+ChrPath+ChrName[Name][0]+'/'+ChrName[Name][0]+ChrClothes[Name][Clothes]+ChrPose[Name][Poes]+ChrFace[Name][Face] +".png'\n"
+							if US.ChrClothes.get(Name)!=None:
+								for Clothes in US.ChrClothes[Name]:
+									if US.ChrPose.get(Name)!=None:
+ 										for Poes in US.ChrPose[Name]:
+ 											if US.ChrFace.get(Name)!=None:
+ 												for Face in US.ChrFace[Name]:
+ 													rn+='image '+US.ChrName[Name][0]+US.ChrClothes[Name][Clothes]+US.ChrPose[Name][Poes]+US.ChrFace[Name][Face]+' = '+"'"+US.ChrPath+US.ChrName[Name][0]+'/'+US.ChrName[Name][0]+US.ChrClothes[Name][Clothes]+US.ChrPose[Name][Poes]+US.ChrFace[Name][Face] +".png'\n"
  					ChrDone=True
  					fo.write(rn)
  					fo.close()
  
- 			elif (HashName=='Bg') | (HashName=='BgSub') | (HashName=='BgWeather'):
+ 			elif (HashName=='Bg') | (HashName=='US.BgSub') | (HashName=='US.BgWeather'):
  				if BgDone==False:
- 					fo=codecs.open(ScriptPath+'define/bg.rpy','w','utf-8')
- 					for Bg in BgMain:
- 						if BgSub.get(Bg)!=None:
- 							for Sub in BgSub[Bg]:
-								if BgWeather.get(Bg)!=None:
- 									for Wh in BgWeather[Bg]:
-										rn+='image bg '+BgMain[Bg]+BgSub[Bg][Sub]+BgWeather[Bg][Wh]+' = '+"'"+BgPath+'/'+BgMain[Bg]+BgSub[Bg][Sub]+BgWeather[Bg][Wh]+".png'\n"
+ 					fo=codecs.open(US.ScriptPath+'define/bg.rpy','w','utf-8')
+ 					for Bg in US.BgMain:
+ 						if US.BgSub.get(Bg)!=None:
+ 							for Sub in US.BgSub[Bg]:
+								if US.BgWeather.get(Bg)!=None:
+ 									for Wh in US.BgWeather[Bg]:
+										rn+='image bg '+US.BgMain[Bg]+US.BgSub[Bg][Sub]+US.BgWeather[Bg][Wh]+' = '+"'"+US.BgPath+'/'+US.BgMain[Bg]+US.BgSub[Bg][Sub]+US.BgWeather[Bg][Wh]+".png'\n"
  					BgDone=True
  					fo.write(rn)
  					fo.close()
   
   
- 	FileHash=open(sys.path[0]+'/game/Gal2Renpy/Gal2Renpy/HashDict','w')
+ 	FileHash=open('Gal2Renpy/HashDict','w')
  	pickle.dump(DictHash,FileHash)
  	FileHash.close()
