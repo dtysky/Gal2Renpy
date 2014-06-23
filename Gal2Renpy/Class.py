@@ -4,6 +4,7 @@ import re
 import sys
 import os
 import json
+import locale
 from ctypes import *
 import codecs
 from Keyword import *
@@ -29,10 +30,10 @@ class MyFS():
 		self.linepos+=1
 		return self.fs.readline()
 	def error(self,e):
-		MessageBox(e+'\r\n'+'file : '+self.path.encode('gbk')+'\r\n'+'line : '+str(self.linepos))
+		MessageBox(e+'\r\n'+'file : '+self.path.encode(locale.getdefaultlocale()[1])+'\r\n'+'line : '+str(self.linepos))
 		sys.exit(0)
 	def error2(self,e):
-		MessageBox(e+'\r\n'+'file : '+self.path.encode('gbk')+'\r\n'+'line : '+str(self.linepos))
+		MessageBox(e+'\r\n'+'file : '+self.path.encode(locale.getdefaultlocale()[1])+'\r\n'+'line : '+str(self.linepos))
 	def hash(self):
 		md5obj=hashlib.md5()
 		while 1:

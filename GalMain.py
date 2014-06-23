@@ -41,7 +41,7 @@ else:
 	HashFile.clear()
 	ListFile.clear()
 
-#Only a file had been changed will process it
+#Add all '.gal' files
 for root,dirs,files in os.walk(US.TextPath):
     for f in files:
         if os.path.splitext(f)[1]!='.gal':
@@ -49,7 +49,7 @@ for root,dirs,files in os.walk(US.TextPath):
         else:
         	FileAll.append(root+'/'+f)
 
-#Add files which will be processed
+#Only a file had been changed will process it
 for f in FileAll:
 	Fs.open(f,'rb')
 	if HashFile.get(f)==None:
