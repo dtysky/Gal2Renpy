@@ -215,8 +215,12 @@ else:
 										US.ChrName[name][2].rfattrs(attrs,US,Fs)
 								Fo.write(US.ChrName[name][2].show())
 
+					elif Flag=='test':
+						Fs.error2('This flag does not exist or be supported in this Mode,ignoring... ')
+
 					else:
 						Fo.write(Sp2Script(Flag,Transition,Content,US,Fs))
+							
 
 				elif Head=='words':
 					if US.ChrName[Flag][0] in ChrNow:
