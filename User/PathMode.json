@@ -1,6 +1,6 @@
 {
 	"Comment1":"//Seting True when you want to use TestMode, if not , seting False", 
-	"TestMode":"False" ,
+	"TestMode":"True" ,
 
 	"Comment2":"//Your '.rpy' Script path, please use absolute path",
 	"ScriptPath":"E:/Follow_wings/FW/game/script/" ,

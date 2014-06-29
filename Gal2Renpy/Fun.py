@@ -224,16 +224,16 @@ def CreatDefine(US):
  		else:
  			DictHash[HashName]=DHash(eval('US.'+HashName))
 			rn=''
- 			if  HashName=='US.ChrName':
+ 			if  HashName=='ChrName':
  				fo=codecs.open(US.ScriptPath+'define/name.rpy','w','utf-8')
  				for Name in US.ChrName:
  					if Name!='Saying':
- 						rn+='define '+US.ChrName[Name][0]+'A = Character('+"'"+Name+"',color='"+US.ChrName[Name][1]+"')\n"
-						rn+='define '+US.ChrName[Name][0]+'V = Character('+"'"+Name+"',color='"+US.ChrName[Name][1]+"')\n"
+ 						rn+='define '+US.ChrName[Name][0]+'A = Character('+"'"+Name+"',who_bold=False,who_outlines=[ (2, '"+US.ChrName[Name][1]+"') ],what_outlines=[ (1,'"+US.ChrName[Name][1]+"') ])\n"
+						rn+='define '+US.ChrName[Name][0]+'V = Character('+"'"+Name+"',who_bold=False,who_outlines=[ (2, '"+US.ChrName[Name][1]+"') ],what_outlines=[ (1,'"+US.ChrName[Name][1]+"') ])\n"
 				fo.write(rn)
 				fo.close()
 
-			elif (HashName=='US.ChrClothes') | (HashName=='US.ChrPose') | (HashName=='US.ChrFace'):
+			elif (HashName=='ChrClothes') | (HashName=='ChrPose') | (HashName=='ChrFace'):
 				if ChrDone==False:
 					fo=codecs.open(US.ScriptPath+'define/char.rpy','w','utf-8')
 					for Name in US.ChrName:
@@ -249,7 +249,7 @@ def CreatDefine(US):
  					fo.write(rn)
  					fo.close()
  
- 			elif (HashName=='Bg') | (HashName=='US.BgSub') | (HashName=='US.BgWeather'):
+ 			elif (HashName=='Bg') | (HashName=='BgSub') | (HashName=='BgWeather'):
  				if BgDone==False:
  					fo=codecs.open(US.ScriptPath+'define/bg.rpy','w','utf-8')
  					for Bg in US.BgMain:
