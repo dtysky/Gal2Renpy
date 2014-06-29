@@ -2,7 +2,8 @@
 {
 	"BgMain":{
 		"白": "White",
-		"家": "Home" 
+		"家": "Home" ,
+		"星眼": "SE"
 	},
 
 	"Comment1":"//You must give them a default value at least !",
@@ -13,6 +14,10 @@
 
 		"白":{
 			"default": "01"
+		},
+
+		"星眼":{
+			"草坪一": "01"
 		}
 	},
 
@@ -25,6 +30,14 @@
 
 		"白":{
 			"default": "A"
+		},
+
+		"星眼":{
+			"晨曦":"A",
+			"白天":"B",
+			"黄昏":"C",
+			"夜":"D",
+			"拂晓":"E"
 		}
 	}
 

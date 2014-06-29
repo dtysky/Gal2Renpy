@@ -134,6 +134,12 @@ if US.TestMode==True:
 					elif Flag=='sc':
 						pass
 
+					elif Flag=='view':
+						if US.ChrName.get(Content)==None:
+							Fs.error('This charecter does not exist !')
+						else:
+							US.ChrName['Saying']=Content
+
 					else:
 						Fo.write(Sp2Script(Flag,Transition,Content,US,Fs))
 
@@ -217,6 +223,12 @@ else:
 
 					elif Flag=='test':
 						Fs.error2('This flag does not exist or be supported in this Mode,ignoring... ')
+
+					elif Flag=='view':
+						if US.ChrName.get(Content)==None:
+							Fs.error('This charecter does not exist !')
+						else:
+							US.ChrName['Saying']=Content
 
 					else:
 						Fo.write(Sp2Script(Flag,Transition,Content,US,Fs))

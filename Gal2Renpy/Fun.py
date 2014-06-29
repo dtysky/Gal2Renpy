@@ -77,7 +77,7 @@ def RBlock(Fs,Allow,US):
 					head='text'
 					flag='None'
 					transition='None'
-					content="'"+s+"'"
+					content="'"+s.strip()+"'\n"
 				else:
 					head='words'
 					if US.ChrName['Saying']==None:
@@ -85,16 +85,15 @@ def RBlock(Fs,Allow,US):
 					else:
 						flag=US.ChrName['Saying']
 					transition='think'
-					content=tmp
+					content=tmp.group(1)
 			else:
 				if US.ChrName.get(tmp.group(1))==None:
 					Fs.error('This charecter doen not exist !')
 				else:
 					head='words'
 					flag=tmp.group(1)
-					transition='say'
+					transition='Say'
 					content=tmp.group(2)
-					US.ChrName['Saying']=flag
 		else:
 			head='None'
 			flag='None'
@@ -124,7 +123,7 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 				if US.BgWeather[sr[0]].get(tmp[1])==None:
 					Fs.error('This Weather does not exist !')
 				else:
-					w=US.BgWeather[sr[0]].get[tmp[1]]
+					w=US.BgWeather[sr[0]][tmp[1]]
 			if len(sr)==2:
 				if US.BgSub[sr[0]].get(sr[1])==None:
 					Fs.error('This SubBg does not exist !')

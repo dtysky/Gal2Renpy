@@ -150,9 +150,9 @@ class Chr():
 		elif self.say['new']:
 			rn+=self.name+self.say['Mode']+' '
 			if self.say['Style']=='Say':
-				rn+='''"'''+self.say['Text']+'''"'''+'\n'
+				rn+="'"+self.say['Text']+"'\n"
 			else:
-				rn+='''"（'''+self.say['Text']+'''）"'''+'\n'
+				rn+="'（"+self.say['Text']+"）'\n"
 			self.say['new']=False
 			return '    '+rn
 		else:
