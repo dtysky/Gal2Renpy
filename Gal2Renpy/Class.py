@@ -67,6 +67,7 @@ class User():
 		self.ChrName['Saying']= None 
 		self.ChrClothes=jtmp['ChrClothes']
 		self.ChrPose=jtmp['ChrPose']
+		self.ChrDistance=jtmp['ChrDistance']
 		self.ChrPosition=jtmp['ChrPosition']
 		#Effect
 		jtmp=json.load(open('User/Effect.json','r'))
@@ -94,6 +95,7 @@ class User():
 			"f": self.ChrFace,
 			"c": self.ChrClothes,
 			"p": self.ChrPose,
+			"d": self.ChrDistance,
 			"l": self.ChrPosition
 
 		}
@@ -102,18 +104,12 @@ class User():
 #A class for charecter
 class Chr():
 	#One or two arguments 
-	def __init__(self,*Text):
-		if len(Text)==2:
-			self.name=Text[0]
-			self.orgname=Text[1]
-			#'new' will be true if the attributes has been changed
-			self.attrs={'e':None,'f':None,'c':None,'p':None,'l':None,'new':False}
-			self.complete=False
-		elif len(Text)==4:
-			self.name=Text[0]
-			self.orgname=Text[1]
-			self.attrs={'e':None,'f':None,'c':None,'p':None,'l':None,'new':False}
-			self.rfattrs(Text[2],Text[4])
+	def __init__(self,name,orgname):
+		self.name=name
+		self.orgname=orgname
+		#'new' will be true if the attributes has been changed
+		self.attrs={'t':None,'f':None,'c':None,'p':None,'d':None,'l':None,'new':False}
+		self.complete=False
 		#Text,Say or Think,Mode,Is refreshed
 		self.say={'Text':None,'Style':None,'Mode':None,'new':False}
 	#Refresh attributes in this charecter
@@ -123,10 +119,19 @@ class Chr():
 			if US.ChrKeyword.get(ttmp[0])==None:
 				Fs.error("This charecter's attribute does not exist !")
 			else:
-				if US.ChrKeyword[ttmp[0]][self.orgname].get(ttmp[1])==None:
-					Fs.error("This "+US.ChrKeyword[ttmp[0]]+" does not exist !")
+				if (ttmp[0]=='c') | (ttmp[0]=='p') | (ttmp[0]=='f'):
+
+					if US.ChrKeyword[ttmp[0]][self.orgname].get(ttmp[1])==None:
+						Fs.error("This "+US.ChrKeyword[ttmp[0]]+" does not exist !")
+					else:
+						self.attrs[ttmp[0]]=US.ChrKeyword[ttmp[0]][self.orgname][ttmp[1]]
 				else:
-					self.attrs[ttmp[0]]=US.ChrKeyword[ttmp[0]][self.orgname][ttmp[1]]
+
+					if US.ChrKeyword[ttmp[0]].get(ttmp[1])==None:
+						Fs.error("This "+US.ChrKeyword[ttmp[0]]+" does not exist !")
+					else:
+						self.attrs[ttmp[0]]=US.ChrKeyword[ttmp[0]][ttmp[1]]
+
 			self.attrs['new']=True
 	#Refresh next word by this charecter
 	def rftext(self,Text,Style,Mode):
@@ -135,18 +140,17 @@ class Chr():
 		self.say['Mode']=Mode
 		self.say['new']=True
 	#Creat scripts which are related to charecters
-	def show(self):
+	def show(self,Fs):
 		rn=''
 		if self.attrs['new']:
 			if self.complete==False:
 				for attr in self.attrs:
 					if self.attrs[attr]==None:
-						MessageBox("This charecter's attributes are not complete !")
-						sys.exit(0)
+						Fs.error("This charecter's attributes are not complete !")
 					self.complete==True
-			rn+='    show '+self.name+self.attrs['c']+self.attrs['p']+self.attrs['f']
-			rn+=' at '+self.attrs['l']+'\n'
-			rn+='    with '+self.attrs['e']+'\n'
+			rn+='    show '+self.name+self.attrs['c']+self.attrs['p']+self.attrs['f']+self.attrs['d']+' '
+			rn+='at '+self.attrs['l']+'\n'
+			rn+='    with '+self.attrs['t']+'\n'
 			self.attrs['new']=False
 			return rn
 		elif self.say['new']:

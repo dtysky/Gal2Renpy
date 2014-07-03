@@ -4,15 +4,15 @@
 	"Logos1","Poem1","Existent1","Void1"],
 
 	"ChrName":{
-		"寒苍": ["Dream1","#aaaaaa","Dream1"] ,
-		"晗樱": ["Soul1","#380066","Soul1"] ,
-		"苓苏": ["Flower1","#24b901","Flower1"] ,
-		"雏末": ["Moon1","#000000","Moon1"] ,
-		"弗莱士": ["Star1","#feaa32","Star1"] ,
-		"暮": ["Logos1","#ca0683","Logos1"] ,
-		"晓": ["Poem1","#3a88ca","Poem1"] ,
-		"散夜": ["Existent1","#22847a","Existent1"] ,
-		"无名": ["Void1","#798d8b","Void1"] ,
+		"寒苍": ["Dream","#aaaaaa","Dream1"] ,
+		"晗樱": ["Soul","#380066","Soul1"] ,
+		"苓苏": ["Flower","#24b901","Flower1"] ,
+		"雏末": ["Moon","#000000","Moon1"] ,
+		"弗莱士": ["Star","#feaa32","Star1"] ,
+		"暮": ["Logos","#ca0683","Logos1"] ,
+		"晓": ["Poem","#3a88ca","Poem1"] ,
+		"散夜": ["Existent","#22847a","Existent1"] ,
+		"无名": ["Void","#798d8b","Void1"] ,
 		"少年": ["Boy","#895a28","Default"]
 	},
 
@@ -97,6 +97,13 @@
 		"无名":{
 			"普通":"A"
 		}
+	},
+
+	"ChrDistance":{
+		"平常":"A",
+		"近":"B",
+		"超近":"C",
+		"远":"D"
 	},
 
 	"ChrPosition":{

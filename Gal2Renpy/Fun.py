@@ -251,7 +251,7 @@ def CreatDefine(US):
 				fo.write(rn)
 				fo.close()
 
-			elif (HashName=='ChrClothes') | (HashName=='ChrPose') | (HashName=='ChrFace'):
+			elif (HashName=='ChrClothes') | (HashName=='ChrPose') | (HashName=='ChrFace') | (HashName=='ChrDistance'):
 				if ChrDone==False:
 					fo=codecs.open(US.ScriptPath+'define/char.rpy','w','utf-8')
 					for Name in US.ChrName:
@@ -262,7 +262,8 @@ def CreatDefine(US):
  										for Poes in US.ChrPose[Name]:
  											if US.ChrFace.get(Name)!=None:
  												for Face in US.ChrFace[Name]:
- 													rn+='image '+US.ChrName[Name][0]+US.ChrClothes[Name][Clothes]+US.ChrPose[Name][Poes]+US.ChrFace[Name][Face]+' = '+"'"+US.ChrPath+US.ChrName[Name][0]+'/'+US.ChrName[Name][0]+US.ChrClothes[Name][Clothes]+US.ChrPose[Name][Poes]+US.ChrFace[Name][Face] +".png'\n"
+ 													for Dist in US.ChrDistance:
+ 														rn+='image '+US.ChrName[Name][0]+US.ChrClothes[Name][Clothes]+US.ChrPose[Name][Poes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist]+' = '+"'"+US.ChrPath+US.ChrName[Name][0]+'/'+US.ChrName[Name][0]+US.ChrClothes[Name][Clothes]+US.ChrPose[Name][Poes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist] +".png'\n"
  					ChrDone=True
  					fo.write(rn)
  					fo.close()
