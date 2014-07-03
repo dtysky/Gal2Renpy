@@ -7,14 +7,17 @@ from ctypes import *
 from Keyword import *
 from Class import *
 
-#Return hash for a dict which may contain a dict as its value
+#Return hash for a dict which may contain a dict as its value or others
 def DHash(Dict):
 	dh=0
-	for tmp in Dict:
-		if isinstance(Dict[tmp],dict):
-			dh+=hash(tmp)+hash(str(sorted(Dict[tmp],key=lambda d: d[0])))
-		else:
-			dh+=hash(tmp)+hash(str(Dict[tmp]))
+	if isinstance(Dict,dict):
+		for tmp in Dict:
+			if isinstance(Dict[tmp],dict):
+				dh+=hash(tmp)+hash(str(sorted(Dict[tmp],key=lambda d: d[0])))
+			else:
+				dh+=hash(tmp)+hash(str(Dict[tmp]))
+	else:
+		dh+=hash(str(Dict))
 	return dh
 	
 #Return next block
@@ -77,7 +80,7 @@ def RBlock(Fs,Allow,US):
 					head='text'
 					flag='None'
 					transition='None'
-					content="'"+s.strip()+"'\n"
+					content="n '"+s.strip()+"'\n"
 				else:
 					head='words'
 					if US.ChrName['Saying']==None:
@@ -204,6 +207,9 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 			Fs.error('This Mode does not be supported !')
 		return rn
 
+	elif Flag=='date':
+		return "    $ Date='"+US.WinPath+'date/'+Content+".png'\n"
+
 	elif Flag=='renpy':
 		return '    '+Content+'\n'
 
@@ -216,19 +222,32 @@ def CreatDefine(US):
  	BgDone=False
  	FileHash=open('Gal2Renpy/HashDict','r')
  	DictHash=pickle.load(FileHash)
- 	FileHash.close()
+ 	
  	for HashName in DictHash:
  		if DictHash[HashName]==DHash(eval('US.'+HashName)):
  			pass
  		else:
  			DictHash[HashName]=DHash(eval('US.'+HashName))
 			rn=''
- 			if  HashName=='ChrName':
+			if HashName=='ChrWindow':
+				fo=codecs.open(US.ScriptPath+'define/bgwin.rpy','w','utf-8')
+				for Name in US.ChrWindow:
+					rn+='define '+Name+"S='"+US.WinPath+'adv/'+Name+"S.png'\n"
+					rn+='define '+Name+"N='"+US.WinPath+'adv/'+Name+"N.png'\n"
+				fo.write(rn)
+				fo.close()
+
+ 			elif  HashName=='ChrName':
  				fo=codecs.open(US.ScriptPath+'define/name.rpy','w','utf-8')
  				for Name in US.ChrName:
  					if Name!='Saying':
- 						rn+='define '+US.ChrName[Name][0]+'A = Character('+"'"+Name+"',who_bold=False,who_outlines=[ (2, '"+US.ChrName[Name][1]+"') ],what_outlines=[ (1,'"+US.ChrName[Name][1]+"') ])\n"
-						rn+='define '+US.ChrName[Name][0]+'V = Character('+"'"+Name+"',who_bold=False,who_outlines=[ (2, '"+US.ChrName[Name][1]+"') ],what_outlines=[ (1,'"+US.ChrName[Name][1]+"') ])\n"
+ 						if len(US.ChrName[Name])==4:
+ 							rn+='define '+US.ChrName[Name][0]+'A = Character('+"'"+Name+"',who_bold=False,who_outlines=[ (2, '"+US.ChrName[Name][1]+"') ],what_outlines=[ (1,'"+US.ChrName[Name][1]+"') ],show_bg="+US.ChrName[Name][2]+"S)\n"
+ 							rn+='define '+US.ChrName[Name][0]+'V = Character('+"'"+Name+"',who_bold=False,who_outlines=[ (2, '"+US.ChrName[Name][1]+"') ],what_outlines=[ (1,'"+US.ChrName[Name][1]+"') ])\n"
+ 						else:
+	 						rn+='define '+US.ChrName[Name][0]+'A = Character('+"'"+Name+"',who_bold=False,who_outlines=[ (2, '"+US.ChrName[Name][1]+"') ],what_outlines=[ (1,'"+US.ChrName[Name][1]+"') ])\n"
+							rn+='define '+US.ChrName[Name][0]+'V = Character('+"'"+Name+"',who_bold=False,who_outlines=[ (2, '"+US.ChrName[Name][1]+"') ],what_outlines=[ (1,'"+US.ChrName[Name][1]+"') ])\n"
+				rn+='define n=Character(show_bg=None)'
 				fo.write(rn)
 				fo.close()
 

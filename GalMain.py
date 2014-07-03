@@ -139,6 +139,8 @@ if US.TestMode==True:
 							Fs.error('This charecter does not exist !')
 						else:
 							US.ChrName['Saying']=Content
+						if len(US.ChrName[Content])==4:
+							Fo.write('    $ n=Character(show_bg='+US.ChrName[Content][2]+'N)\n')
 
 					else:
 						Fo.write(Sp2Script(Flag,Transition,Content,US,Fs))
@@ -147,10 +149,10 @@ if US.TestMode==True:
 					if US.ChrName[Flag][0] in ChrNow:
 						pass
 					else:
-						US.ChrName[Flag][2]=Chr(US.ChrName[Flag][0],Flag)
+						US.ChrName[Flag][len(US.ChrName[Flag])-1]=Chr(US.ChrName[Flag][0],Flag)
 						ChrNow.append(US.ChrName[Flag][0])
-					US.ChrName[Flag][2].rftext(Content,Transition,Mode)
-					Fo.write(US.ChrName[Flag][2].show())
+					US.ChrName[Flag][len(US.ChrName[Flag])-1].rftext(Content,Transition,Mode)
+					Fo.write(US.ChrName[Flag][len(US.ChrName[Flag])-1].show())
 
 				elif Head=='text':
 					Fo.write('    '+Content)
@@ -229,6 +231,8 @@ else:
 							Fs.error('This charecter does not exist !')
 						else:
 							US.ChrName['Saying']=Content
+						if len(US.ChrName[Content])==4:
+							Fo.write('    $ Bg_Ns='+US.ChrName[Content][2]+'N\n')
 
 					else:
 						Fo.write(Sp2Script(Flag,Transition,Content,US,Fs))
@@ -238,10 +242,10 @@ else:
 					if US.ChrName[Flag][0] in ChrNow:
 						pass
 					else:
-						US.ChrName[Flag][2]=Chr(US.ChrName[Flag][0],Flag)
+						US.ChrName[Flag][len(US.ChrName[Flag])-1]=Chr(US.ChrName[Flag][0],Flag)
 						ChrNow.append(US.ChrName[Flag][0])
-					US.ChrName[Flag][2].rftext(Content,Transition,Mode)
-					Fo.write(US.ChrName[Flag][2].show())
+					US.ChrName[Flag][len(US.ChrName[Flag])-1].rftext(Content,Transition,Mode)
+					Fo.write(US.ChrName[Flag][len(US.ChrName[Flag])-1].show())
 
 				elif Head=='text':
 					Fo.write('    '+Content)

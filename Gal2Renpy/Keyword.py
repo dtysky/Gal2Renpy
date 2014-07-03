@@ -9,7 +9,8 @@ Keywords=[
 	"chr",
 	"bg",
 	"bgm",
-	"sound"
+	"sound",
+	"date",
 	"cg",	#not
 	"vd"	#not
 	"ef",	#a part

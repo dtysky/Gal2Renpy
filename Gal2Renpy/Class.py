@@ -60,6 +60,7 @@ class User():
 		self.ChrFace=json.load(open('User/ChrFace.json','r'))
 		#ChrOther
 		jtmp=json.load(open('User/ChrOther.json','r'))
+		self.ChrWindow=jtmp['ChrWindow']
 		self.ChrName=jtmp['ChrName']
 		for ch in sorted(self.ChrName):
 			self.ChrName[ch].append(None)
@@ -82,6 +83,7 @@ class User():
 		self.BgPath=jtmp['BgPath']
 		self.BgmPath=jtmp['BgmPath']
 		self.TextPath=jtmp['TextPath']
+		self.WinPath=jtmp['WinPath']
 		if jtmp['TestMode']=='True':
 			self.TestMode=True
 		else:

@@ -6,7 +6,7 @@
 
 	"Comment2":"Transition",
 	"Trans":{
-	
+		"默认":"dissolve"
 	}
 
 }

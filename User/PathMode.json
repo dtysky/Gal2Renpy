@@ -11,5 +11,6 @@
 	"Comment4":"//Your game data path, you can use absolute path or a path which relative to your game dir",
 	"ChrPath":"data/char/" ,
 	"BgPath":"data/bg/" ,
-	"BgmPath":"data/bgm/" 
+	"BgmPath":"data/bgm/" ,
+	"WinPath":"data/window/"
 }
