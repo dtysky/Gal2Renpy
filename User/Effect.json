@@ -6,7 +6,9 @@
 
 	"Comment2":"Transition",
 	"Trans":{
+		"隐藏":"hide",
 		"默认":"dissolve"
+
 	}
 
 }

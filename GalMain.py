@@ -129,6 +129,7 @@ if US.TestMode==True:
 									US.ChrName[name][len(US.ChrName[name])-1]=Chr(US.ChrName[name][0],name)
 									ChrNow.append(US.ChrName[name][0])
 									US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
+							US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
 							Fo.write(US.ChrName[name][len(US.ChrName[name])-1].show(Fs))
 
 					elif Flag=='sc':
@@ -209,19 +210,20 @@ else:
 							Fs.error('This mode does not exist ！')
 
 					elif Flag=='ch':
-							for ch in Content.splitlines():
-								name=re.match(r'(\S+)\s+(\S+)',ch).group(1)
-								attrs=re.match(r'(\S+)\s+(\S+)',ch).group(2)
-								if US.ChrName.get(name)==None:
-									Fs.error('This charecter does not exist !')
+						for ch in Content.splitlines():
+							name=re.match(r'(\S+)\s+(\S+)',ch).group(1)
+							attrs=re.match(r'(\S+)\s+(\S+)',ch).group(2)
+							if US.ChrName.get(name)==None:
+								Fs.error('This charecter does not exist !')
+							else:
+								if US.ChrName[name][0] in ChrNow:
+									pass
 								else:
-									if US.ChrName[name][0] in ChrNow:
-										pass
-									else:
-										US.ChrName[name][2]=Chr(US.ChrName[name][0],name,attrs,Fs)
-										ChrNow.append(US.ChrName[name][0])
-										US.ChrName[name][2].rfattrs(attrs,US,Fs)
-								Fo.write(US.ChrName[name][2].show(Fs))
+									US.ChrName[name][len(US.ChrName[name])-1]=Chr(US.ChrName[name][0],name)
+									ChrNow.append(US.ChrName[name][0])
+									US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
+							US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
+							Fo.write(US.ChrName[name][len(US.ChrName[name])-1].show(Fs))
 
 					elif Flag=='test':
 						Fs.error2('This flag does not exist or be supported in this Mode,ignoring... ')

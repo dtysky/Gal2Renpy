@@ -148,9 +148,12 @@ class Chr():
 					if self.attrs[attr]==None:
 						Fs.error("This charecter's attributes are not complete !")
 					self.complete==True
-			rn+='    show '+self.name+self.attrs['c']+self.attrs['p']+self.attrs['f']+self.attrs['d']+' '
-			rn+='at '+self.attrs['l']+'\n'
-			rn+='    with '+self.attrs['t']+'\n'
+			if self.attrs['t']=='hide':
+				rn='    hide '+self.name+' '+self.attrs['c']+self.attrs['p']+self.attrs['f']+self.attrs['d']+'\n'
+			else:
+				rn+='    show '+self.name+' '+self.attrs['c']+self.attrs['p']+self.attrs['f']+self.attrs['d']+' '
+				rn+='at '+self.attrs['l']+'\n'
+				rn+='    with '+self.attrs['t']+'\n'
 			self.attrs['new']=False
 			return rn
 		elif self.say['new']:
@@ -162,8 +165,7 @@ class Chr():
 			self.say['new']=False
 			return '    '+rn
 		else:
-			MessageBox('This charecter does not be created !')
-			sys.exit(0)
+			Fs.error('This charecter does not be created !')
 
 
 

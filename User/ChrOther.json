@@ -108,13 +108,25 @@
 
 	"ChrPosition":{
 		
-		"A1": "Grid(1,7)" ,
+		"1": "GridX(1)",
+		"2": "GridX(2)",
+		"3": "GridX(3)",
+		"4": "GridX(4)",
+		"5": "GridX(5)",
+		"6": "GridX(6)",
+
+		"A1": "GridXY(1,6)" ,
+		"A2": "GridXY(2,6)" ,
+		"A3": "GridXY(3,6)" ,
+		"A4": "GridXY(4,6)" ,
+		"A5": "GridXY(5,6)" ,
+		"A6": "GridXY(6,6)" ,
 
 		
-		"B1": "Grid(1,5)" ,
+		"B1": "GridXY(1,2)" ,
 
 		
-		"C1": "Grid(1,2)"
+		"C1": "GridXY(1,1)"
 	}
 
 }

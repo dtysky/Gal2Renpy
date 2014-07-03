@@ -263,7 +263,7 @@ def CreatDefine(US):
  											if US.ChrFace.get(Name)!=None:
  												for Face in US.ChrFace[Name]:
  													for Dist in US.ChrDistance:
- 														rn+='image '+US.ChrName[Name][0]+US.ChrClothes[Name][Clothes]+US.ChrPose[Name][Poes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist]+' = '+"'"+US.ChrPath+US.ChrName[Name][0]+'/'+US.ChrName[Name][0]+US.ChrClothes[Name][Clothes]+US.ChrPose[Name][Poes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist] +".png'\n"
+ 														rn+='image '+US.ChrName[Name][0]+' '+US.ChrClothes[Name][Clothes]+US.ChrPose[Name][Poes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist]+' = '+"'"+US.ChrPath+US.ChrName[Name][0]+'/'+US.ChrName[Name][0]+US.ChrClothes[Name][Clothes]+US.ChrPose[Name][Poes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist] +".png'\n"
  					ChrDone=True
  					fo.write(rn)
  					fo.close()
