@@ -141,7 +141,7 @@ if US.TestMode==True:
 						else:
 							US.ChrName['Saying']=Content
 						if len(US.ChrName[Content])==4:
-							Fo.write('    $ n=Character(show_bg='+US.ChrName[Content][2]+'N)\n')
+							Fo.write('    $ n=Character(show_bg='+US.ChrName[Content][2]+"N,what_outlines=[(1,'"+US.ChrName[Content][1]+"')])\n")
 
 					else:
 						Fo.write(Sp2Script(Flag,Transition,Content,US,Fs))

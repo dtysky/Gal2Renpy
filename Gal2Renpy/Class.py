@@ -97,8 +97,8 @@ class User():
 			"p": self.ChrPose,
 			"d": self.ChrDistance,
 			"l": self.ChrPosition
-
 		}
+		self.Date=None
 
 
 #A class for charecter
@@ -149,9 +149,9 @@ class Chr():
 						Fs.error("This charecter's attributes are not complete !")
 					self.complete==True
 			if self.attrs['t']=='hide':
-				rn='    hide '+self.name+' '+self.attrs['c']+self.attrs['p']+self.attrs['f']+self.attrs['d']+'\n'
+				rn='    hide '+self.name+'\n'#+' '+self.attrs['c']+self.attrs['p']+self.attrs['f']+self.attrs['d']+'\n'
 			else:
-				rn+='    show '+self.name+' '+self.attrs['c']+self.attrs['p']+self.attrs['f']+self.attrs['d']+' '
+				rn+='    show '+self.name+' '+self.attrs['p']+self.attrs['c']+self.attrs['f']+self.attrs['d']+' '
 				rn+='at '+self.attrs['l']+'\n'
 				rn+='    with '+self.attrs['t']+'\n'
 			self.attrs['new']=False

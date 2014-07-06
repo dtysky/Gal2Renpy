@@ -141,6 +141,8 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 				Fs.error('This transition does not exist !')
 			else:
 				rn+='    with '+US.Trans[Transition]+'\n'
+		if US.Date!=None:
+			rn+="    show screen date('" +US.WinPath+'date/'+US.Date+".png')\n"
 		return rn
 
 	elif Flag=='bgm':
@@ -208,7 +210,8 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 		return rn
 
 	elif Flag=='date':
-		return "    $ Date='"+US.WinPath+'date/'+Content+".png'\n"
+		US.Date=Content
+		return ""
 
 	elif Flag=='renpy':
 		return '    '+Content+'\n'
@@ -227,7 +230,6 @@ def CreatDefine(US):
  		if DictHash[HashName]==DHash(eval('US.'+HashName)):
  			pass
  		else:
- 			DictHash[HashName]=DHash(eval('US.'+HashName))
 			rn=''
 			if HashName=='ChrWindow':
 				fo=codecs.open(US.ScriptPath+'define/bgwin.rpy','w','utf-8')
@@ -263,7 +265,7 @@ def CreatDefine(US):
  											if US.ChrFace.get(Name)!=None:
  												for Face in US.ChrFace[Name]:
  													for Dist in US.ChrDistance:
- 														rn+='image '+US.ChrName[Name][0]+' '+US.ChrClothes[Name][Clothes]+US.ChrPose[Name][Poes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist]+' = '+"'"+US.ChrPath+US.ChrName[Name][0]+'/'+US.ChrName[Name][0]+US.ChrClothes[Name][Clothes]+US.ChrPose[Name][Poes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist] +".png'\n"
+ 														rn+='image '+US.ChrName[Name][0]+' '+US.ChrPose[Name][Poes]+US.ChrClothes[Name][Clothes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist]+' = '+"'"+US.ChrPath+US.ChrName[Name][0]+'/'+US.ChrName[Name][0]+US.ChrPose[Name][Poes]+US.ChrClothes[Name][Clothes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist] +".png'\n"
  					ChrDone=True
  					fo.write(rn)
  					fo.close()
@@ -281,7 +283,7 @@ def CreatDefine(US):
  					fo.write(rn)
  					fo.close()
   
-  
+  			DictHash[HashName]=DHash(eval('US.'+HashName))
  	FileHash=open('Gal2Renpy/HashDict','w')
  	pickle.dump(DictHash,FileHash)
  	FileHash.close()
