@@ -122,13 +122,13 @@ class Chr():
 				if (ttmp[0]=='c') | (ttmp[0]=='p') | (ttmp[0]=='f'):
 
 					if US.ChrKeyword[ttmp[0]][self.orgname].get(ttmp[1])==None:
-						Fs.error("This "+US.ChrKeyword[ttmp[0]]+" does not exist !")
+						Fs.error("This ChrAttribute "+str(self.name+' '+ttmp[0])+" does not exist !")
 					else:
 						self.attrs[ttmp[0]]=US.ChrKeyword[ttmp[0]][self.orgname][ttmp[1]]
 				else:
 
 					if US.ChrKeyword[ttmp[0]].get(ttmp[1])==None:
-						Fs.error("This "+US.ChrKeyword[ttmp[0]]+" does not exist !")
+						Fs.error("This ChrAttribute "+str(self.name+' '+ttmp[0])+" does not exist !")
 					else:
 						self.attrs[ttmp[0]]=US.ChrKeyword[ttmp[0]][ttmp[1]]
 
