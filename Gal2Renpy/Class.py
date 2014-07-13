@@ -30,10 +30,10 @@ class MyFS():
 		self.linepos+=1
 		return self.fs.readline()
 	def error(self,e):
-		MessageBox(e+'\r\n'+'file : '+self.path.encode(locale.getdefaultlocale()[1])+'\r\n'+'line : '+str(self.linepos))
+		MessageBox(e.encode(locale.getdefaultlocale()[1])+'\r\n'+'file : '+self.path.encode(locale.getdefaultlocale()[1])+'\r\n'+'line : '+str(self.linepos))
 		sys.exit(0)
 	def error2(self,e):
-		MessageBox(e+'\r\n'+'file : '+self.path.encode(locale.getdefaultlocale()[1])+'\r\n'+'line : '+str(self.linepos))
+		MessageBox(e.encode(locale.getdefaultlocale()[1])+'\r\n'+'file : '+self.path.encode(locale.getdefaultlocale()[1])+'\r\n'+'line : '+str(self.linepos))
 	def hash(self):
 		md5obj=hashlib.md5()
 		while 1:
@@ -51,11 +51,24 @@ class MyFS():
 #User's source
 class User():
 	def __init__(self):
+		#Effect
+		jtmp=json.load(open('User/Effect.json','r'))
+		self.EffectSp=jtmp['EffectSp']
+		self.Trans=jtmp['Trans']
+		self.Graph=jtmp['Graph']
+		for gr in self.Graph:
+			self.Graph[gr]['Pause']=0
 		#Bg
 		jtmp=json.load(open('User/Bg.json','r'))
 		self.BgMain=jtmp['BgMain']
 		self.BgSub=jtmp['BgSub']
 		self.BgWeather=jtmp['BgWeather']
+		self.BgPosition=jtmp['BgPosition']
+		#Bg keywords!
+		self.BgKeyword={
+			"t": self.Trans,
+			"l": self.BgPosition
+		}
 		#ChrFace
 		self.ChrFace=json.load(open('User/ChrFace.json','r'))
 		#ChrOther
@@ -69,22 +82,21 @@ class User():
 		self.ChrPose=jtmp['ChrPose']
 		self.ChrDistance=jtmp['ChrDistance']
 		self.ChrPosition=jtmp['ChrPosition']
-		#Effect
-		jtmp=json.load(open('User/Effect.json','r'))
-		self.EffectSp=jtmp['EffectSp']
-		self.Trans=jtmp['Trans']
 		#Sound
 		jtmp=json.load(open('User/Sound.json','r'))
 		self.Bgm=jtmp['Bgm']
 		self.SoundE=jtmp['SoundE']
 		#Path,Mode
 		jtmp=json.load(open('User/PathMode.json','r'))
+		self.GamePath=jtmp['GamePath']
 		self.ScriptPath=jtmp['ScriptPath']
 		self.ChrPath=jtmp['ChrPath']
 		self.BgPath=jtmp['BgPath']
 		self.BgmPath=jtmp['BgmPath']
+		self.SoundPath=jtmp['SoundPath']
 		self.TextPath=jtmp['TextPath']
 		self.WinPath=jtmp['WinPath']
+		self.EfPath=jtmp['EfPath']
 		if jtmp['TestMode']=='True':
 			self.TestMode=True
 		else:
@@ -99,6 +111,7 @@ class User():
 			"l": self.ChrPosition
 		}
 		self.Date=None
+		self.BgLast=None
 
 
 #A class for charecter

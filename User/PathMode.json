@@ -1,4 +1,6 @@
 {
+	"GamePath":"E:/Follow_wings/FW/game/",
+
 	"Comment1":"//Seting True when you want to use TestMode, if not , seting False", 
 	"TestMode":"True" ,
 
@@ -12,5 +14,7 @@
 	"ChrPath":"data/char/" ,
 	"BgPath":"data/bg/" ,
 	"BgmPath":"data/bgm/" ,
-	"WinPath":"data/window/"
+	"SoundPath":"data/sound/",
+	"WinPath":"data/window/",
+	"EfPath":"data/effect/"
 }

@@ -1,13 +1,40 @@
 {
 	"Comment1":"Special Effect",
 	"EffectSp":[
-		"EfText1"
+		"EfText1",
+		"EfImage1"
 	],
 
 	"Comment2":"Transition",
 	"Trans":{
 		"隐藏":"hide",
-		"默认":"dissolve"
+		"默认":"dissolve",
+		"移动":"move",
+		"栅栏":"blinds",
+		"BgDefault":"dissolve",
+		"无":"None"
+
+	},
+
+	"Comment3":"Graph",
+	"Graph":{
+
+		"PlaneA":{
+			"Source":"Dir",
+			"Type":"Frame",
+			"Delay":"0.03"
+		},
+
+		"PlaneB":{
+			"Source":"Dir",
+			"Type":"Frame",
+			"Delay":"0.01"
+		},
+
+		"Plane1":{
+			"Source":"File",
+			"Type":"Image"
+		}
 
 	}
 

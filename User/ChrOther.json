@@ -1,7 +1,8 @@
 {
 
 	"ChrWindow":["Default","Dream1","Soul1","Flower1","Moon1","Star1",
-	"Logos1","Poem1","Existent1","Void1"],
+	"Logos1","Poem1","Existent1","Void1","Dream2","Soul2","Flower2","Moon2","Star2",
+	"Logos2","Poem2"],
 
 	"ChrName":{
 		"寒苍": ["Dream","#aaaaaa","Dream1"] ,
@@ -13,7 +14,10 @@
 		"晓": ["Poem","#3a88ca","Poem1"] ,
 		"散夜": ["Existent","#22847a","Existent1"] ,
 		"无名": ["Void","#798d8b","Void1"] ,
-		"少年": ["Boy","#895a28","Default"]
+		"苓苏-梦":["Flower_D","#0b3800","Flower2"],
+		"少年": ["Boy","#895a28","Default"],
+		"少女":["Gril","#895a28","Default"],
+		"男人":["Man","#895a28","Default"]
 	},
 
 
@@ -82,6 +86,10 @@
 			"破损二": "C",
 			"完整": "D"
 
+		},
+
+		"苓苏-梦":{
+			"哥特": "A"
 		}
 	},
 
@@ -128,11 +136,17 @@
 
 		"散夜":{
 			"普通":"A",
-			"右倾":"B"
+			"抚发":"B"
 		},
 
 		"无名":{
-			"普通":"A"
+			"普通":"A",
+			"思考":"B"
+		},
+
+		"苓苏-梦":{
+			"普通": "A",
+			"抚发": "B"
 		}
 	},
 

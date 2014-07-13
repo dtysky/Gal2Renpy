@@ -1,4 +1,4 @@
-#coding:utf-8
+#-*-coding:utf-8-*- 
 
 import re
 import codecs
@@ -6,6 +6,9 @@ import pickle
 from ctypes import *
 from Keyword import *
 from Class import *
+import sys   
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 #Return hash for a dict which may contain a dict as its value or others
 def DHash(Dict):
@@ -13,7 +16,9 @@ def DHash(Dict):
 	if isinstance(Dict,dict):
 		for tmp in Dict:
 			if isinstance(Dict[tmp],dict):
-				dh+=hash(tmp)+hash(str(sorted(Dict[tmp],key=lambda d: d[0])))
+				dh+=hash(tmp)
+				for sub in Dict[tmp]:
+					dh+=hash(sub+str(Dict[tmp][sub]))
 			else:
 				dh+=hash(tmp)+hash(str(Dict[tmp]))
 	else:
@@ -26,7 +31,7 @@ def RBlock(Fs,Allow,US):
 	s=Fs.readline()
 	if s=='':
 		head='end'
-	elif s=='\r\n':
+	elif (s=='\r\n') | (s[0]=='#'):
 		head='None'
 	elif re.match(r'<.*>',s)!=None:
 
@@ -109,14 +114,18 @@ def RBlock(Fs,Allow,US):
 #Return a string which changing special texts to scripts
 def Sp2Script(Flag,Transition,Content,US,Fs):
 
-
 	if Flag=='sc':
 		return 'label '+Content.replace('，',',').replace(',','')+' :\n'
 
 	elif Flag=='bg':
+		rn=''
+		if US.BgLast!=(Content.replace('，',',').replace('：',':')):
+			if US.BgLast!=None:
+				rn+='    hide screen date\n'
+				rn+='    show bg Black01A with '+US.Trans['BgDefault']+'\n'
+			rn+="    show screen date('" +US.WinPath+'date/'+US.Date+".png')\n"
 		tmp=Content.replace('：',':').split(':')
 		sr=tmp[0].replace('，',',').split(',')
-		rn=''
 		if US.BgMain.get(sr[0])==None:
 			Fs.error('This Bg does not exist !')
 		else:
@@ -131,18 +140,39 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 				if US.BgSub[sr[0]].get(sr[1])==None:
 					Fs.error('This SubBg does not exist !')
 				else:
-					rn='    scene bg '+US.BgMain[sr[0]]+US.BgSub[sr[0]][sr[1]]+w+'\n'
+					rn+='    scene bg '+US.BgMain[sr[0]]+US.BgSub[sr[0]][sr[1]]+w
 			elif len(sr)==1:
-				rn='    scene bg '+US.BgMain[sr[0]]+US.BgSub[sr[0]]['default']+w+'\n'
+				rn+='    scene bg '+US.BgMain[sr[0]]+US.BgSub[sr[0]]['default']+w
 			else:
 				Fs.error('Unsupport two and more subscenes !')
 		if Transition!='None':
-			if US.Trans.get(Transition)==None:
-				Fs.error('This transition does not exist !')
-			else:
-				rn+='    with '+US.Trans[Transition]+'\n'
-		if US.Date!=None:
-			rn+="    show screen date('" +US.WinPath+'date/'+US.Date+".png')\n"
+			attrs=Transition.replace('，',',').split(',')
+			attrdict={}
+			for attr in attrs:
+				tmp=attr.replace('：',':').split(':')
+				attrdict[tmp[0]]=tmp[1]
+			if 'l' not in attrdict:
+				rn+=' at truecenter\n'
+			for attr in attrdict:
+				if US.BgKeyword.get(attr)==None:
+					Fs.error("This BgKeyword does not exist !")
+				else:
+					if US.BgKeyword[attr].get(attrdict[attr])==None:
+							Fs.error(attrdict[attr]+' does not exist !')
+					else:
+						if attr=='l':
+							if US.BgKeyword[attr][attrdict[attr]]=='None':
+								rn+='\n'
+							else:
+								rn+=' at '+US.BgKeyword[attr][attrdict[attr]]+'\n'
+						else:
+							rn+='    with '+US.BgKeyword[attr][attrdict[attr]]+'\n'
+		else:
+			rn+=' at truecenter\n    with '+US.Trans['BgDefault']+'\n'
+		if US.BgLast!=(Content.replace('，',',').replace('：',':')):
+			if US.BgLast!=None:
+				rn+="    n ''\n"
+		US.BgLast=Content.replace('，',',').replace('：',':')
 		return rn
 
 	elif Flag=='bgm':
@@ -167,30 +197,44 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 				for efc in range(2,len(ef)+1):
 					if ef[efc-1]=='this':
 						if ef[1]=='Text':
-							rn+='''"'''+s+'''"'''+','
+							rn+="'"+s+"'"
 						elif ef[1]=='Image':
-							if Graph.get(s)==None:
-								Fs.error('This graph does not exist !')
-							else:
-								rn+=s+','
+							rn+=s
 						else:
 							pass
 					elif efc>2:
 						rn+=ef[efc-1]
-						if efc<len(ef):
-							rn+=','
-					if efc==len(ef):
+					if efc<len(ef) and efc>2:
+						rn+=','
+					elif efc==len(ef):
 						rn+=')\n'
 			return rn
 		else:
 			Fs.error('This effect does not exist !')
+
+	elif Flag=='gf':
+		if US.Graph.get(Content)==None:
+ 			Fs.error('This Graph does not exist !')
+		elif US.Graph[Content]['Type']=='Frame':
+			if Transition!=None:
+				return '    show '+Content+' at '+Transition+'\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    hide '+Content+'\n'+'    pause 0.2\n'
+			else:
+				return '    show '+Content+'\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    hide '+Content+'\n'+'    pause 0.2\n'
+		elif US.Graph[Content]['Type']=='Image':
+			if Transition!=None:
+				if Transition=='hide':
+					return '    hide '+Content+'\n'
+				else:
+					return '    show '+Content+' at '+Transition+' with dissolve\n'
+			else:
+				return '    show '+Content+' with dissolve\n'
 
 	elif Flag=='sound':
 		rn=''
 		if US.SoundE.get(Content)==None:
 			Fs.error('This Sound does not exist !')
 		else:
-			rn='play sound '+'''"'''+SoundPath+US.SoundE[Content]+'''"\n'''
+			rn='play sound '+'''"'''+US.SoundPath+US.SoundE[Content]+'''"\n'''
 		if Transition!='None':
 			if US.Trans.get(Transition)==None:
 				Fs.error('This effect does not exist !')
@@ -225,6 +269,7 @@ def CreatDefine(US):
  	BgDone=False
  	FileHash=open('Gal2Renpy/HashDict','r')
  	DictHash=pickle.load(FileHash)
+ 	FileHash.close()
  	
  	for HashName in DictHash:
  		if DictHash[HashName]==DHash(eval('US.'+HashName)):
@@ -282,6 +327,26 @@ def CreatDefine(US):
  					BgDone=True
  					fo.write(rn)
  					fo.close()
+
+ 			elif HashName=='Graph':
+ 				fo=fo=codecs.open(US.ScriptPath+'define/graph.rpy','w','utf-8')
+ 				rn=''
+ 				for gr in US.Graph:
+ 					if US.Graph[gr]['Source']=='Dir':
+ 						rn+='image '+gr+':\n'
+ 						if US.Graph[gr]['Type']=='Frame':
+ 							delay=US.Graph[gr]['Delay']
+ 							for root,dirs,files in os.walk(US.GamePath+US.EfPath+gr):
+ 								for f in files:
+ 									if os.path.splitext(f)[1]=='.png':
+ 										US.Graph[gr]['Pause']+=float(delay)
+	 									rn+="    '"+US.EfPath+gr+'/'+f+"'\n    pause "+delay+'\n'
+	 				elif US.Graph[gr]['Source']=='File':
+	 					if US.Graph[gr]['Type']=='Image':
+	 						rn+='image '+gr+"='"+US.EfPath+gr+".png'\n"
+				fo.write(rn)
+				fo.close()
+
   
   			DictHash[HashName]=DHash(eval('US.'+HashName))
  	FileHash=open('Gal2Renpy/HashDict','w')

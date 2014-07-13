@@ -6,15 +6,18 @@
 Keywords=[
 	"sc",
 	"sw",	#a part
-	"chr",
+	"ch",
 	"bg",
 	"bgm",
 	"sound",
 	"date",
 	"cg",	#not
-	"vd"	#not
+	"vd",	#not
 	"ef",	#a part
+	"gf",
 	"mode",
+	"view",
+	"chc",
 	"test"
 ]
 

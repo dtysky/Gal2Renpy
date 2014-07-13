@@ -1,4 +1,4 @@
-#coding:utf-8
+#-*-coding:utf-8-*- 
 
 #Writing to future me:
 #You have only two chioces: rewriting, or closing
@@ -22,6 +22,7 @@ Fs=MyFS()
 ChrNow=[]
 FileNow=[]
 FileAll=[]
+ChrTmp=[]
 
 US=User()
 CreatDefine(US)
@@ -69,7 +70,6 @@ for f in sorted(HashFile):
 		del HashFile[f]
 		del ListFile[f]
 
-
 if US.TestMode==True:
 	if os.path.exists(US.ScriptPath+'script.rpy'):
 		os.remove(US.ScriptPath+'script.rpy')
@@ -104,7 +104,10 @@ if US.TestMode==True:
 			elif Begin:
 				if Head=='sp':
 					
-					if Flag=='mode':
+					if Flag not in Keywords:
+						Fs.error('This keyword does not exit!')
+
+					elif Flag=='mode':
 						if Content=='Hide':
 							Fo.write('    hide window\n')
 						elif Content=='Re':
@@ -142,6 +145,24 @@ if US.TestMode==True:
 							US.ChrName['Saying']=Content
 						if len(US.ChrName[Content])==4:
 							Fo.write('    $ n=Character(show_bg='+US.ChrName[Content][2]+"N,what_outlines=[(1,'"+US.ChrName[Content][1]+"')])\n")
+
+					elif Flag=='chc':
+						if Transition=='Begin':
+							NameC=Content.replace('：',':').split(':')
+							for na in NameC:
+								if na not in US.ChrName:
+									Fs.error('This Character does not exist !')
+							ChrTmp.append(NameC[0])
+							Fo.write('    $ '+US.ChrName[NameC[0]][0]+"A=Character('"+NameC[0]+"',show_bg="+US.ChrName[NameC[1]][2]+"S,what_outlines=[(1,'"+US.ChrName[NameC[1]][1]+"')],who_bold=False,who_outlines=[ (2,'"+US.ChrName[NameC[1]][1]+"')])\n")
+						elif Transition=='End':
+							if Content not in ChrTmp:
+								Fs.error('This Character did not be changed !')
+							else:
+								ChrTmp.remove(Content)
+								Fo.write('    $ '+US.ChrName[Content][0]+"A=Character('"+Content+"',show_bg="+US.ChrName[Content][2]+"S,what_outlines=[(1,'"+US.ChrName[Content][1]+"')],who_bold=False,who_outlines=[ (2,'"+US.ChrName[Content][1]+"')])\n")
+						else:
+							Fs.error('Wrong using this keyword !')
+
 
 					else:
 						Fo.write(Sp2Script(Flag,Transition,Content,US,Fs))
@@ -197,7 +218,10 @@ else:
 			elif Allow:
 				if Head=='sp':
 
-					if Flag=='mode':
+					if Flag not in keywords:
+						Fs.error('This keyword does not exit!')
+
+					elif Flag=='mode':
 						if Content=='Hide':
 							sout='    hide window\n'
 						elif Content=='Re':
@@ -235,7 +259,22 @@ else:
 							US.ChrName['Saying']=Content
 						if len(US.ChrName[Content])==4:
 							Fo.write('    $ Bg_Ns='+US.ChrName[Content][2]+'N\n')
-
+					elif Flag=='chc':
+						if Transition=='Begin':
+							NameC=Content.replace('：',':').split(':')
+							for na in NameC:
+								if na not in US.ChrName:
+									Fs.error('This Character does not exist !')
+							ChrTmp.append(NameC[0])
+							Fo.write('    $ '+US.ChrName[NameC[0]][0]+"A=Character('"+NameC[0]+"',show_bg="+US.ChrName[NameC[1]][2]+"S,what_outlines=[(1,'"+US.ChrName[NameC[1]][1]+"')],who_bold=False,who_outlines=[ (2,'"+US.ChrName[NameC[1]][1]+"')])\n")
+						elif Transition=='End':
+							if Content not in ChrTmp:
+								Fs.error('This Character did not be changed !')
+							else:
+								ChrTmp.remove(Content)
+								Fo.write('    $ '+US.ChrName[Content][0]+"A=Character('"+Content+"',show_bg="+US.ChrName[NameC[1]][2]+"S,what_outlines=[(1,'""')],who_bold=False,who_outlines=[ (2,'"+US.ChrName[Content][1]+"')])\n")
+						else:
+							Fs.error('Wrong using this keyword !')
 					else:
 						Fo.write(Sp2Script(Flag,Transition,Content,US,Fs))
 							
