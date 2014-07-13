@@ -2,9 +2,9 @@
 S'ChrPose'
 p1
 L-274312558L
-sS'ChrPosition'
+sS'ChrDistance'
 p2
-L-8685800192L
+I-432504586
 sS'BgSub'
 p3
 L-5037327355L
@@ -29,7 +29,7 @@ L-8860344891L
 sS'ChrFace'
 p10
 L19652438478L
-sS'ChrDistance'
+sS'ChrPosition'
 p11
-I-432504586
+L-8685800192L
 s.
