@@ -169,9 +169,6 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 							rn+='    with '+US.BgKeyword[attr][attrdict[attr]]+'\n'
 		else:
 			rn+=' at truecenter\n    with '+US.Trans['BgDefault']+'\n'
-		if US.BgLast!=(Content.replace('，',',').replace('：',':')):
-			if US.BgLast!=None:
-				rn+="    n ''\n"
 		US.BgLast=Content.replace('，',',').replace('：',':')
 		return rn
 
@@ -194,17 +191,12 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 		if ef[0] in US.EffectSp:
 			for s in Content.splitlines():
 				rn+='    call '+ef[0]+'('
-				for efc in range(2,len(ef)+1):
+				for efc in range(1,len(ef)+1):
 					if ef[efc-1]=='this':
-						if ef[1]=='Text':
-							rn+="'"+s+"'"
-						elif ef[1]=='Image':
-							rn+=s
-						else:
-							pass
-					elif efc>2:
+						rn+=s
+					elif efc>1:
 						rn+=ef[efc-1]
-					if efc<len(ef) and efc>2:
+					if efc<len(ef) and efc>1:
 						rn+=','
 					elif efc==len(ef):
 						rn+=')\n'
@@ -234,13 +226,15 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 		if US.SoundE.get(Content)==None:
 			Fs.error('This Sound does not exist !')
 		else:
-			rn='play sound '+'''"'''+US.SoundPath+US.SoundE[Content]+'''"\n'''
+			rn="    play sound '"+US.SoundPath+US.SoundE[Content]+"'\n"
 		if Transition!='None':
 			if US.Trans.get(Transition)==None:
 				Fs.error('This effect does not exist !')
 			else:
-				rn='with '+US.Trans[Transition]+'\n'
-		return '    '+rn
+				rn='    with '+US.Trans[Transition]+'\n'
+		rn+="    hide screen say\n"
+		rn+='    pause 2.0\n'
+		return rn
 
 	elif Flag=='sw':
 		rn='    menu:\n'

@@ -1,8 +1,9 @@
 {
 	"Comment1":"Special Effect",
 	"EffectSp":[
-		"EfText1",
-		"EfImage1"
+		"EfTextCenter",
+		"EfImage1",
+		"EfTextMapFlag"
 	],
 
 	"Comment2":"Transition",
@@ -22,13 +23,13 @@
 		"PlaneA":{
 			"Source":"Dir",
 			"Type":"Frame",
-			"Delay":"0.03"
+			"Delay":"0.01"
 		},
 
 		"PlaneB":{
 			"Source":"Dir",
 			"Type":"Frame",
-			"Delay":"0.01"
+			"Delay":"0.02"
 		},
 
 		"Plane1":{

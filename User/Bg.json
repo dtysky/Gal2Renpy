@@ -87,6 +87,10 @@
 		"正中":"truecenter",
 		"左上":"topleft",
 		"右上":"topright",
+		"左":"centerleft",
+		"右":"centerright",
+		"中下":"center",
+		"中上":"top",
 		"左下右":"left_down_right",
 		"右上到左下-极慢":"tr_ct_ld_s(30.0)",
 		"无":"None"
