@@ -123,7 +123,8 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 			if US.BgLast!=None:
 				rn+='    hide screen date\n'
 				rn+='    show bg Black01A with '+US.Trans['BgDefault']+'\n'
-			rn+="    show screen date('" +US.WinPath+'date/'+US.Date+".png')\n"
+			if US.Date!='None':
+				rn+="    show screen date(Date2)\n"
 		tmp=Content.replace('：',':').split(':')
 		sr=tmp[0].replace('，',',').split(',')
 		if US.BgMain.get(sr[0])==None:
@@ -144,7 +145,7 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 			elif len(sr)==1:
 				rn+='    scene bg '+US.BgMain[sr[0]]+US.BgSub[sr[0]]['default']+w
 			else:
-				Fs.error('Unsupport two and more subscenes !')
+				Fs.error('Unsupport two and more leaves subscenes !')
 		if Transition!='None':
 			attrs=Transition.replace('，',',').split(',')
 			attrdict={}
@@ -176,14 +177,18 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 		rn=''
 		if US.Bgm.get(Content)==None:
 			Fs.error('This US.Bgm does not exist !')
+		elif US.Bgm[Content]=='StopBgm':
+			rn+='    stop music\n'
 		else:
-			rn='play music '+'''"'''+US.BgmPath+US.Bgm[Content]+'''"\n'''
+			rn+='    play music '+'''"'''+US.BgmPath+US.Bgm[Content]+'''"\n'''
 		if Transition!='None':
 			if US.Trans.get(Transition)==None:
 				Fs.error('This effect does not exist !')
 			else:
-				rn='with '+US.Trans[Transition]+'\n'
-		return '    '+rn
+				rn+='    with '+US.Trans[Transition]+'\n'
+		else:
+			rn+='    with dissolve\n'
+		return rn
 
 	elif Flag=='ef':
 		rn=''
@@ -211,7 +216,7 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 			if Transition!=None:
 				return '    show '+Content+' at '+Transition+'\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    hide '+Content+'\n'+'    pause 0.2\n'
 			else:
-				return '    show '+Content+'\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    hide '+Content+'\n'+'    pause 0.2\n'
+				return '    show '+Content+'\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    hide '+Content+'\n'+'    pause 0.5\n'
 		elif US.Graph[Content]['Type']=='Image':
 			if Transition!=None:
 				if Transition=='hide':
@@ -220,6 +225,9 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 					return '    show '+Content+' at '+Transition+' with dissolve\n'
 			else:
 				return '    show '+Content+' with dissolve\n'
+		elif US.Graph[Content]['Type']=='Chapter':
+			return '    scene '+Content+'\n'+'    with dissolve\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    pause 2.0\n'
+
 
 	elif Flag=='sound':
 		rn=''
@@ -238,7 +246,7 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 
 	elif Flag=='sw':
 		rn='    menu:\n'
-		if Transition=='nomal':
+		if Transition=='normal':
 			for sw in Content.splitlines():
 				tmp=sw.replace('：',':').split(':')
 				rn+='        '+"'"+tmp[0]+"':\n"
@@ -248,11 +256,18 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 		return rn
 
 	elif Flag=='date':
+		rn=''
+		if US.Date!='None':
+			rn+="    $ Date1='"+US.WinPath+'date/'+US.Date+".png'\n"
+		rn+="    $ Date2='"+US.WinPath+'date/'+Content+".png'\n"
 		US.Date=Content
-		return ""
+		return rn
 
 	elif Flag=='renpy':
 		return '    '+Content+'\n'
+
+	elif Flag=='key':
+		return ''
 
 	else:
 		Fs.error('This flag does not exist or be supported in this Fun !')
@@ -328,13 +343,12 @@ def CreatDefine(US):
  				for gr in US.Graph:
  					if US.Graph[gr]['Source']=='Dir':
  						rn+='image '+gr+':\n'
- 						if US.Graph[gr]['Type']=='Frame':
- 							delay=US.Graph[gr]['Delay']
- 							for root,dirs,files in os.walk(US.GamePath+US.EfPath+gr):
- 								for f in files:
- 									if os.path.splitext(f)[1]=='.png':
- 										US.Graph[gr]['Pause']+=float(delay)
-	 									rn+="    '"+US.EfPath+gr+'/'+f+"'\n    pause "+delay+'\n'
+						delay=US.Graph[gr]['Delay']
+ 						for root,dirs,files in os.walk(US.GamePath+US.EfPath+gr):
+ 							for f in files:
+ 								if os.path.splitext(f)[1]=='.png':
+ 									US.Graph[gr]['Pause']+=float(delay)
+	 								rn+="    '"+US.EfPath+gr+'/'+f+"'\n    pause "+delay+'\n'
 	 				elif US.Graph[gr]['Source']=='File':
 	 					if US.Graph[gr]['Type']=='Image':
 	 						rn+='image '+gr+"='"+US.EfPath+gr+".png'\n"

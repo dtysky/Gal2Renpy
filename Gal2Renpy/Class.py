@@ -110,7 +110,7 @@ class User():
 			"d": self.ChrDistance,
 			"l": self.ChrPosition
 		}
-		self.Date=None
+		self.Date='None'
 		self.BgLast=None
 
 

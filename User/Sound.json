@@ -1,6 +1,7 @@
 {
 	"Comment1":"//Background music",
 	"Bgm":{
+		"停止播放":"StopBgm",
 		"Peotic Being~OrgVer.~" : "01.ogg",
 		"梦幻箱庭": "02.ogg"
 		 },

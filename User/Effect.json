@@ -3,7 +3,8 @@
 	"EffectSp":[
 		"EfTextCenter",
 		"EfImage1",
-		"EfTextMapFlag"
+		"EfTextMapFlag",
+		"EfDate"
 	],
 
 	"Comment2":"Transition",
@@ -19,6 +20,12 @@
 
 	"Comment3":"Graph",
 	"Graph":{
+
+		"Cp1":{
+			"Source":"Dir",
+			"Type":"Chapter",
+			"Delay":"0.05"
+		},
 
 		"PlaneA":{
 			"Source":"Dir",

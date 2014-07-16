@@ -15,9 +15,11 @@ Keywords=[
 	"vd",	#not
 	"ef",	#a part
 	"gf",
+	"key",
 	"mode",
 	"view",
 	"chc",
+	"renpy",
 	"test"
 ]
 

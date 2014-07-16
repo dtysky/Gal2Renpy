@@ -1,6 +1,7 @@
 
 {
 	"BgMain":{
+		"日期":"Date",
 		"白": "White",
 		"黑": "Black",
 		"家": "HM" ,
@@ -11,6 +12,10 @@
 
 	"Comment1":"//You must give them a default value at least !",
 	"BgSub":{
+
+		"日期":{
+			"default": "01"
+		},
 
 		"白":{
 			"default": "01"
@@ -42,6 +47,11 @@
 
 	"Comment2":"//You must give them a default value at least !",
 	"BgWeather":{
+
+		"日期":{
+			"夜": "A",
+			"白天": "B"
+		},
 
 		"白":{
 			"default": "A"
