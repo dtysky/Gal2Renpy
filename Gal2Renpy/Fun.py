@@ -117,77 +117,21 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 	if Flag=='sc':
 		return 'label '+Content.replace('，',',').replace(',','')+' :\n'
 
-	elif Flag=='bg':
-		rn=''
-		if US.BgLast!=(Content.replace('，',',').replace('：',':')):
-			if US.BgLast!=None:
-				rn+='    hide screen date\n'
-				rn+='    show bg Black01A with '+US.Trans['BgDefault']+'\n'
-			if US.Date!='None':
-				rn+="    show screen date(Date2)\n"
-		tmp=Content.replace('：',':').split(':')
-		sr=tmp[0].replace('，',',').split(',')
-		if US.BgMain.get(sr[0])==None:
-			Fs.error('This Bg does not exist !')
-		else:
-			if len(tmp)==1:
-				w=US.BgWeather[sr[0]]['default']
-			else:
-				if US.BgWeather[sr[0]].get(tmp[1])==None:
-					Fs.error('This Weather does not exist !')
-				else:
-					w=US.BgWeather[sr[0]][tmp[1]]
-			if len(sr)==2:
-				if US.BgSub[sr[0]].get(sr[1])==None:
-					Fs.error('This SubBg does not exist !')
-				else:
-					rn+='    scene bg '+US.BgMain[sr[0]]+US.BgSub[sr[0]][sr[1]]+w
-			elif len(sr)==1:
-				rn+='    scene bg '+US.BgMain[sr[0]]+US.BgSub[sr[0]]['default']+w
-			else:
-				Fs.error('Unsupport two and more leaves subscenes !')
-		if Transition!='None':
-			attrs=Transition.replace('，',',').split(',')
-			attrdict={}
-			for attr in attrs:
-				tmp=attr.replace('：',':').split(':')
-				attrdict[tmp[0]]=tmp[1]
-			if 'l' not in attrdict:
-				rn+=' at truecenter\n'
-			for attr in attrdict:
-				if US.BgKeyword.get(attr)==None:
-					Fs.error("This BgKeyword does not exist !")
-				else:
-					if US.BgKeyword[attr].get(attrdict[attr])==None:
-							Fs.error(attrdict[attr]+' does not exist !')
-					else:
-						if attr=='l':
-							if US.BgKeyword[attr][attrdict[attr]]=='None':
-								rn+='\n'
-							else:
-								rn+=' at '+US.BgKeyword[attr][attrdict[attr]]+'\n'
-						else:
-							rn+='    with '+US.BgKeyword[attr][attrdict[attr]]+'\n'
-		else:
-			rn+=' at truecenter\n    with '+US.Trans['BgDefault']+'\n'
-		US.BgLast=Content.replace('，',',').replace('：',':')
-		return rn
-
 	elif Flag=='bgm':
 		rn=''
 		if US.Bgm.get(Content)==None:
 			Fs.error('This US.Bgm does not exist !')
 		elif US.Bgm[Content]=='StopBgm':
-			rn+='    stop music\n'
+			rn+='    stop music fadeout 1.0\n'
 		else:
-			rn+='    play music '+'''"'''+US.BgmPath+US.Bgm[Content]+'''"\n'''
-		if Transition!='None':
-			if US.Trans.get(Transition)==None:
-				Fs.error('This effect does not exist !')
+			rn+='    play music '+"'"+US.BgmPath+US.Bgm[Content]+"'"
+			if Transition!='None':
+				if US.Trans.get(Transition)==None:
+					Fs.error('This effect does not exist !')
+				else:
+					rn+='    with '+US.Trans[Transition]+'\n'
 			else:
-				rn+='    with '+US.Trans[Transition]+'\n'
-		else:
-			rn+='    with dissolve\n'
+				rn+='    fadein 1.0\n'
 		return rn
 
 	elif Flag=='ef':
@@ -226,7 +170,7 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 			else:
 				return '    show '+Content+' with dissolve\n'
 		elif US.Graph[Content]['Type']=='Chapter':
-			return '    scene '+Content+'\n'+'    with dissolve\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    pause 2.0\n'
+			return '    scene '+Content+'\n'+'    with dissolve\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    pause 2.0\n'+'    show bg Black01A with dissolve\n'
 
 
 	elif Flag=='sound':

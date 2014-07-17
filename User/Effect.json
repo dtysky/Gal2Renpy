@@ -12,7 +12,10 @@
 		"隐藏":"hide",
 		"默认":"dissolve",
 		"移动":"move",
+		"移动-慢":"MoveTransition(2.0)",
 		"栅栏":"blinds",
+		"睁眼":"TransEyeOpen",
+		"闭眼":"TransEyeClose",
 		"BgDefault":"dissolve",
 		"无":"None"
 
@@ -22,6 +25,12 @@
 	"Graph":{
 
 		"Cp1":{
+			"Source":"Dir",
+			"Type":"Chapter",
+			"Delay":"0.05"
+		},
+
+		"Cp2":{
 			"Source":"Dir",
 			"Type":"Chapter",
 			"Delay":"0.05"

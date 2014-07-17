@@ -25,6 +25,7 @@ FileAll=[]
 ChrTmp=[]
 
 US=User()
+BgC=Bg(US)
 CreatDefine(US)
 
 
@@ -119,6 +120,10 @@ if US.TestMode==True:
 						else:
 							Fs.error('This mode does not exist !')
 
+					elif Flag=='bg':
+						BgC.refresh(Content,Transition,US,Fs)
+						Fo.write(BgC.show(US,Fs))
+
 					elif Flag=='ch':
 						for ch in Content.splitlines():
 							name=re.match(r'(\S+)\s+(\S+)',ch).group(1)
@@ -134,9 +139,6 @@ if US.TestMode==True:
 									US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
 							US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
 							Fo.write(US.ChrName[name][len(US.ChrName[name])-1].show(Fs))
-
-					elif Flag=='sc':
-						pass
 
 					elif Flag=='view':
 						if US.ChrName.get(Content)==None:

@@ -17,7 +17,8 @@
 		"苓苏-梦":["Flower_D","#0b3800","Flower2"],
 		"少年": ["Boy","#895a28","Default"],
 		"少女":["Gril","#895a28","Default"],
-		"男人":["Man","#895a28","Default"]
+		"男人":["Man","#895a28","Default"],
+		"？？？":["Who","#895a28","Default"]
 	},
 
 
@@ -157,12 +158,13 @@
 
 	"ChrPosition":{
 		
-		"1": "GridX(1)",
-		"2": "GridX(2)",
-		"3": "GridX(3)",
-		"4": "GridX(4)",
-		"5": "GridX(5)",
-		"6": "GridX(6)",
+		"1": "GridX(0)",
+		"2": "GridX(1)",
+		"3": "GridX(2)",
+		"4": "GridX(3)",
+		"5": "GridX(4)",
+		"6": "GridX(5)",
+		"7": "GridX(6)",
 
 		"A1": "GridXY(1,6)" ,
 		"A2": "GridXY(2,6)" ,

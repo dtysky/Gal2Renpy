@@ -3,13 +3,17 @@
 	"Bgm":{
 		"停止播放":"StopBgm",
 		"Peotic Being~OrgVer.~" : "01.ogg",
-		"梦幻箱庭": "02.ogg"
+		"梦幻箱庭": "02.ogg",
+		"平凡而美丽的生活":"03.ogg"
 		 },
 
 
 
 	"Comment1":"//Sound Effect",
 	"SoundE":{
-		"铃声：寒苍":"01.ogg"
+		"铃声：寒苍":"01.ogg",
+		"敲门":"02.wav",
+		"敲门-重":"03.wav",
+		"开门":"04.wav"
 	}
 }

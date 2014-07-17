@@ -66,6 +66,9 @@ class User():
 		self.BgPosition=jtmp['BgPosition']
 		#Bg keywords!
 		self.BgKeyword={
+			'm': self.BgMain,
+			's': self.BgSub,
+			'w': self.BgWeather,
 			"t": self.Trans,
 			"l": self.BgPosition
 		}
@@ -162,7 +165,8 @@ class Chr():
 						Fs.error("This charecter's attributes are not complete !")
 					self.complete==True
 			if self.attrs['t']=='hide':
-				rn='    hide '+self.name+'\n'#+' '+self.attrs['c']+self.attrs['p']+self.attrs['f']+self.attrs['d']+'\n'
+				self.attrs['t']='dissolve'
+				rn='    hide '+self.name+' with dissolve\n'#+' '+self.attrs['c']+self.attrs['p']+self.attrs['f']+self.attrs['d']+'\n'
 			else:
 				rn+='    show '+self.name+' '+self.attrs['p']+self.attrs['c']+self.attrs['f']+self.attrs['d']+' '
 				rn+='at '+self.attrs['l']+'\n'
@@ -181,5 +185,67 @@ class Chr():
 			Fs.error('This charecter does not be created !')
 
 
+#A class for Bg
+class Bg():
+	def __init__(self,US):
+		self.bg={'m':None,'s':None,'w':None}
+		self.bgorg={'m':None,'s':None,'w':None}
+		self.attrs={'l':US.BgKeyword['l']['default'],'t':US.BgKeyword['t']['BgDefault']}
+		self.bgLast={'m':None,'s':None,'w':None}
+	def refresh(self,Bgs,Attrs,US,Fs):
+		Bgs=Bgs.replace('，',',').replace('：',':').split(',')
+		Attrs=Attrs.replace('，',',').replace('：',':').split(',')
+		for bg in Bgs:
+			tmp=bg.split(':')
+			if tmp[0] not in self.bg:
+				Fs.error('This Bgkeyword '+tmp[0]+' does not exist !')
+			else:
+				if tmp[0]=='m':
+					if US.BgKeyword[tmp[0]].get(tmp[1])==None:
+						Fs.error('This Bg '+tmp[1]+' does not exist !')
+					else:
+						self.bg[tmp[0]]=US.BgKeyword[tmp[0]][tmp[1]]
+						self.bgorg[tmp[0]]=tmp[1]
+				else:
+					if self.bg['m']==None:
+						Fs.error('You must give a BgMain at first !')
+					else:
+						if US.BgKeyword[tmp[0]][self.bgorg['m']].get(tmp[1])==None:
+							Fs.error('This Bg '+tmp[1]+' in '+self.bgorg['m']+' does not exist !')
+						else:
+							self.bg[tmp[0]]=US.BgKeyword[tmp[0]][self.bgorg['m']][tmp[1]]
+							self.bgorg[tmp[0]]=tmp[1]
+		for attr in Attrs:
+			tmp=attr.split(':')
+			if tmp[0]=='None':
+				pass
+			elif tmp[0] not in self.attrs:
+				Fs.error('This Bgkeyword '+tmp[0]+' does not exist !')
+			else:
+				if US.BgKeyword[tmp[0]].get(tmp[1])==None:
+					Fs.error('This attribute '+tmp[1]+' does not exist !')
+				else:
+					self.attrs[tmp[0]]=US.BgKeyword[tmp[0]][tmp[1]]
+	def show(self,US,Fs):
+		rn=''
+		for bg in self.bg:
+			if self.bg[bg]==None:
+				Fs.error("Bg is not complete !")
+		for bg in self.bgorg:
+			if bg!='m':
+				if US.BgKeyword[bg][self.bgorg['m']].get(self.bgorg[bg])==None:
+					Fs.error('This Bg '+self.bgorg[bg]+' which use your last seting in '+self.bgorg['m']+' does not exist !')
+		if self.bg!=self.bgLast:
+			if (self.bgLast!=None) & (self.bg['m']!='Black'):
+				rn+='    hide screen date\n'
+				rn+='    scene bg Black01A with '+US.Trans['BgDefault']+'\n'
+			if US.Date!='None':
+				rn+="    show screen date(Date2)\n"
+		rn+='    scene bg '+self.bg['m']+self.bg['s']+self.bg['w']+' at '+self.attrs['l']+'\n'
+		rn+='    with '+self.attrs['t']+'\n'
+		self.attrs={'l':US.BgKeyword['l']['default'],'t':US.BgKeyword['t']['BgDefault']}
+		self.bgLast=self.bg
+		return rn
+ 
 
 
