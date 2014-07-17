@@ -120,7 +120,7 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 	elif Flag=='bgm':
 		rn=''
 		if US.Bgm.get(Content)==None:
-			Fs.error('This US.Bgm does not exist !')
+			Fs.error('This Bgm does not exist !')
 		elif US.Bgm[Content]=='StopBgm':
 			rn+='    stop music fadeout 1.0\n'
 		else:
@@ -158,15 +158,21 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
  			Fs.error('This Graph does not exist !')
 		elif US.Graph[Content]['Type']=='Frame':
 			if Transition!=None:
-				return '    show '+Content+' at '+Transition+'\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    hide '+Content+'\n'+'    pause 0.2\n'
+				if US.BgPostion.get(Transition)==None:
+					Fs.error('This Postion does not exist !')
+				else:
+					return '    show '+Content+' at '+Transition+'\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    hide '+Content+'\n'+'    pause 0.2\n'
 			else:
 				return '    show '+Content+'\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    hide '+Content+'\n'+'    pause 0.5\n'
 		elif US.Graph[Content]['Type']=='Image':
 			if Transition!=None:
-				if Transition=='hide':
-					return '    hide '+Content+'\n'
+				if US.BgPostion.get(Transition)==None:
+					Fs.error('This Postion does not exist !')
 				else:
-					return '    show '+Content+' at '+Transition+' with dissolve\n'
+					if Transition=='hide':
+						return '    hide '+Content+'\n'
+					else:
+						return '    show '+Content+' at '+Transition+' with dissolve\n'
 			else:
 				return '    show '+Content+' with dissolve\n'
 		elif US.Graph[Content]['Type']=='Chapter':
@@ -288,14 +294,14 @@ def CreatDefine(US):
  					if US.Graph[gr]['Source']=='Dir':
  						rn+='image '+gr+':\n'
 						delay=US.Graph[gr]['Delay']
- 						for root,dirs,files in os.walk(US.GamePath+US.EfPath+gr):
+ 						for root,dirs,files in os.walk(US.GamePath+US.EfPath+gr[name]):
  							for f in files:
  								if os.path.splitext(f)[1]=='.png':
  									US.Graph[gr]['Pause']+=float(delay)
-	 								rn+="    '"+US.EfPath+gr+'/'+f+"'\n    pause "+delay+'\n'
+	 								rn+="    '"+US.EfPath+gr[name]+'/'+f+"'\n    pause "+delay+'\n'
 	 				elif US.Graph[gr]['Source']=='File':
 	 					if US.Graph[gr]['Type']=='Image':
-	 						rn+='image '+gr+"='"+US.EfPath+gr+".png'\n"
+	 						rn+='image '+gr[name]+"='"+US.EfPath+gr[name]+".png'\n"
 				fo.write(rn)
 				fo.close()
 

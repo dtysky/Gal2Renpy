@@ -24,34 +24,39 @@
 	"Comment3":"Graph",
 	"Graph":{
 
-		"Cp1":{
+		"第一章":{
+			"name":"Cp1",
 			"Source":"Dir",
 			"Type":"Chapter",
 			"Delay":"0.05"
 		},
 
-		"Cp2":{
+		"第二章":{
+			"name":"Cp2",
 			"Source":"Dir",
 			"Type":"Chapter",
 			"Delay":"0.05"
 		},
 
-		"PlaneA":{
+		"纸飞机-来":{
+			"name":"PlaneA",
 			"Source":"Dir",
 			"Type":"Frame",
 			"Delay":"0.01"
 		},
 
-		"PlaneB":{
+		"纸飞机-去":{
+			"name":"PlaneB",
 			"Source":"Dir",
 			"Type":"Frame",
 			"Delay":"0.02"
 		},
 
-		"Plane1":{
+		"纸飞机":{
+			"name":"Plane1",
 			"Source":"File",
 			"Type":"Image"
-		}
+		},
 
 	}
 
