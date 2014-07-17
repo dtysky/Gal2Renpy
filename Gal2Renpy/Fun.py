@@ -294,14 +294,14 @@ def CreatDefine(US):
  					if US.Graph[gr]['Source']=='Dir':
  						rn+='image '+gr+':\n'
 						delay=US.Graph[gr]['Delay']
- 						for root,dirs,files in os.walk(US.GamePath+US.EfPath+gr[name]):
+ 						for root,dirs,files in os.walk(US.GamePath+US.EfPath+US.Graph[gr]['name']):
  							for f in files:
  								if os.path.splitext(f)[1]=='.png':
  									US.Graph[gr]['Pause']+=float(delay)
-	 								rn+="    '"+US.EfPath+gr[name]+'/'+f+"'\n    pause "+delay+'\n'
+	 								rn+="    '"+US.EfPath+US.Graph[gr]['name']+'/'+f+"'\n    pause "+delay+'\n'
 	 				elif US.Graph[gr]['Source']=='File':
 	 					if US.Graph[gr]['Type']=='Image':
-	 						rn+='image '+gr[name]+"='"+US.EfPath+gr[name]+".png'\n"
+	 						rn+='image '+US.Graph[gr]['name']+"='"+US.EfPath+US.Graph[gr]['name']+".png'\n"
 				fo.write(rn)
 				fo.close()
 

@@ -114,7 +114,6 @@ class User():
 			"l": self.ChrPosition
 		}
 		self.Date='None'
-		self.BgLast=None
 
 
 #A class for charecter
@@ -228,6 +227,8 @@ class Bg():
 					self.attrs[tmp[0]]=US.BgKeyword[tmp[0]][tmp[1]]
 	def show(self,US,Fs):
 		rn=''
+		print 'now '+str(self.bg)
+		print 'last '+str(self.bgLast)
 		for bg in self.bg:
 			if self.bg[bg]==None:
 				Fs.error("Bg is not complete !")
@@ -236,7 +237,7 @@ class Bg():
 				if US.BgKeyword[bg][self.bgorg['m']].get(self.bgorg[bg])==None:
 					Fs.error('This Bg '+self.bgorg[bg]+' which use your last seting in '+self.bgorg['m']+' does not exist !')
 		if self.bg!=self.bgLast:
-			if (self.bgLast!=None) & (self.bg['m']!='Black'):
+			if self.bg['m']!='Black':
 				rn+='    hide screen date\n'
 				rn+='    scene bg Black01A with '+US.Trans['BgDefault']+'\n'
 			if US.Date!='None':
@@ -244,7 +245,7 @@ class Bg():
 		rn+='    scene bg '+self.bg['m']+self.bg['s']+self.bg['w']+' at '+self.attrs['l']+'\n'
 		rn+='    with '+self.attrs['t']+'\n'
 		self.attrs={'l':US.BgKeyword['l']['default'],'t':US.BgKeyword['t']['BgDefault']}
-		self.bgLast=self.bg
+		self.bgLast=self.bg.copy()
 		return rn
  
 
