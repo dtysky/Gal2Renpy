@@ -288,22 +288,32 @@ def CreatDefine(US):
  					fo.close()
 
  			elif HashName=='Graph':
- 				fo=fo=codecs.open(US.ScriptPath+'define/graph.rpy','w','utf-8')
+ 				fo=codecs.open(US.ScriptPath+'define/graph.rpy','w','utf-8')
  				rn=''
  				for gr in US.Graph:
  					if US.Graph[gr]['Source']=='Dir':
  						rn+='image '+gr+':\n'
 						delay=US.Graph[gr]['Delay']
- 						for root,dirs,files in os.walk(US.GamePath+US.EfPath+US.Graph[gr]['name']):
+ 						for root,dirs,files in os.walk(US.GamePath+US.EfPath+US.Graph[gr]['Name']):
  							for f in files:
  								if os.path.splitext(f)[1]=='.png':
  									US.Graph[gr]['Pause']+=float(delay)
-	 								rn+="    '"+US.EfPath+US.Graph[gr]['name']+'/'+f+"'\n    pause "+delay+'\n'
+	 								rn+="    '"+US.EfPath+US.Graph[gr]['Name']+'/'+f+"'\n    pause "+delay+'\n'
 	 				elif US.Graph[gr]['Source']=='File':
 	 					if US.Graph[gr]['Type']=='Image':
-	 						rn+='image '+US.Graph[gr]['name']+"='"+US.EfPath+US.Graph[gr]['name']+".png'\n"
+	 						rn+='image '+US.Graph[gr]['Name']+"='"+US.EfPath+US.Graph[gr]['Name']+".png'\n"
 				fo.write(rn)
 				fo.close()
+
+			elif HashName=='Cg':
+				fo=codecs.open(US.ScriptPath+'define/cg.rpy','w','utf-8')
+				rn=''
+				for cg in US.Cg:
+					for sub in US.CgSub[cg]:
+						rn+='image cg '+US.Cg[cg]['Name']+sub+"='"+US.CgPath+US.Cg[cg]['Name']+'/'+sub+".png'\n"
+				fo.write(rn)
+				fo.close()
+
 
   
   			DictHash[HashName]=DHash(eval('US.'+HashName))

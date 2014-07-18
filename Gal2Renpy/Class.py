@@ -89,6 +89,24 @@ class User():
 		jtmp=json.load(open('User/Sound.json','r'))
 		self.Bgm=jtmp['Bgm']
 		self.SoundE=jtmp['SoundE']
+		#Cg
+		jtmp=json.load(open('User/Cg.json','r'))
+		self.Cg=jtmp['Cg']
+		self.CgSub={}
+		for cg in self.Cg:
+			self.CgSub[cg]=[]
+			for char in self.Cg[cg]['Chr']:
+				for charnum in range(char[1]):
+					for bg in self.Cg[cg]['Bg']:
+						self.CgSub[cg].append(char[0]+str(charnum)+bg)
+						
+		#Cg keywords!
+		self.CgKeyword={
+			'm': self.Cg,
+			's': self.CgSub,
+			"t": self.Trans,
+			"l": self.BgPosition
+		}
 		#Path,Mode
 		jtmp=json.load(open('User/PathMode.json','r'))
 		self.GamePath=jtmp['GamePath']
@@ -96,6 +114,7 @@ class User():
 		self.ChrPath=jtmp['ChrPath']
 		self.BgPath=jtmp['BgPath']
 		self.BgmPath=jtmp['BgmPath']
+		self.CgPath=jtmp['CgPath']
 		self.SoundPath=jtmp['SoundPath']
 		self.TextPath=jtmp['TextPath']
 		self.WinPath=jtmp['WinPath']
@@ -131,7 +150,7 @@ class Chr():
 	def rfattrs(self,Attrs,US,Fs):
 		for attr in Attrs.replace('，',',').split(','):
 			ttmp=attr.replace('：',':').split(':')
-			if US.ChrKeyword.get(ttmp[0])==None:
+			if ttmp[0] not in US.ChrKeyword==None:
 				Fs.error("This charecter's attribute does not exist !")
 			else:
 				if (ttmp[0]=='c') | (ttmp[0]=='p') | (ttmp[0]=='f'):
@@ -196,7 +215,9 @@ class Bg():
 		Attrs=Attrs.replace('，',',').replace('：',':').split(',')
 		for bg in Bgs:
 			tmp=bg.split(':')
-			if tmp[0] not in self.bg:
+			if tmp[0]=='nc':
+				pass
+			elif tmp[0] not in self.bg:
 				Fs.error('This Bgkeyword '+tmp[0]+' does not exist !')
 			else:
 				if tmp[0]=='m':
@@ -227,8 +248,6 @@ class Bg():
 					self.attrs[tmp[0]]=US.BgKeyword[tmp[0]][tmp[1]]
 	def show(self,US,Fs):
 		rn=''
-		print 'now '+str(self.bg)
-		print 'last '+str(self.bgLast)
 		for bg in self.bg:
 			if self.bg[bg]==None:
 				Fs.error("Bg is not complete !")
@@ -248,5 +267,58 @@ class Bg():
 		self.bgLast=self.bg.copy()
 		return rn
  
-
-
+#A class for Cg
+class Cg():
+	def __init__(self,US):
+		self.cg={'m':None,'s':None}
+		self.cgorg={'m':None,'s':None}
+		self.attrs={'l':US.CgKeyword['l']['default'],'t':US.CgKeyword['t']['CgDefault']}
+	def refresh(self,Cgs,Attrs,US,Fs):
+		Cgs=Cgs.replace('，',',').replace('：',':').split(',')
+		Attrs=Attrs.replace('，',',').replace('：',':').split(',')
+		for cg in Cgs:
+			tmp=cg.split(':')
+			if tmp[0]=='nc':
+				pass
+			elif tmp[0] not in self.cg:
+				Fs.error('This Cgkeyword '+tmp[0]+' does not exist !')
+			else:
+				if tmp[0]=='m':
+					if US.CgKeyword[tmp[0]].get(tmp[1])==None:
+						Fs.error('This Cg '+tmp[1]+' does not exist !')
+					else:
+						self.cg[tmp[0]]=US.CgKeyword[tmp[0]][tmp[1]]
+						self.cgorg[tmp[0]]=tmp[1]
+				else:
+					if self.cg['m']==None:
+						Fs.error('You must give a CgMain at first !')
+					else:
+						if US.CgKeyword[tmp[0]][self.cgorg['m']].get(tmp[1])==None:
+							Fs.error('This Cg '+tmp[1]+' in '+self.cgorg['m']+' does not exist !')
+						else:
+							self.cg[tmp[0]]=US.CgKeyword[tmp[0]][self.cgorg['m']][tmp[1]]
+							self.cgorg[tmp[0]]=tmp[1]
+		for attr in Attrs:
+			tmp=attr.split(':')
+			if tmp[0]=='None':
+				pass
+			elif tmp[0] not in self.attrs:
+				Fs.error('This Cgkeyword '+tmp[0]+' does not exist !')
+			else:
+				if US.CgKeyword[tmp[0]].get(tmp[1])==None:
+					Fs.error('This attribute '+tmp[1]+' does not exist !')
+				else:
+					self.attrs[tmp[0]]=US.CgKeyword[tmp[0]][tmp[1]]
+	def show(self,US,Fs):
+		rn='    hide screen date\n'
+		for cg in self.cg:
+			if self.cg[cg]==None:
+				Fs.error("Cg is not complete !")
+		for cg in self.cgorg:
+			if cg!='m':
+				if US.CgKeyword[cg][self.cgorg['m']].get(self.cgorg[cg])==None:
+					Fs.error('This Cg '+self.cgorg[cg]+' which use your last seting in '+self.cgorg['m']+' does not exist !')
+		rn+='    scene cg '+self.cg['m']+self.cg['s']+self.cg['w']+' at '+self.attrs['l']+'\n'
+		rn+='    with '+self.attrs['t']+'\n'
+		self.attrs={'l':US.CgKeyword['l']['default'],'t':US.CgKeyword['t']['CgDefault']}
+		return rn

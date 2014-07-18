@@ -17,6 +17,7 @@
 		"睁眼":"TransEyeOpen",
 		"闭眼":"TransEyeClose",
 		"BgDefault":"dissolve",
+		"CgDefault":"dissolve",
 		"无":"None"
 
 	},
@@ -25,35 +26,35 @@
 	"Graph":{
 
 		"第一章":{
-			"name":"Cp1",
+			"Name":"Cp1",
 			"Source":"Dir",
 			"Type":"Chapter",
 			"Delay":"0.05"
 		},
 
 		"第二章":{
-			"name":"Cp2",
+			"Name":"Cp2",
 			"Source":"Dir",
 			"Type":"Chapter",
 			"Delay":"0.05"
 		},
 
 		"纸飞机-来":{
-			"name":"PlaneA",
+			"Name":"PlaneA",
 			"Source":"Dir",
 			"Type":"Frame",
 			"Delay":"0.01"
 		},
 
 		"纸飞机-去":{
-			"name":"PlaneB",
+			"Name":"PlaneB",
 			"Source":"Dir",
 			"Type":"Frame",
 			"Delay":"0.02"
 		},
 
 		"纸飞机":{
-			"name":"Plane1",
+			"Name":"Plane1",
 			"Source":"File",
 			"Type":"Image"
 		}

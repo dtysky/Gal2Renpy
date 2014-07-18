@@ -26,6 +26,7 @@ ChrTmp=[]
 
 US=User()
 BgC=Bg(US)
+CgC=Cg(US)
 CreatDefine(US)
 
 
@@ -123,6 +124,10 @@ if US.TestMode==True:
 					elif Flag=='bg':
 						BgC.refresh(Content,Transition,US,Fs)
 						Fo.write(BgC.show(US,Fs))
+
+					elif Flag=='cg':
+						CgC.refresh(Content,Transition,US,Fs)
+						Fo.write(CgC.show(US,Fs))
 
 					elif Flag=='ch':
 						for ch in Content.splitlines():
@@ -251,6 +256,10 @@ else:
 							US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
 							Fo.write(US.ChrName[name][len(US.ChrName[name])-1].show(Fs))
 
+					elif Flag=='bg':
+						BgC.refresh(Content,Transition,US,Fs)
+						Fo.write(BgC.show(US,Fs))
+					
 					elif Flag=='test':
 						Fs.error2('This flag does not exist or be supported in this Mode,ignoring... ')
 

@@ -14,6 +14,7 @@
 	"ChrPath":"data/char/" ,
 	"BgPath":"data/bg/" ,
 	"BgmPath":"data/bgm/" ,
+	"CgPath":"data/cg/",
 	"SoundPath":"data/sound/",
 	"WinPath":"data/window/",
 	"EfPath":"data/effect/"
