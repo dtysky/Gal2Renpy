@@ -259,6 +259,10 @@ else:
 					elif Flag=='bg':
 						BgC.refresh(Content,Transition,US,Fs)
 						Fo.write(BgC.show(US,Fs))
+
+					elif Flag=='cg':
+						CgC.refresh(Content,Transition,US,Fs)
+						Fo.write(CgC.show(US,Fs))
 					
 					elif Flag=='test':
 						Fs.error2('This flag does not exist or be supported in this Mode,ignoring... ')
