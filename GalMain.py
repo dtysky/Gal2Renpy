@@ -170,6 +170,9 @@ if US.TestMode==True:
 						else:
 							Fs.error('Wrong using this keyword !')
 
+					elif Flag=='sc':
+						pass
+
 
 					else:
 						Fo.write(Sp2Script(Flag,Transition,Content,US,Fs))

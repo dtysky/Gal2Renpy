@@ -16,6 +16,7 @@
 		"栅栏":"blinds",
 		"睁眼":"TransEyeOpen",
 		"闭眼":"TransEyeClose",
+		"旋转":"TransCircle",
 		"BgDefault":"dissolve",
 		"CgDefault":"dissolve",
 		"无":"None"

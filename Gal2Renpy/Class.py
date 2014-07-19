@@ -258,7 +258,7 @@ class Bg():
 		if self.bg!=self.bgLast:
 			if self.bg['m']!='Black':
 				rn+='    hide screen date\n'
-				rn+='    scene bg Black01A with '+US.Trans['BgDefault']+'\n'
+				rn+='    scene bg Black01A with '+self.attrs['t']+'\n'
 			if US.Date!='None':
 				rn+="    show screen date(Date2)\n"
 		rn+='    scene bg '+self.bg['m']+self.bg['s']+self.bg['w']+' at '+self.attrs['l']+'\n'
@@ -287,16 +287,16 @@ class Cg():
 					if US.CgKeyword[tmp[0]].get(tmp[1])==None:
 						Fs.error('This Cg '+tmp[1]+' does not exist !')
 					else:
-						self.cg[tmp[0]]=US.CgKeyword[tmp[0]][tmp[1]]
+						self.cg[tmp[0]]=US.CgKeyword[tmp[0]][tmp[1]]['Name']
 						self.cgorg[tmp[0]]=tmp[1]
 				else:
 					if self.cg['m']==None:
 						Fs.error('You must give a CgMain at first !')
 					else:
-						if US.CgKeyword[tmp[0]][self.cgorg['m']].get(tmp[1])==None:
+						if tmp[1] not in US.CgKeyword[tmp[0]][self.cgorg['m']]==None:
 							Fs.error('This Cg '+tmp[1]+' in '+self.cgorg['m']+' does not exist !')
 						else:
-							self.cg[tmp[0]]=US.CgKeyword[tmp[0]][self.cgorg['m']][tmp[1]]
+							self.cg[tmp[0]]=tmp[1]
 							self.cgorg[tmp[0]]=tmp[1]
 		for attr in Attrs:
 			tmp=attr.split(':')
@@ -316,9 +316,9 @@ class Cg():
 				Fs.error("Cg is not complete !")
 		for cg in self.cgorg:
 			if cg!='m':
-				if US.CgKeyword[cg][self.cgorg['m']].get(self.cgorg[cg])==None:
+				if  self.cgorg[cg] not in US.CgKeyword[cg][self.cgorg['m']]==None:
 					Fs.error('This Cg '+self.cgorg[cg]+' which use your last seting in '+self.cgorg['m']+' does not exist !')
-		rn+='    scene cg '+self.cg['m']+self.cg['s']+self.cg['w']+' at '+self.attrs['l']+'\n'
+		rn+='    scene cg '+self.cg['m']+self.cg['s']+' at '+self.attrs['l']+'\n'
 		rn+='    with '+self.attrs['t']+'\n'
 		self.attrs={'l':US.CgKeyword['l']['default'],'t':US.CgKeyword['t']['CgDefault']}
 		return rn

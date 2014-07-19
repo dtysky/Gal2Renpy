@@ -157,26 +157,26 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 		if US.Graph.get(Content)==None:
  			Fs.error('This Graph does not exist !')
 		elif US.Graph[Content]['Type']=='Frame':
-			if Transition!=None:
-				if US.BgPostion.get(Transition)==None:
+			if Transition!='None':
+				if US.BgPosition.get(Transition)==None:
 					Fs.error('This Postion does not exist !')
 				else:
-					return '    show '+Content+' at '+Transition+'\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    hide '+Content+'\n'+'    pause 0.2\n'
+					return '    show '+US.Graph[Content]['Name']+' at '+US.BgPosition[Transition]+'\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    hide '+US.Graph[Content]['Name']+'\n'+'    pause 0.2\n'
 			else:
 				return '    show '+Content+'\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    hide '+Content+'\n'+'    pause 0.5\n'
 		elif US.Graph[Content]['Type']=='Image':
-			if Transition!=None:
-				if US.BgPostion.get(Transition)==None:
+			if Transition!='None':
+				if US.BgPosition.get(Transition)==None:
 					Fs.error('This Postion does not exist !')
 				else:
-					if Transition=='hide':
-						return '    hide '+Content+'\n'
+					if US.BgPosition[Transition]=='hide':
+						return '    hide '+US.Graph[Content]['Name']+'\n'
 					else:
-						return '    show '+Content+' at '+Transition+' with dissolve\n'
+						return '    show '+US.Graph[Content]['Name']+' at '+US.BgPosition[Transition]+' with dissolve\n'
 			else:
-				return '    show '+Content+' with dissolve\n'
+				return '    show '+US.Graph[Content]['Name']+' with dissolve\n'
 		elif US.Graph[Content]['Type']=='Chapter':
-			return '    scene '+Content+'\n'+'    with dissolve\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    pause 2.0\n'+'    show bg Black01A with dissolve\n'
+			return '    hide screen date\n    scene bg Black01A with dissolve\n    scene '+US.Graph[Content]['Name']+'\n'+'    with dissolve\n'+'    pause '+str(US.Graph[Content]['Pause'])+'\n'+'    pause 2.0\n'+'    scene bg Black01A with dissolve\n'
 
 
 	elif Flag=='sound':
@@ -292,7 +292,7 @@ def CreatDefine(US):
  				rn=''
  				for gr in US.Graph:
  					if US.Graph[gr]['Source']=='Dir':
- 						rn+='image '+gr+':\n'
+ 						rn+='image '+US.Graph[gr]['Name']+':\n'
 						delay=US.Graph[gr]['Delay']
  						for root,dirs,files in os.walk(US.GamePath+US.EfPath+US.Graph[gr]['Name']):
  							for f in files:
