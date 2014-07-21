@@ -139,7 +139,7 @@ if US.TestMode==True:
 								if US.ChrName[name][0] in ChrNow:
 									pass
 								else:
-									US.ChrName[name][len(US.ChrName[name])-1]=Chr(US.ChrName[name][0],name)
+									US.ChrName[name][len(US.ChrName[name])-1]=Chr(US,name)
 									ChrNow.append(US.ChrName[name][0])
 									US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
 							US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
@@ -181,7 +181,7 @@ if US.TestMode==True:
 					if US.ChrName[Flag][0] in ChrNow:
 						pass
 					else:
-						US.ChrName[Flag][len(US.ChrName[Flag])-1]=Chr(US.ChrName[Flag][0],Flag)
+						US.ChrName[Flag][len(US.ChrName[Flag])-1]=Chr(US,Flag)
 						ChrNow.append(US.ChrName[Flag][0])
 					US.ChrName[Flag][len(US.ChrName[Flag])-1].rftext(Content,Transition,Mode)
 					Fo.write(US.ChrName[Flag][len(US.ChrName[Flag])-1].show(Fs))
@@ -253,7 +253,7 @@ else:
 								if US.ChrName[name][0] in ChrNow:
 									pass
 								else:
-									US.ChrName[name][len(US.ChrName[name])-1]=Chr(US.ChrName[name][0],name)
+									US.ChrName[name][len(US.ChrName[name])-1]=Chr(US,name)
 									ChrNow.append(US.ChrName[name][0])
 									US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
 							US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
@@ -301,7 +301,7 @@ else:
 					if US.ChrName[Flag][0] in ChrNow:
 						pass
 					else:
-						US.ChrName[Flag][len(US.ChrName[Flag])-1]=Chr(US.ChrName[Flag][0],Flag)
+						US.ChrName[Flag][len(US.ChrName[Flag])-1]=Chr(US,Flag)
 						ChrNow.append(US.ChrName[Flag][0])
 					US.ChrName[Flag][len(US.ChrName[Flag])-1].rftext(Content,Transition,Mode)
 					Fo.write(US.ChrName[Flag][len(US.ChrName[Flag])-1].show(Fs))

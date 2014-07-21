@@ -138,11 +138,12 @@ class User():
 #A class for charecter
 class Chr():
 	#One or two arguments 
-	def __init__(self,name,orgname):
-		self.name=name
+	def __init__(self,US,orgname):
+		self.name=US.ChrName[orgname][0]
 		self.orgname=orgname
+		self.tDefault=US.Trans['ChrDefault']
 		#'new' will be true if the attributes has been changed
-		self.attrs={'t':None,'f':None,'c':None,'p':None,'d':None,'l':None,'new':False}
+		self.attrs={'t':self.tDefault,'f':None,'c':None,'p':None,'d':None,'l':None,'new':False}
 		self.complete=False
 		#Text,Say or Think,Mode,Is refreshed
 		self.say={'Text':None,'Style':None,'Mode':None,'new':False}
@@ -190,6 +191,7 @@ class Chr():
 				rn+='at '+self.attrs['l']+'\n'
 				rn+='    with '+self.attrs['t']+'\n'
 			self.attrs['new']=False
+			self.attrs['t']=self.tDefault
 			return rn
 		elif self.say['new']:
 			rn+=self.name+self.say['Mode']+' '
