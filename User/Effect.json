@@ -17,6 +17,8 @@
 		"睁眼":"TransEyeOpen",
 		"闭眼":"TransEyeClose",
 		"旋转":"TransCircle",
+		"线性":"TransLinear",
+		"线性-斜":"TransLinearSt",
 		"BgDefault":"dissolve",
 		"CgDefault":"dissolve",
 		"无":"None"

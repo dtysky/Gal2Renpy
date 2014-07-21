@@ -18,7 +18,8 @@
 		"少年": ["Boy","#895a28","Default"],
 		"少女":["Gril","#895a28","Default"],
 		"男人":["Man","#895a28","Default"],
-		"？？？":["Who","#895a28","Default"]
+		"？？？":["Who","#895a28","Default"],
+		"电视":["TV","#895a28","Default"]
 	},
 
 
@@ -165,13 +166,14 @@
 		"5": "GridX(4)",
 		"6": "GridX(5)",
 		"7": "GridX(6)",
-
-		"A1": "GridXY(1,6)" ,
-		"A2": "GridXY(2,6)" ,
-		"A3": "GridXY(3,6)" ,
-		"A4": "GridXY(4,6)" ,
-		"A5": "GridXY(5,6)" ,
-		"A6": "GridXY(6,6)" ,
+		
+		"L1": "GridXY(0,4,2.0)" ,
+		"L2": "GridXY(1,4,2.0)" ,
+		"L3": "GridXY(2,4,2.0)" ,
+		"L4": "GridXY(3,4,2.0)" ,
+		"L5": "GridXY(4,4,2.0)" ,
+		"L6": "GridXY(5,4,2.0)" ,
+		"L7": "GridXY(6,4,2.0)" ,
 
 		
 		"B1": "GridXY(1,2)" ,
