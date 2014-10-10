@@ -1,5 +1,7 @@
 #coding:utf-8
 
+#Copyright(c) 2014 dtysky
+
 import re
 import sys
 import os
@@ -132,6 +134,16 @@ class User():
 			"d": self.ChrDistance,
 			"l": self.ChrPosition
 		}
+		#Keywords
+		jtmp=json.load(open('User/KeyWord.json','r'))['KeyWord']
+		self.KeyWord={}
+		for k in jtmp:
+			self.KeyWord[k]={'l':[]}
+			for l in jtmp[k]:
+				self.KeyWord[k]['l'].append(l[0])
+				self.KeyWord[k][l[0]]=l[1:]
+
+
 		self.Date='None'
 
 
@@ -185,7 +197,7 @@ class Chr():
 					self.complete==True
 			if self.attrs['t']=='hide':
 				self.attrs['t']='dissolve'
-				rn='    hide '+self.name+' with dissolve\n'#+' '+self.attrs['c']+self.attrs['p']+self.attrs['f']+self.attrs['d']+'\n'
+				rn='    hide '+self.name+'\n'#+' '+self.attrs['c']+self.attrs['p']+self.attrs['f']+self.attrs['d']+'\n'
 			else:
 				rn+='    show '+self.name+' '+self.attrs['p']+self.attrs['c']+self.attrs['f']+self.attrs['d']+' '
 				rn+='at '+self.attrs['l']+'\n'

@@ -13,6 +13,7 @@
 		"默认":"dissolve",
 		"移动":"move",
 		"移动-慢":"MoveTransition(2.0)",
+		"移动-快":"MoveTransition(0.2)",
 		"栅栏":"blinds",
 		"睁眼":"TransEyeOpen",
 		"闭眼":"TransEyeClose",

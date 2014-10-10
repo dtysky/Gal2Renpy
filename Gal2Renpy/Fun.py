@@ -1,5 +1,7 @@
 #-*-coding:utf-8-*- 
 
+#Copyright(c) 2014 dtysky
+
 import re
 import codecs
 import pickle
@@ -115,7 +117,9 @@ def RBlock(Fs,Allow,US):
 def Sp2Script(Flag,Transition,Content,US,Fs):
 
 	if Flag=='sc':
-		return 'label '+Content.replace('，',',').replace(',','')+' :\n'
+		rn='label '+Content.replace('，',',').replace(',','')+' :\n'
+		rn+="    $ chpater='Chpater."+Content.replace('，',',').split(',')[0].split('p')[1]+"'\n"
+		return rn
 
 	elif Flag=='bgm':
 		rn=''
@@ -191,7 +195,6 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 			else:
 				rn='    with '+US.Trans[Transition]+'\n'
 		rn+="    hide screen say\n"
-		rn+='    pause 2.0\n'
 		return rn
 
 	elif Flag=='sw':
@@ -210,6 +213,7 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 		if US.Date!='None':
 			rn+="    $ Date1='"+US.WinPath+'date/'+US.Date+".png'\n"
 		rn+="    $ Date2='"+US.WinPath+'date/'+Content+".png'\n"
+		rn+="    $ date='"+Content.replace('-','.')+"'\n"
 		US.Date=Content
 		return rn
 
@@ -217,7 +221,22 @@ def Sp2Script(Flag,Transition,Content,US,Fs):
 		return '    '+Content+'\n'
 
 	elif Flag=='key':
-		return ''
+		rn=''
+		lines=Content.splitlines()
+		for line in lines:
+			tmp=line.replace('：',':').split(':')
+			if US.KeyWord.get(Transition)==None:
+				Fs.error("This kind of KeyWord does not exist!")
+			else:
+				if US.KeyWord[Transition].get(tmp[0])==None:
+					Fs.error("This KeyWord does not exist!")
+				else:
+					if int(tmp[1].encode('utf-8'))>(len(US.KeyWord[Transition][tmp[0]])-1):
+						Fs.error("Your Keyword does not have such many information!")
+					else:
+						rn+="    $ SetMyKey('"+Transition+"','"+tmp[0]+"',"+tmp[1]+')\n'
+		rn+='    call EfTextKey()\n'
+		return rn
 
 	else:
 		Fs.error('This flag does not exist or be supported in this Fun !')
@@ -253,7 +272,7 @@ def CreatDefine(US):
  						else:
 	 						rn+='define '+US.ChrName[Name][0]+'A = Character('+"'"+Name+"',who_bold=False,who_outlines=[ (2, '"+US.ChrName[Name][1]+"') ],what_outlines=[ (1,'"+US.ChrName[Name][1]+"') ])\n"
 							rn+='define '+US.ChrName[Name][0]+'V = Character('+"'"+Name+"',who_bold=False,who_outlines=[ (2, '"+US.ChrName[Name][1]+"') ],what_outlines=[ (1,'"+US.ChrName[Name][1]+"') ])\n"
-				rn+='define n=Character(show_bg=None)'
+				rn+="define n=Character('none',show_bg=None)"
 				fo.write(rn)
 				fo.close()
 
@@ -314,7 +333,27 @@ def CreatDefine(US):
 				fo.write(rn)
 				fo.close()
 
+			elif HashName=='KeyWord':
+				fo=codecs.open(US.ScriptPath+'define/mykey.rpy','w','utf-8')
+				rn='define mykeyinit={'
+				for k in US.KeyWord:
+				    rn+="\n    '"+k+"':{\n        'l':["
+				    for l in US.KeyWord[k]['l']:
+				    	rn+="'"+l+"',"
+				    rn=rn[:-1]+"],"
+				    for l in US.KeyWord[k]['l']:
+				    	rn+="\n        '"+l+"':[0,"
+				    	for lk in US.KeyWord[k][l]:
+				    		rn+="'"+lk+"',"
+				    	rn=rn[:-1]+"],"
+				    rn=rn[:-1]+'\n    },'
+				rn=rn[:-1]+'\n}\n'
 
+				#define a function to set mykey's station in renpy
+				rn+='init python:\n    def SetMyKey(kn,k,i):\n        if i>persistent.mykey[kn][k][0]:\n            persistent.mykey[kn][k][0]=i\n'
+
+				fo.write(rn)
+				fo.close()
   
   			DictHash[HashName]=DHash(eval('US.'+HashName))
  	FileHash=open('Gal2Renpy/HashDict','w')

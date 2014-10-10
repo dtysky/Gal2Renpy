@@ -19,7 +19,8 @@
 		"少女":["Gril","#895a28","Default"],
 		"男人":["Man","#895a28","Default"],
 		"？？？":["Who","#895a28","Default"],
-		"电视":["TV","#895a28","Default"]
+		"电视":["TV","#895a28","Default"],
+		"众人":["All","#895a28","Default"]
 	},
 
 
@@ -153,12 +154,14 @@
 	},
 
 	"ChrDistance":{
-		"平常":"A",
-		"近":"B"
+		"中":"A",
+		"近":"B",
+		"特":"C"
 	},
 
 	"ChrPosition":{
 		
+		"outl": "GridX(-2)",
 		"1": "GridX(0)",
 		"2": "GridX(1)",
 		"3": "GridX(2)",
@@ -166,14 +169,15 @@
 		"5": "GridX(4)",
 		"6": "GridX(5)",
 		"7": "GridX(6)",
-		
-		"L1": "GridXY(0,4,2.0)" ,
-		"L2": "GridXY(1,4,2.0)" ,
-		"L3": "GridXY(2,4,2.0)" ,
-		"L4": "GridXY(3,4,2.0)" ,
-		"L5": "GridXY(4,4,2.0)" ,
-		"L6": "GridXY(5,4,2.0)" ,
-		"L7": "GridXY(6,4,2.0)" ,
+		"outr": "GridX(9)",
+
+		"outdl":"GridXY(-1,7,1.0)",
+
+		"A2":"GridXY(1,5,1.0)" ,
+
+		"B3":"GridXY(2,6,1.0)" ,
+
+		"M4": "GridXY(3,5,0.5)" ,
 
 		
 		"B1": "GridXY(1,2)" ,
