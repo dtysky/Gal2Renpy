@@ -1,0 +1,40 @@
+{
+	"Comment1":"Special Effect",
+	"EffectSp":[
+		"EfTextCenter"
+	],
+
+	"Comment2":"Transition",
+	"Trans":{
+		"隐藏":"hide",
+		"默认":"dissolve",
+		"无":"None"
+
+	},
+
+	"Comment3":"Graph",
+	"Graph":{
+
+		"纸飞机-来":{
+			"Name":"PlaneA",
+			"Source":"Dir",
+			"Type":"Frame",
+			"Delay":"0.01"
+		},
+
+		"纸飞机-去":{
+			"Name":"PlaneB",
+			"Source":"Dir",
+			"Type":"Frame",
+			"Delay":"0.02"
+		},
+
+		"纸飞机":{
+			"Name":"Plane1",
+			"Source":"File",
+			"Type":"Image"
+		}
+
+	}
+
+}
