@@ -80,7 +80,7 @@ if US.TestMode==True:
 		if os.path.exists(US.ScriptPath+'script.rpyc'):
 			os.remove(US.ScriptPath+'script.rpyc')
 	Fo=codecs.open(US.ScriptPath+'test.rpy','w','utf-8')
-	Fo.write('label start:\n'+"    $ chapter='Chapter.test'\n    $ date='10.09'\n    $ persistent.mykey=mykeyinit\n")
+	Fo.write('label start:\n'+"    $ chapter='Chapter.test'\n    $ date='10.09'\n    $ InitMyKey()\n")
 	for path in FileNow:
 		Fs.open(path,'r')
 		ListFile[f]=[]
@@ -318,7 +318,7 @@ else:
 		if os.path.exists(US.ScriptPath+'test.rpyc'):
 			os.remove(US.ScriptPath+'test.rpyc')
 	Fo=codecs.open(US.ScriptPath+'script.rpy','w','utf-8')
-	Fo.write("label start:\n    $ date='10.09'\n    $ persistent.mykey=mykeyinit\n")
+	Fo.write("label start:\n    $ date='10.09'\n    $ InitMyKey()\n")
 	for f in sorted(ListFile):
 		if len(f)==0:
 			pass

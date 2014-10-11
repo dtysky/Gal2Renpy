@@ -342,15 +342,27 @@ def CreatDefine(US):
 				    	rn+="'"+l+"',"
 				    rn=rn[:-1]+"],"
 				    for l in US.KeyWord[k]['l']:
-				    	rn+="\n        '"+l+"':[0,"
+				    	rn+="\n        '"+l+"':[0,False,"
 				    	for lk in US.KeyWord[k][l]:
 				    		rn+="'"+lk+"',"
 				    	rn=rn[:-1]+"],"
 				    rn=rn[:-1]+'\n    },'
 				rn=rn[:-1]+'\n}\n'
-
 				#define a function to set mykey's station in renpy
-				rn+='init python:\n    def SetMyKey(kn,k,i):\n        if i>persistent.mykey[kn][k][0]:\n            persistent.mykey[kn][k][0]=i\n'
+				rn+='init python:\n'
+				rn+='    def SetMyKey(kn,k,i):\n'
+				rn+='        if i>persistent.mykey[kn][k][0]:\n'
+				rn+='            persistent.mykey[kn][k][0]=i\n'
+				rn+='            persistent.mykey[kn][k][1]=True\n'
+				rn+='    def InitMyKey():\n'
+				rn+='        if persistent.mykey==None:\n'
+				rn+='            persistent.mykey=mykeyinit\n'
+				rn+='    class ReStMyKey(Action):\n'
+				rn+='        def __init__(self,kn,k):\n'
+				rn+='            self.kn=kn\n'
+				rn+='            self.k=k\n'
+				rn+='        def __call__(self):\n'
+				rn+='            persistent.mykey[self.kn][self.k][1]=False\n'
 
 				fo.write(rn)
 				fo.close()
