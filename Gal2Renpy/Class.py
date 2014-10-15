@@ -360,6 +360,7 @@ class Cg():
 
 #A class for HPCSystem
 class HPC():
+<<<<<<< HEAD
 	def __init__(self,US,Fs):
 		self.fs=Fs
 		self.us=US
@@ -444,5 +445,25 @@ class HPC():
 		rn=rn[:-1]+'])\n'
 
 
+=======
+	def __init__(self,US):
+		self.modem=None
+		self.modes=None
+		self.owner=None
+		self.hide=False
+		self.pos=center
+		self.trans=None
+		self.tPhoneDefault=US.Trans['PhoneDefault']
+		self.tPCDefault=US.Trans['PCDefault']
+		self.bg=None
+		self.chr=None
+		self.chrs=None
+		self.messadd=None
+	def setvalue(US,Fs,Modem=None,Modes=None,Owner=None,Hide=None,Pos=None,Trans=None,Bg=None,Chr=None,Chrs=None,MessAdd=None):
+		if Modem:
+			self.modem=Modem
+		if Modes:
+			self.modes=Modes
+>>>>>>> ec5fc04ccf38a396c198d74d1b5aedbf7224226b
 
 

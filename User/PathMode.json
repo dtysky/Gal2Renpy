@@ -3,7 +3,11 @@
 
 	"Comment1":"//Seting True when you want to use TestMode, if not , seting False", 
 	"TestMode":"True" ,
+<<<<<<< HEAD:User/PathMode.json
 	"HPCSystem":"False",
+=======
+	"HPCSystem":"True",
+>>>>>>> ec5fc04ccf38a396c198d74d1b5aedbf7224226b:User/PathMode.json
 
 	"Comment2":"//Your '.rpy' Script path, please use absolute path",
 	"ScriptPath":"E:/Follow_wings/FW/game/script/" ,
