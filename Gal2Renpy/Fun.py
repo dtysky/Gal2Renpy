@@ -294,11 +294,7 @@ def CreatDefine(US):
  													for Dist in US.ChrDistance:
  														rn+='image '+US.ChrName[Name][0]+' '+US.ChrPose[Name][Poes]+US.ChrClothes[Name][Clothes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist]+' = '+"'"+US.ChrPath+US.ChrName[Name][0]+'/'+US.ChrName[Name][0]+US.ChrPose[Name][Poes]+US.ChrClothes[Name][Clothes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist] +".png'\n"
  														if US.HPCSystem:
-<<<<<<< HEAD
  															rnHPC+='define '+US.ChrName[Name][0]+US.ChrPose[Name][Poes]+US.ChrClothes[Name][Clothes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist]+'HPC = '+"'"+US.ChrPath+US.ChrName[Name][0]+'/'+US.ChrName[Name][0]+US.ChrPose[Name][Poes]+US.ChrClothes[Name][Clothes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist] +".png'\n"
-=======
- 															rnHPC+='define '+US.ChrName[Name][0]+' '+US.ChrPose[Name][Poes]+US.ChrClothes[Name][Clothes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist]+'HPC = '+"'"+US.ChrPath+US.ChrName[Name][0]+'/'+US.ChrName[Name][0]+US.ChrPose[Name][Poes]+US.ChrClothes[Name][Clothes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist] +".png'\n"
->>>>>>> ec5fc04ccf38a396c198d74d1b5aedbf7224226b
  					ChrDone=True
  					fo.write(rn)
  					foHPC.write(rnHPC)
