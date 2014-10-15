@@ -254,6 +254,8 @@ def CreatDefine(US):
  			pass
  		else:
 			rn=''
+			foHPC=None
+ 			rnHPC=''
 			if HashName=='ChrWindow':
 				fo=codecs.open(US.ScriptPath+'define/bgwin.rpy','w','utf-8')
 				for Name in US.ChrWindow:
@@ -279,6 +281,8 @@ def CreatDefine(US):
 			elif (HashName=='ChrClothes') | (HashName=='ChrPose') | (HashName=='ChrFace') | (HashName=='ChrDistance'):
 				if ChrDone==False:
 					fo=codecs.open(US.ScriptPath+'define/char.rpy','w','utf-8')
+					if US.HPCSystem:
+ 						foHPC=codecs.open(US.ScriptPath+'define/hpcchar.rpy','w','utf-8')
 					for Name in US.ChrName:
 						if Name!='Saying':
 							if US.ChrClothes.get(Name)!=None:
@@ -289,21 +293,32 @@ def CreatDefine(US):
  												for Face in US.ChrFace[Name]:
  													for Dist in US.ChrDistance:
  														rn+='image '+US.ChrName[Name][0]+' '+US.ChrPose[Name][Poes]+US.ChrClothes[Name][Clothes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist]+' = '+"'"+US.ChrPath+US.ChrName[Name][0]+'/'+US.ChrName[Name][0]+US.ChrPose[Name][Poes]+US.ChrClothes[Name][Clothes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist] +".png'\n"
+ 														if US.HPCSystem:
+ 															rnHPC+='define '+US.ChrName[Name][0]+US.ChrPose[Name][Poes]+US.ChrClothes[Name][Clothes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist]+'HPC = '+"'"+US.ChrPath+US.ChrName[Name][0]+'/'+US.ChrName[Name][0]+US.ChrPose[Name][Poes]+US.ChrClothes[Name][Clothes]+US.ChrFace[Name][Face]+US.ChrDistance[Dist] +".png'\n"
  					ChrDone=True
  					fo.write(rn)
+ 					foHPC.write(rnHPC)
+ 					foHPC.close()
  					fo.close()
  
  			elif (HashName=='Bg') | (HashName=='BgSub') | (HashName=='BgWeather'):
  				if BgDone==False:
  					fo=codecs.open(US.ScriptPath+'define/bg.rpy','w','utf-8')
+ 					print US.HPCSystem
+ 					if US.HPCSystem:
+ 						foHPC=codecs.open(US.ScriptPath+'define/hpcbg.rpy','w','utf-8')
  					for Bg in US.BgMain:
  						if US.BgSub.get(Bg)!=None:
  							for Sub in US.BgSub[Bg]:
 								if US.BgWeather.get(Bg)!=None:
  									for Wh in US.BgWeather[Bg]:
 										rn+='image bg '+US.BgMain[Bg]+US.BgSub[Bg][Sub]+US.BgWeather[Bg][Wh]+' = '+"'"+US.BgPath+'/'+US.BgMain[Bg]+US.BgSub[Bg][Sub]+US.BgWeather[Bg][Wh]+".png'\n"
+										if US.HPCSystem:
+											rnHPC+='define '+US.BgMain[Bg]+US.BgSub[Bg][Sub]+US.BgWeather[Bg][Wh]+'HPC = '+"'"+US.BgPath+'/'+US.BgMain[Bg]+US.BgSub[Bg][Sub]+US.BgWeather[Bg][Wh]+".png'\n"
  					BgDone=True
  					fo.write(rn)
+ 					foHPC.write(rnHPC)
+ 					foHPC.close()
  					fo.close()
 
  			elif HashName=='Graph':

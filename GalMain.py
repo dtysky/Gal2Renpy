@@ -27,7 +27,7 @@ FileAll=[]
 ChrTmp=[]
 
 US=User()
-BgC=Bg(US)
+BgC=Bg(US,Fs)
 CgC=Cg(US)
 CreatDefine(US)
 
@@ -124,8 +124,8 @@ if US.TestMode==True:
 							Fs.error('This mode does not exist !')
 
 					elif Flag=='bg':
-						BgC.refresh(Content,Transition,US,Fs)
-						Fo.write(BgC.show(US,Fs))
+						BgC.refresh(Content,Transition)
+						Fo.write(BgC.show())
 
 					elif Flag=='cg':
 						CgC.refresh(Content,Transition,US,Fs)
@@ -141,11 +141,11 @@ if US.TestMode==True:
 								if US.ChrName[name][0] in ChrNow:
 									pass
 								else:
-									US.ChrName[name][len(US.ChrName[name])-1]=Chr(US,name)
+									US.ChrName[name][len(US.ChrName[name])-1]=Chr(US,Fs,name)
 									ChrNow.append(US.ChrName[name][0])
-									US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
-							US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
-							Fo.write(US.ChrName[name][len(US.ChrName[name])-1].show(Fs))
+									US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs)
+							US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs)
+							Fo.write(US.ChrName[name][len(US.ChrName[name])-1].show())
 
 					elif Flag=='view':
 						if US.ChrName.get(Content)==None:
@@ -183,10 +183,10 @@ if US.TestMode==True:
 					if US.ChrName[Flag][0] in ChrNow:
 						pass
 					else:
-						US.ChrName[Flag][len(US.ChrName[Flag])-1]=Chr(US,Flag)
+						US.ChrName[Flag][len(US.ChrName[Flag])-1]=Chr(US,Fs,Flag)
 						ChrNow.append(US.ChrName[Flag][0])
 					US.ChrName[Flag][len(US.ChrName[Flag])-1].rftext(Content,Transition,Mode)
-					Fo.write(US.ChrName[Flag][len(US.ChrName[Flag])-1].show(Fs))
+					Fo.write(US.ChrName[Flag][len(US.ChrName[Flag])-1].show())
 
 				elif Head=='text':
 					Fo.write('    '+Content)
@@ -255,15 +255,15 @@ else:
 								if US.ChrName[name][0] in ChrNow:
 									pass
 								else:
-									US.ChrName[name][len(US.ChrName[name])-1]=Chr(US,name)
+									US.ChrName[name][len(US.ChrName[name])-1]=Chr(US,Fs,name)
 									ChrNow.append(US.ChrName[name][0])
-									US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
-							US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs,US,Fs)
-							Fo.write(US.ChrName[name][len(US.ChrName[name])-1].show(Fs))
+									US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs)
+							US.ChrName[name][len(US.ChrName[name])-1].rfattrs(attrs)
+							Fo.write(US.ChrName[name][len(US.ChrName[name])-1].show())
 
 					elif Flag=='bg':
-						BgC.refresh(Content,Transition,US,Fs)
-						Fo.write(BgC.show(US,Fs))
+						BgC.refresh(Content,Transition)
+						Fo.write(BgC.show())
 
 					elif Flag=='cg':
 						CgC.refresh(Content,Transition,US,Fs)
@@ -303,10 +303,10 @@ else:
 					if US.ChrName[Flag][0] in ChrNow:
 						pass
 					else:
-						US.ChrName[Flag][len(US.ChrName[Flag])-1]=Chr(US,Flag)
+						US.ChrName[Flag][len(US.ChrName[Flag])-1]=Chr(US,Fs,Flag)
 						ChrNow.append(US.ChrName[Flag][0])
 					US.ChrName[Flag][len(US.ChrName[Flag])-1].rftext(Content,Transition,Mode)
-					Fo.write(US.ChrName[Flag][len(US.ChrName[Flag])-1].show(Fs))
+					Fo.write(US.ChrName[Flag][len(US.ChrName[Flag])-1].show())
 
 				elif Head=='text':
 					Fo.write('    '+Content)

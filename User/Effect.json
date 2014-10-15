@@ -1,13 +1,18 @@
 {
 	"Comment1":"Special Effect",
 	"EffectSp":[
-		"EfTextCenter"
+		"EfTextCenter",
+		"EfImage1"
 	],
 
 	"Comment2":"Transition",
 	"Trans":{
 		"隐藏":"hide",
 		"默认":"dissolve",
+		"移动":"move",
+		"ChrDefault":"Dissolve(0.2)",
+		"BgDefault":"dissolve",
+		"CgDefault":"dissolve",
 		"无":"None"
 
 	},

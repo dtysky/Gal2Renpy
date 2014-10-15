@@ -125,6 +125,10 @@ class User():
 			self.TestMode=True
 		else:
 			self.TestMode=False
+		if jtmp['HPCSystem']=='True':
+			self.HPCSystem=True
+		else:
+			self.HPCSystem=False
 		#Chareter keywords!
 		self.ChrKeyword={
 			"t": self.Trans,
@@ -150,7 +154,9 @@ class User():
 #A class for charecter
 class Chr():
 	#One or two arguments 
-	def __init__(self,US,orgname):
+	def __init__(self,US,Fs,orgname):
+		self.fs=Fs
+		self.us=US
 		self.name=US.ChrName[orgname][0]
 		self.orgname=orgname
 		self.tDefault=US.Trans['ChrDefault']
@@ -160,24 +166,24 @@ class Chr():
 		#Text,Say or Think,Mode,Is refreshed
 		self.say={'Text':None,'Style':None,'Mode':None,'new':False}
 	#Refresh attributes in this charecter
-	def rfattrs(self,Attrs,US,Fs):
+	def rfattrs(self,Attrs):
 		for attr in Attrs.replace('，',',').split(','):
 			ttmp=attr.replace('：',':').split(':')
-			if ttmp[0] not in US.ChrKeyword==None:
-				Fs.error("This charecter's attribute does not exist !")
+			if ttmp[0] not in self.us.ChrKeyword==None:
+				self.fs.error("This charecter's attribute does not exist !")
 			else:
 				if (ttmp[0]=='c') | (ttmp[0]=='p') | (ttmp[0]=='f'):
 
-					if US.ChrKeyword[ttmp[0]][self.orgname].get(ttmp[1])==None:
-						Fs.error("This ChrAttribute "+str(self.name+' '+ttmp[0])+" does not exist !")
+					if self.us.ChrKeyword[ttmp[0]][self.orgname].get(ttmp[1])==None:
+						self.fs.error("This ChrAttribute "+str(self.name+' '+ttmp[0])+" does not exist !")
 					else:
-						self.attrs[ttmp[0]]=US.ChrKeyword[ttmp[0]][self.orgname][ttmp[1]]
+						self.attrs[ttmp[0]]=self.us.ChrKeyword[ttmp[0]][self.orgname][ttmp[1]]
 				else:
 
-					if US.ChrKeyword[ttmp[0]].get(ttmp[1])==None:
-						Fs.error("This ChrAttribute "+str(self.name+' '+ttmp[0])+" does not exist !")
+					if self.us.ChrKeyword[ttmp[0]].get(ttmp[1])==None:
+						self.fs.error("This ChrAttribute "+str(self.name+' '+ttmp[0])+" does not exist !")
 					else:
-						self.attrs[ttmp[0]]=US.ChrKeyword[ttmp[0]][ttmp[1]]
+						self.attrs[ttmp[0]]=self.us.ChrKeyword[ttmp[0]][ttmp[1]]
 
 			self.attrs['new']=True
 	#Refresh next word by this charecter
@@ -186,15 +192,22 @@ class Chr():
 		self.say['Style']=Style
 		self.say['Mode']=Mode
 		self.say['new']=True
-	#Creat scripts which are related to charecters
-	def show(self,Fs):
-		rn=''
+	#Check whether the attributes completely
+	def checkattrs(self):
 		if self.attrs['new']:
 			if self.complete==False:
 				for attr in self.attrs:
 					if self.attrs[attr]==None:
-						Fs.error("This charecter's attributes are not complete !")
-					self.complete==True
+						self.fs.error("This charecter's attributes are not complete !")
+	#A interface
+	def getattrs(self):
+		return self.attrs.update({'name':self.name})
+
+	#Creat scripts which are related to charecters
+	def show(self):
+		rn=''
+		if self.attrs['new']:
+			self.complete==True
 			if self.attrs['t']=='hide':
 				self.attrs['t']='dissolve'
 				rn='    hide '+self.name+'\n'#+' '+self.attrs['c']+self.attrs['p']+self.attrs['f']+self.attrs['d']+'\n'
@@ -214,17 +227,19 @@ class Chr():
 			self.say['new']=False
 			return '    '+rn
 		else:
-			Fs.error('This charecter does not be created !')
+			self.fs.error('This charecter does not be created !')
 
 
 #A class for Bg
 class Bg():
-	def __init__(self,US):
+	def __init__(self,US,Fs):
+		self.fs=Fs
+		self.us=US
 		self.bg={'m':None,'s':None,'w':None}
 		self.bgorg={'m':None,'s':None,'w':None}
 		self.attrs={'l':US.BgKeyword['l']['default'],'t':US.BgKeyword['t']['BgDefault']}
 		self.bgLast={'m':None,'s':None,'w':None}
-	def refresh(self,Bgs,Attrs,US,Fs):
+	def refresh(self,Bgs,Attrs):
 		Bgs=Bgs.replace('，',',').replace('：',':').split(',')
 		Attrs=Attrs.replace('，',',').replace('：',':').split(',')
 		for bg in Bgs:
@@ -232,52 +247,58 @@ class Bg():
 			if tmp[0]=='nc':
 				pass
 			elif tmp[0] not in self.bg:
-				Fs.error('This Bgkeyword '+tmp[0]+' does not exist !')
+				self.fs.error('This Bgkeyword '+tmp[0]+' does not exist !')
 			else:
 				if tmp[0]=='m':
-					if US.BgKeyword[tmp[0]].get(tmp[1])==None:
-						Fs.error('This Bg '+tmp[1]+' does not exist !')
+					if self.us.BgKeyword[tmp[0]].get(tmp[1])==None:
+						self.fs.error('This Bg '+tmp[1]+' does not exist !')
 					else:
-						self.bg[tmp[0]]=US.BgKeyword[tmp[0]][tmp[1]]
+						self.bg[tmp[0]]=self.us.BgKeyword[tmp[0]][tmp[1]]
 						self.bgorg[tmp[0]]=tmp[1]
 				else:
 					if self.bg['m']==None:
-						Fs.error('You must give a BgMain at first !')
+						self.fs.error('You must give a BgMain at first !')
 					else:
-						if US.BgKeyword[tmp[0]][self.bgorg['m']].get(tmp[1])==None:
-							Fs.error('This Bg '+tmp[1]+' in '+self.bgorg['m']+' does not exist !')
+						if self.us.BgKeyword[tmp[0]][self.bgorg['m']].get(tmp[1])==None:
+							self.fs.error('This Bg '+tmp[1]+' in '+self.bgorg['m']+' does not exist !')
 						else:
-							self.bg[tmp[0]]=US.BgKeyword[tmp[0]][self.bgorg['m']][tmp[1]]
+							self.bg[tmp[0]]=self.us.BgKeyword[tmp[0]][self.bgorg['m']][tmp[1]]
 							self.bgorg[tmp[0]]=tmp[1]
 		for attr in Attrs:
 			tmp=attr.split(':')
 			if tmp[0]=='None':
 				pass
 			elif tmp[0] not in self.attrs:
-				Fs.error('This Bgkeyword '+tmp[0]+' does not exist !')
+				self.fs.error('This Bgkeyword '+tmp[0]+' does not exist !')
 			else:
-				if US.BgKeyword[tmp[0]].get(tmp[1])==None:
-					Fs.error('This attribute '+tmp[1]+' does not exist !')
+				if self.us.BgKeyword[tmp[0]].get(tmp[1])==None:
+					self.fs.error('This attribute '+tmp[1]+' does not exist !')
 				else:
-					self.attrs[tmp[0]]=US.BgKeyword[tmp[0]][tmp[1]]
-	def show(self,US,Fs):
-		rn=''
+					self.attrs[tmp[0]]=self.us.BgKeyword[tmp[0]][tmp[1]]
+	def checkattrs(self):
 		for bg in self.bg:
 			if self.bg[bg]==None:
-				Fs.error("Bg is not complete !")
+				self.fs.error("Bg is not complete !")
 		for bg in self.bgorg:
 			if bg!='m':
-				if US.BgKeyword[bg][self.bgorg['m']].get(self.bgorg[bg])==None:
-					Fs.error('This Bg '+self.bgorg[bg]+' which use your last seting in '+self.bgorg['m']+' does not exist !')
+				if self.us.BgKeyword[bg][self.bgorg['m']].get(self.bgorg[bg])==None:
+					self.fs.error('This Bg '+self.bgorg[bg]+' which use your last seting in '+self.bgorg['m']+' does not exist !')
+	
+	def getattrs(self):
+		return self.attrs.update(self.bg)
+
+	def show(self):
+		rn=''
+		self.checkattrs()
 		if self.bg!=self.bgLast:
 			if self.bg['m']!='Black':
 				rn+='    hide screen date\n'
 				rn+='    scene bg Black01A with '+self.attrs['t']+'\n'
-			if US.Date!='None':
+			if self.us.Date!='None':
 				rn+="    show screen date(Date2)\n"
 		rn+='    scene bg '+self.bg['m']+self.bg['s']+self.bg['w']+' at '+self.attrs['l']+'\n'
 		rn+='    with '+self.attrs['t']+'\n'
-		self.attrs={'l':US.BgKeyword['l']['default'],'t':US.BgKeyword['t']['BgDefault']}
+		self.attrs={'l':self.us.BgKeyword['l']['default'],'t':self.us.BgKeyword['t']['BgDefault']}
 		self.bgLast=self.bg.copy()
 		return rn
  
@@ -336,3 +357,92 @@ class Cg():
 		rn+='    with '+self.attrs['t']+'\n'
 		self.attrs={'l':US.CgKeyword['l']['default'],'t':US.CgKeyword['t']['CgDefault']}
 		return rn
+
+#A class for HPCSystem
+class HPC():
+	def __init__(self,US,Fs):
+		self.fs=Fs
+		self.us=US
+		self.tPhoneDefault=US.Trans['PhoneDefault']
+		self.tPCDefault=US.Trans['PCDefault']
+		self.modemlist=('Phone','PC')
+		self.modeslist=('Call','Message','Web')
+		self.argrange={
+			'modem':('Phone','PC'),
+			'modes':('Call','Message','Web'),
+			'owner':US.CharName,
+			'hide':(True,False),
+			'pos':US.BgPosition,
+			'trans':US.Trans
+		}
+		self.args={
+			'modem':None,
+			'modes':None,
+			'owner':None,
+			'hide':False,
+			'pos':'center',
+			'trans':None,
+			'bg':Bg(),
+			'bgz':0.6,
+			'chr':None,
+			'chrs':None,
+			'messadd':None
+		}
+	#def decode(self,Transition,Content):
+
+	def setvalue(self,Modem=None,Modes=None,Owner=None,Hide=None,Pos=None,Trans=None,Bg=None,Chr=None,Chrs=None,MessAdd=None):
+		def set(e,v):
+			if v:
+				self.args[e]=v
+		set('modem',Modem)
+		set('modes',Modes)
+		set('owner',Owner)
+		set('hide',Hide)
+		set('pos',Pos)
+		set('trans',Trans)
+		set('bg',Bg)
+		set('chr',Chr)
+		set('chrs',Chrs)
+		set('messadd',MessAdd)
+	def check(self,Fs):
+		for arg in argrange:
+			if self.args[arg] not in self.argrange[arg]:
+				Fs.error('This HPC argument '+arg+' is out of its range !')
+
+	def show(self):
+		self.check(self.fs)
+		if self.args['modem']=='Phone':
+			if self.args['modes']=='Call':
+				return self.phonecall()
+			elif self.args['modes']=='Message':
+				return self.phonemess()
+			elif self.args['modes']=='Web':
+				return self.phoneweb()
+		elif self.args['modem']=='PC':
+			if self.args['modes']=='Call':
+				return self.pccall()
+			elif self.args['modes']=='Message':
+				return self.pcmess()
+			elif self.args['modes']=='Web':
+				return self.pcweb()
+
+	def phonecall(self):
+		rn=''
+		ChrAttrs=[]
+		self.args['bg'].checkattrs()
+		BgAttrs=self.args['bg'].getattrs()
+		for char in self.args['chrs']:
+			char.checkattrs()
+			ChrAttrs.append(char.getattrs())
+		rn+='    $ call HPC('
+		rn+="ModeM='"+self.args['modem']+"',Modes='"+self.args['modes']+"',"
+		rn+="Owner='"+self.args['owner']+"',Pos="+self.args['pos']+',Trans='+self.args['trans']+','
+		rn+='Bg=(bg'+BgAttrs['m']+BgAttrs['s']+BgAttrs['w']+'HPC,'+BgAttrs['l']+','+self.args['bgz']+'),'
+		rn+='Chrs=['
+		for charattr in ChrAttrs:
+			rn+='('+chrattr['name']+chrattr['p']+chrattr['c']+chrattr['f']+chrattr['d']+'HPC,'+chrattr['l']+',0.8),'
+		rn=rn[:-1]+'])\n'
+
+
+
+

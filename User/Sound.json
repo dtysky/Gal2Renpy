@@ -9,6 +9,7 @@
 
 	"Comment1":"//Sound Effect",
 	"SoundE":{
+		"敲门":"02.wav",
 		"下课铃":"06.wav"
 	}
 }
