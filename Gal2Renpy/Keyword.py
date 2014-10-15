@@ -11,7 +11,7 @@ Keywords=[
 	"bgm",
 	"sound",
 	"date",
-	"cg",	#not
+	"cg",	#a part
 	"vd",	#not
 	"ef",	#a part
 	"gf",
@@ -19,6 +19,7 @@ Keywords=[
 	"mode",
 	"view",
 	"chc",
+	"hpc",
 	"renpy",
 	"test"
 ]

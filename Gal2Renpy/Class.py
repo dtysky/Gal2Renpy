@@ -125,6 +125,10 @@ class User():
 			self.TestMode=True
 		else:
 			self.TestMode=False
+		if jtmp['HPCSystem']=='True':
+			self.HPCSystem=True
+		else:
+			self.HPCSystem=False
 		#Chareter keywords!
 		self.ChrKeyword={
 			"t": self.Trans,
@@ -336,3 +340,26 @@ class Cg():
 		rn+='    with '+self.attrs['t']+'\n'
 		self.attrs={'l':US.CgKeyword['l']['default'],'t':US.CgKeyword['t']['CgDefault']}
 		return rn
+
+#A class for HPCSystem
+class HPC():
+	def __init__(self,US):
+		self.modem=None
+		self.modes=None
+		self.owner=None
+		self.hide=False
+		self.pos=center
+		self.trans=None
+		self.tPhoneDefault=US.Trans['PhoneDefault']
+		self.tPCDefault=US.Trans['PCDefault']
+		self.bg=None
+		self.chr=None
+		self.chrs=None
+		self.messadd=None
+	def setvalue(US,Fs,Modem=None,Modes=None,Owner=None,Hide=None,Pos=None,Trans=None,Bg=None,Chr=None,Chrs=None,MessAdd=None):
+		if Modem:
+			self.modem=Modem
+		if Modes:
+			self.modes=Modes
+
+

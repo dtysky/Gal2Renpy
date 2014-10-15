@@ -1,12 +1,44 @@
 
 {
 	"BgMain":{
-		"家": "HM",
-		"学校": "SC"
+		"日期":"Date",
+		"白": "White",
+		"黑": "Black",
+		"家": "HM" ,
+		"星眼": "SE",
+		"星群": "SG",
+		"学校": "SC",
+		"城市": "City"
 	},
 
 	"Comment1":"//You must give them a default value at least !",
 	"BgSub":{
+
+		"日期":{
+			"default": "01"
+		},
+
+		"白":{
+			"default": "01"
+		},
+
+		"黑":{
+			"default": "01"
+		},
+
+		"城市":{
+			"default": "01"
+		},
+
+		"星眼":{
+			"道路一":"01",
+			"道路二":"02"
+		},
+
+		"星群":{
+			"道路一":"01",
+			"道路二":"02"
+		},
 
 		"家":{
 			"房间": "01" ,
@@ -26,6 +58,41 @@
 
 	"Comment2":"//You must give them a default value at least !",
 	"BgWeather":{
+
+		"日期":{
+			"夜": "A",
+			"白天": "B"
+		},
+
+		"白":{
+			"default": "A"
+		},
+
+		"黑":{
+			"default": "A"
+		},
+
+		"城市":{
+			"白天":"A",
+			"黄昏":"B",
+			"夜":"C"
+		},
+
+		"星眼":{
+			"晨曦":"A",
+			"白天":"B",
+			"黄昏":"C",
+			"夜":"D",
+			"拂晓":"E"
+		},
+
+		"星群":{
+			"晨曦":"A",
+			"白天":"B",
+			"黄昏":"C",
+			"夜":"D",
+			"拂晓":"E"
+		},
 
 		"家":{
 			"晨曦":"A",
@@ -48,7 +115,18 @@
 
 	"BgPosition":{
 		"default":"truecenter",
-		"左下":"left"
+		"左下":"left",
+		"右下":"right",
+		"正中":"truecenter",
+		"左上":"topleft",
+		"右上":"topright",
+		"左":"centerleft",
+		"右":"centerright",
+		"中下":"center",
+		"中上":"top",
+		"左下右":"left_down_right",
+		"右上到左下-极慢":"tr_ct_ld_s(30.0)",
+		"无":"None"
 	}
 
 }
