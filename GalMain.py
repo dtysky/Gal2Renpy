@@ -28,7 +28,8 @@ ChrTmp=[]
 
 US=User()
 BgC=Bg(US,Fs)
-CgC=Cg(US)
+CgC=Cg(US,Fs)
+HPCC=HPC(US,Fs)
 CreatDefine(US)
 
 
@@ -81,6 +82,8 @@ if US.TestMode==True:
 			os.remove(US.ScriptPath+'script.rpyc')
 	Fo=codecs.open(US.ScriptPath+'test.rpy','w','utf-8')
 	Fo.write('label start:\n'+"    $ chapter='Chapter.test'\n    $ date='10.09'\n    $ InitMyKey()\n")
+	if US.HPCSystem:
+		Fo.write('    $ HPCMessInit()\n')
 	for path in FileNow:
 		Fs.open(path,'r')
 		ListFile[f]=[]
@@ -128,8 +131,8 @@ if US.TestMode==True:
 						Fo.write(BgC.show())
 
 					elif Flag=='cg':
-						CgC.refresh(Content,Transition,US,Fs)
-						Fo.write(CgC.show(US,Fs))
+						CgC.refresh(Content,Transition)
+						Fo.write(CgC.show())
 
 					elif Flag=='ch':
 						for ch in Content.splitlines():
@@ -171,6 +174,69 @@ if US.TestMode==True:
 								Fo.write('    $ '+US.ChrName[Content][0]+"A=Character('"+Content+"',show_bg="+US.ChrName[Content][2]+"S,what_outlines=[(1,'"+US.ChrName[Content][1]+"')],who_bold=False,who_outlines=[ (2,'"+US.ChrName[Content][1]+"')])\n")
 						else:
 							Fs.error('Wrong using this keyword !')
+					elif Flag=='hpc':
+						s=Content.splitlines()
+						j=len(s)
+						i=0
+						Content={}
+						while 1:
+							if i>j:
+								Fs.error('This HPC content is error!')
+							elif i==j:
+								break
+							elif re.match(r'\s*<.+>.*',s[i]):
+								tmp=re.match(r'\s*<(\S+)>(\S+)</\S+>',s[i])
+								if tmp:
+									if tmp.group(1)=='chr':
+										Content['chr']=tmp.group(2)
+									else:
+										Fs.error('This flag '+tmp.group(1)+' does not supported in HPC mode ! ')
+								else:
+									tmp=re.match(r'\s*<(\S+)\s+(\S+)>(\S+)</\S+>',s[i])
+									if tmp:
+										if tmp.group(1)=='bg':
+											Content['bg']=(tmp.group(3),tmp.group(2))
+										elif tmp.group(1)=='messadd':
+											Content['messadd']=[tmp.group(2)]
+										else:
+											Fs.error('This flag '+tmp.group(1)+' does not supported in HPC mode ! ')
+									else:
+										tmp=re.match(r'\s*<(\S+)>',s[i])
+										if tmp:
+											if tmp.group(1)=='chrs':
+												Content['chrs']=[]
+											elif tmp.group(1)=='messadd':
+												Content['messadd']=[]
+											else:
+												Fs.error('This flag '+tmp.group(1)+' does not supported in HPC mode ! ')
+											while 1:
+												i+=1
+												if i>j:
+													Fs.error('This HPC content is error!')
+												elif re.match(r'\s*<\S+>',s[i]):
+													break
+												elif tmp.group(1)=='chrs':
+													#s[i]=s[i].encode(locale.getdefaultlocale()[1])
+													name=re.match(r'\s*(\S+)\s+(\S+)',s[i]).group(1)
+													attrs=re.match(r'\s*(\S+)\s+(\S+)',s[i]).group(2)
+													if US.ChrName.get(name)==None:
+														Fs.error('This charecter does not exist !')
+													else:
+														if US.ChrName[name][0] in ChrNow:
+															pass
+														else:
+															US.ChrName[name][len(US.ChrName[name])-1]=Chr(US,Fs,name)
+															ChrNow.append(US.ChrName[name][0])
+														Content['chrs'].append((name,attrs))
+												elif tmp.group(1)=='messadd': 
+													Content['messadd'].append(s[i])
+												else:
+													Fs.error('This flag '+tmp.group(1)+' does not supported in HPC mode ! ')
+								i+=1
+							else:
+								Fs.error('This HPC block has unexpected line !')
+						HPCC.decode(Transition,Content)
+						Fo.write(HPCC.show())
 
 					elif Flag=='sc':
 						pass
@@ -266,8 +332,8 @@ else:
 						Fo.write(BgC.show())
 
 					elif Flag=='cg':
-						CgC.refresh(Content,Transition,US,Fs)
-						Fo.write(CgC.show(US,Fs))
+						CgC.refresh(Content,Transition)
+						Fo.write(CgC.show())
 					
 					elif Flag=='test':
 						Fs.error2('This flag does not exist or be supported in this Mode,ignoring... ')
@@ -295,9 +361,65 @@ else:
 								Fo.write('    $ '+US.ChrName[Content][0]+"A=Character('"+Content+"',show_bg="+US.ChrName[NameC[1]][2]+"S,what_outlines=[(1,'""')],who_bold=False,who_outlines=[ (2,'"+US.ChrName[Content][1]+"')])\n")
 						else:
 							Fs.error('Wrong using this keyword !')
+					elif Flag=='hpc':
+						s=Content.splitlines()
+						j=len(s)
+						Content={}
+						while 1:
+							if i>j:
+								Fs.error('This HPC content is error!')
+							elif s[i]=='<':
+								i+=1
+								tmp=re.match(r'\s*<(\S+)>(\S+)</\S+>',s[i])
+								if tmp:
+									if tmp.group(1)=='chr':
+										Content['chr']=tmp.group(2)
+									else:
+										Fs.error('This flag '+tmp.group(1)+' does not supported in HPC mode ! ')
+								else:
+									tmp=re.match(r'\s*<(\S+)\s+(\S+)>(\S+)</\S+>',s[i])
+									if tmp:
+										if tmp.group(1)=='bg':
+											Content['bg']=(tmp.group(2),tmp.group(3))
+										elif tmp.group(1)=='messadd':
+											Content['messadd']=[tmp.group(2)]
+										else:
+											Fs.error('This flag '+tmp.group(1)+' does not supported in HPC mode ! ')
+									else:
+										tmp=re.match(r'\s*<(\S+)>',s[i])
+										if tmp:
+											if tmp.group(1)=='chrs':
+												Content['chrs']=[]
+											elif tmp.group(1)=='messadd':
+												Content['messadd']=[]
+											else:
+												Fs.error('This flag '+tmp.group(1)+' does not supported in HPC mode ! ')
+											while 1:
+												i+=1
+												if i>j:
+													Fs.error('This HPC content is error!')
+												elif re.match(r'\s*</S+>',s[i]):
+													break
+												elif tmp.group(1)=='chrs':
+													name=re.match(r'\s*(\S+)\s+(\S+)',s[i]).group(1)
+													attrs=re.match(r'\s*(\S+)\s+(\S+)',s[i]).group(2)
+													if US.ChrName.get(name)==None:
+														Fs.error('This charecter does not exist !')
+													else:
+														if US.ChrName[name][0] in ChrNow:
+															pass
+														else:
+															US.ChrName[name][len(US.ChrName[name])-1]=Chr(US,Fs,name)
+															ChrNow.append(US.ChrName[name][0])
+														Content['chrs'].append((name,attrs))
+												elif tmp.group(1)=='messadd': 
+													Content['messadd'].append(s[i])
+												else:
+													Fs.error('This flag '+tmp.group(1)+' does not supported in HPC mode ! ')
+							else:
+								Fs.error('This HPC block has unexpected line !')
 					else:
 						Fo.write(Sp2Script(Flag,Transition,Content,US,Fs))
-							
 
 				elif Head=='words':
 					if US.ChrName[Flag][0] in ChrNow:

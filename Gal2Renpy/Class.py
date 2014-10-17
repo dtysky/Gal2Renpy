@@ -27,7 +27,6 @@ class MyFS():
 		else:
 			MessageBox('The file '+path+' does not exist !')
 			sys.exit(0)
-
 	def readline(self):
 		self.linepos+=1
 		return self.fs.readline()
@@ -201,7 +200,9 @@ class Chr():
 						self.fs.error("This charecter's attributes are not complete !")
 	#A interface
 	def getattrs(self):
-		return self.attrs.update({'name':self.name})
+		rn=self.attrs
+		rn.update({'name':self.name})
+		return rn
 
 	#Creat scripts which are related to charecters
 	def show(self):
@@ -260,7 +261,7 @@ class Bg():
 						self.fs.error('You must give a BgMain at first !')
 					else:
 						if self.us.BgKeyword[tmp[0]][self.bgorg['m']].get(tmp[1])==None:
-							self.fs.error('This Bg '+tmp[1]+' in '+self.bgorg['m']+' does not exist !')
+							self.fs.error('This Bg '+tmp[0]+' '+tmp[1]+' in '+self.bgorg['m']+' does not exist !')
 						else:
 							self.bg[tmp[0]]=self.us.BgKeyword[tmp[0]][self.bgorg['m']][tmp[1]]
 							self.bgorg[tmp[0]]=tmp[1]
@@ -285,7 +286,9 @@ class Bg():
 					self.fs.error('This Bg '+self.bgorg[bg]+' which use your last seting in '+self.bgorg['m']+' does not exist !')
 	
 	def getattrs(self):
-		return self.attrs.update(self.bg)
+		rn=self.attrs
+		rn.update(self.bg)
+		return rn
 
 	def show(self):
 		rn=''
@@ -304,11 +307,13 @@ class Bg():
  
 #A class for Cg
 class Cg():
-	def __init__(self,US):
+	def __init__(self,US,Fs):
+		self.us=US
+		self.fs=Fs
 		self.cg={'m':None,'s':None}
 		self.cgorg={'m':None,'s':None}
 		self.attrs={'l':US.CgKeyword['l']['default'],'t':US.CgKeyword['t']['CgDefault']}
-	def refresh(self,Cgs,Attrs,US,Fs):
+	def refresh(self,Cgs,Attrs):
 		Cgs=Cgs.replace('，',',').replace('：',':').split(',')
 		Attrs=Attrs.replace('，',',').replace('：',':').split(',')
 		for cg in Cgs:
@@ -316,20 +321,20 @@ class Cg():
 			if tmp[0]=='nc':
 				pass
 			elif tmp[0] not in self.cg:
-				Fs.error('This Cgkeyword '+tmp[0]+' does not exist !')
+				self.fs.error('This Cgkeyword '+tmp[0]+' does not exist !')
 			else:
 				if tmp[0]=='m':
-					if US.CgKeyword[tmp[0]].get(tmp[1])==None:
-						Fs.error('This Cg '+tmp[1]+' does not exist !')
+					if self.us.CgKeyword[tmp[0]].get(tmp[1])==None:
+						self.fs.error('This Cg '+tmp[1]+' does not exist !')
 					else:
-						self.cg[tmp[0]]=US.CgKeyword[tmp[0]][tmp[1]]['Name']
+						self.cg[tmp[0]]=self.us.CgKeyword[tmp[0]][tmp[1]]['Name']
 						self.cgorg[tmp[0]]=tmp[1]
 				else:
 					if self.cg['m']==None:
-						Fs.error('You must give a CgMain at first !')
+						self.fs.error('You must give a CgMain at first !')
 					else:
-						if tmp[1] not in US.CgKeyword[tmp[0]][self.cgorg['m']]==None:
-							Fs.error('This Cg '+tmp[1]+' in '+self.cgorg['m']+' does not exist !')
+						if tmp[1] not in self.us.CgKeyword[tmp[0]][self.cgorg['m']]==None:
+							self.fs.error('This Cg '+tmp[1]+' in '+self.cgorg['m']+' does not exist !')
 						else:
 							self.cg[tmp[0]]=tmp[1]
 							self.cgorg[tmp[0]]=tmp[1]
@@ -338,24 +343,24 @@ class Cg():
 			if tmp[0]=='None':
 				pass
 			elif tmp[0] not in self.attrs:
-				Fs.error('This Cgkeyword '+tmp[0]+' does not exist !')
+				self.fs.error('This Cgkeyword '+tmp[0]+' does not exist !')
 			else:
-				if US.CgKeyword[tmp[0]].get(tmp[1])==None:
-					Fs.error('This attribute '+tmp[1]+' does not exist !')
+				if self.us.CgKeyword[tmp[0]].get(tmp[1])==None:
+					self.fs.error('This attribute '+tmp[1]+' does not exist !')
 				else:
-					self.attrs[tmp[0]]=US.CgKeyword[tmp[0]][tmp[1]]
-	def show(self,US,Fs):
+					self.attrs[tmp[0]]=self.us.CgKeyword[tmp[0]][tmp[1]]
+	def show(self):
 		rn='    hide screen date\n'
 		for cg in self.cg:
 			if self.cg[cg]==None:
-				Fs.error("Cg is not complete !")
+				self.fs.error("Cg is not complete !")
 		for cg in self.cgorg:
 			if cg!='m':
-				if  self.cgorg[cg] not in US.CgKeyword[cg][self.cgorg['m']]==None:
-					Fs.error('This Cg '+self.cgorg[cg]+' which use your last seting in '+self.cgorg['m']+' does not exist !')
+				if  self.cgorg[cg] not in self.us.CgKeyword[cg][self.cgorg['m']]==None:
+					self.fs.error('This Cg '+self.cgorg[cg]+' which use your last seting in '+self.cgorg['m']+' does not exist !')
 		rn+='    scene cg '+self.cg['m']+self.cg['s']+' at '+self.attrs['l']+'\n'
 		rn+='    with '+self.attrs['t']+'\n'
-		self.attrs={'l':US.CgKeyword['l']['default'],'t':US.CgKeyword['t']['CgDefault']}
+		self.attrs={'l':self.us.CgKeyword['l']['default'],'t':self.us.CgKeyword['t']['CgDefault']}
 		return rn
 
 #A class for HPCSystem
@@ -363,15 +368,24 @@ class HPC():
 	def __init__(self,US,Fs):
 		self.fs=Fs
 		self.us=US
-		self.tPhoneDefault=US.Trans['PhoneDefault']
-		self.tPCDefault=US.Trans['PCDefault']
-		self.modemlist=('Phone','PC')
+		self.tDefault={
+			'Phone':'PhoneDefault',
+			'PC':'PCDefault'
+			}
+		self.keywords={
+			'mm':'modem',
+			'ms':'modes',
+			'o':'owner',
+			'h':'hide',
+			'p':'pos',
+			't':'trans'
+		}
 		self.modeslist=('Call','Message','Web')
 		self.argrange={
 			'modem':('Phone','PC'),
 			'modes':('Call','Message','Web'),
-			'owner':US.CharName,
-			'hide':(True,False),
+			'owner':US.ChrName,
+			'hide':('True','False'),
 			'pos':US.BgPosition,
 			'trans':US.Trans
 		}
@@ -379,54 +393,96 @@ class HPC():
 			'modem':None,
 			'modes':None,
 			'owner':None,
-			'hide':False,
-			'pos':'center',
-			'trans':None,
-			'bg':Bg(),
-			'bgz':0.6,
+			'hide':'False',
+			'pos':'HPCdefault',
+			'trans':'HPCPhoneDefault',
+			'bg':Bg(US,Fs),
+			'bgz':'0.6',
 			'chr':None,
-			'chrs':None,
+			'chrs':[],
 			'messadd':None
 		}
-	#def decode(self,Transition,Content):
 
-	def setvalue(self,Modem=None,Modes=None,Owner=None,Hide=None,Pos=None,Trans=None,Bg=None,Chr=None,Chrs=None,MessAdd=None):
-		def set(e,v):
-			if v:
-				self.args[e]=v
-		set('modem',Modem)
-		set('modes',Modes)
-		set('owner',Owner)
-		set('hide',Hide)
-		set('pos',Pos)
-		set('trans',Trans)
-		set('bg',Bg)
-		set('chr',Chr)
-		set('chrs',Chrs)
-		set('messadd',MessAdd)
-	def check(self,Fs):
-		for arg in argrange:
-			if self.args[arg] not in self.argrange[arg]:
-				Fs.error('This HPC argument '+arg+' is out of its range !')
+	#Attrs={'bg':(bgs,attrs),'chrs':[(name,attrs),(name,attrs)...],'chr':...,'messadd':[]}
+	#人物的显示顺序有待改进
+	def decode(self,Bases,Attrs):
+		Bases=Bases.replace('，',',').split(',')
+		for base in Bases:
+			base=base.replace('：',':').split(':')
+			if base[0] not in self.keywords:
+				self.fs.error('This HPC base attribute '+base[0]+' does not suppoted!')
+			else:
+				self.args[self.keywords[base[0]]]=base[1]
+		if self.args['modes']=='Call':
+			for attrs in Attrs:
+				if attrs=='bg':
+					self.args[attrs].refresh(Attrs[attrs][0],Attrs[attrs][1])
+				elif attrs=='chrs':
+					for attr in Attrs[attrs]:
+						if self.us.ChrName[attr[0]][len(self.us.ChrName[attr[0]])-1] not in self.args[attrs]:
+							self.args[attrs].append(self.us.ChrName[attr[0]][len(self.us.ChrName[attr[0]])-1])
+						self.us.ChrName[attr[0]][len(self.us.ChrName[attr[0]])-1].rfattrs(attr[1])
+				else:
+					self.fs.error('This flag '+attrs+' does not exist !')
+		elif self.args['modes']=='Message':
+			for attrs in Attrs:
+				if attrs=='chr':
+					self.args[attrs]=Attrs[attrs]
+				elif attrs=='messadd':
+					self.args[attrs]=[]
+					for mess in Attrs[attrs]:
+						mess=mess.replace('，',',').split(',')
+						mess=("('"+mess[0]+"'",mess[1],mess[2])
+						self.args[attrs].append(mess)
+				else:
+					self.fs.error('This flag '+attrs+' does not exist !')
+		elif self.args['modes']=='Web':
+			pass
+
+	# def setvalue(self,Modem=None,Modes=None,Owner=None,Hide=None,Pos=None,Trans=None,Bg=None,Chr=None,Chrs=None,MessAdd=None):
+	# 	def set(e,v):
+	# 		if v:
+	# 			self.args[e]=v
+	# 	set('modem',Modem)
+	# 	set('modes',Modes)
+	# 	set('owner',Owner)
+	# 	set('hide',Hide)
+	# 	set('pos',Pos)
+	# 	set('trans',Trans)
+	# 	set('bg',Bg)
+	# 	set('chr',Chr)
+	# 	set('chrs',Chrs)
+	# 	set('messadd',MessAdd)
+
+	def check(self):
+		for arg in self.argrange:
+			if self.args[arg]==None:
+				self.fs.error('This HPC base argument '+arg+' is None !')
+			elif self.args[arg] not in self.argrange[arg]:
+				self.fs.error('This HPC base argument '+arg+' is out of its range !')
+			if self.args['modes']=='Call':
+				if self.args['bg']==None or self.args['bgz']==None or self.args['chrs']==None:
+					self.fs.error('This HPC necessary argument bg/bgz/chrs in '+self.args['modem']+self.args['modes']+' is None !')
+			elif self.args['modes']=='Message':
+				if self.args['chr']==None:
+					self.fs.error('This HPC necessary argument chr in '+self.args['modem']+self.args['modes']+' is None !')
+			elif self.args['modes']=='Web':
+				pass
 
 	def show(self):
-		self.check(self.fs)
-		if self.args['modem']=='Phone':
-			if self.args['modes']=='Call':
-				return self.phonecall()
-			elif self.args['modes']=='Message':
-				return self.phonemess()
-			elif self.args['modes']=='Web':
-				return self.phoneweb()
-		elif self.args['modem']=='PC':
-			if self.args['modes']=='Call':
-				return self.pccall()
-			elif self.args['modes']=='Message':
-				return self.pcmess()
-			elif self.args['modes']=='Web':
-				return self.pcweb()
+		self.check()
+		rn='    call HPC('
+		rn+="ModeM='"+self.args['modem']+"',ModeS='"+self.args['modes']+"',Hide="+self.args['hide']+','
+		rn+="Owner='"+self.args['owner']+"',Pos="+self.us.BgPosition[self.args['pos']]+',Trans='+self.us.Trans[self.args['trans']]+','
+		if self.args['modes']=='Call':
+			rn+=self.call()
+		elif self.args['modes']=='Message':
+			rn+=self.mess()
+		elif self.args['modes']=='Web':
+			rn+=self.web()
+		return rn
 
-	def phonecall(self):
+	def call(self):
 		rn=''
 		ChrAttrs=[]
 		self.args['bg'].checkattrs()
@@ -434,14 +490,32 @@ class HPC():
 		for char in self.args['chrs']:
 			char.checkattrs()
 			ChrAttrs.append(char.getattrs())
-		rn+='    $ call HPC('
-		rn+="ModeM='"+self.args['modem']+"',Modes='"+self.args['modes']+"',"
-		rn+="Owner='"+self.args['owner']+"',Pos="+self.args['pos']+',Trans='+self.args['trans']+','
-		rn+='Bg=(bg'+BgAttrs['m']+BgAttrs['s']+BgAttrs['w']+'HPC,'+BgAttrs['l']+','+self.args['bgz']+'),'
+		rn+='Bg=('+BgAttrs['m']+BgAttrs['s']+BgAttrs['w']+'HPC,'+BgAttrs['l']+','+self.args['bgz']+'),'
 		rn+='Chrs=['
-		for charattr in ChrAttrs:
+		for chrattr in ChrAttrs:
 			rn+='('+chrattr['name']+chrattr['p']+chrattr['c']+chrattr['f']+chrattr['d']+'HPC,'+chrattr['l']+',0.8),'
 		rn=rn[:-1]+'])\n'
+		self.args['trans']=self.tDefault[self.args['modem']]
+		return rn
+
+	def mess(self):
+		rn="Chr='"+self.args['chr']+"',"
+		if self.args['messadd']:
+			rn+='MessAdd=['
+			for mess in self.args['messadd']:
+				rn+='('
+				for arg in mess:
+					rn+=arg+','
+				rn=rn[:-1]+'),'
+			self.args['messadd']=None
+			rn=rn[:-1]+'])\n'
+		else:
+			rn=rn=rn[:-1]+')\n'
+		return rn
+
+	def web(self):
+		pass
+
 
 
 

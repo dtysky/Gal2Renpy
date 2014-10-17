@@ -77,7 +77,6 @@ def RBlock(Fs,Allow,US):
 					content+=re.match('\s*(.+)',s).group(1)+'\n'
 		else:
 			Fs.error('''Error! Please check the "<>"" !''')
-
 	else:
 		if Allow:
 			tmp=re.match(ur'(\S+)\s+【(.*)】',s)
