@@ -369,8 +369,8 @@ class HPC():
 		self.fs=Fs
 		self.us=US
 		self.tDefault={
-			'Phone':'PhoneDefault',
-			'PC':'PCDefault'
+			'Phone':'HPCPhoneDefault',
+			'PC':'HPCPCDefault'
 			}
 		self.keywords={
 			'mm':'modem',
@@ -394,10 +394,11 @@ class HPC():
 			'modes':None,
 			'owner':None,
 			'hide':'False',
-			'pos':'HPCdefault',
+			'pos':'HPCPhDefault',
 			'trans':'HPCPhoneDefault',
 			'bg':Bg(US,Fs),
-			'bgz':'0.6',
+			'bgz':{'Phone':'0.6','PC':'0.8'},
+			'chrz':{'Phone':'0.8','PC':'0.9'},
 			'chr':None,
 			'chrs':[],
 			'messadd':None
@@ -490,10 +491,10 @@ class HPC():
 		for char in self.args['chrs']:
 			char.checkattrs()
 			ChrAttrs.append(char.getattrs())
-		rn+='Bg=('+BgAttrs['m']+BgAttrs['s']+BgAttrs['w']+'HPC,'+BgAttrs['l']+','+self.args['bgz']+'),'
+		rn+='Bg=('+BgAttrs['m']+BgAttrs['s']+BgAttrs['w']+'HPC,'+BgAttrs['l']+','+self.args['bgz'][self.args['modem']]+'),'
 		rn+='Chrs=['
 		for chrattr in ChrAttrs:
-			rn+='('+chrattr['name']+chrattr['p']+chrattr['c']+chrattr['f']+chrattr['d']+'HPC,'+chrattr['l']+',0.8),'
+			rn+='('+chrattr['name']+chrattr['p']+chrattr['c']+chrattr['f']+chrattr['d']+'HPC,'+chrattr['l']+','+self.args['chrz'][self.args['modem']]+'),'
 		rn=rn[:-1]+'])\n'
 		self.args['trans']=self.tDefault[self.args['modem']]
 		return rn
