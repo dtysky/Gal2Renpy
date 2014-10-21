@@ -432,8 +432,11 @@ class HPC():
 				elif attrs=='messadd':
 					self.args[attrs]=[]
 					for mess in Attrs[attrs]:
-						mess=mess.replace('，',',').split(',')
-						mess=("('"+mess[0]+"'",mess[1],mess[2])
+						mess=re.match(r'\s*<n>(\S+)</n><p>(\S+)</p><t>(\S+)</t>',mess)
+						if mess:
+							mess=("'"+mess.group(1)+"'","'"+mess.group(2)+"'","'"+mess.group(3)+"'")
+						else:
+							self.fs.error('This message line is unexpected !')
 						self.args[attrs].append(mess)
 				else:
 					self.fs.error('This flag '+attrs+' does not exist !')
