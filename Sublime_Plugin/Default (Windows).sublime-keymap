@@ -1,0 +1,7 @@
+[
+	{ "keys": ["alt+s"], "command": "build" },
+	{ 	
+		"keys": ["ctrl+m"], 
+		"command": "gal2_renpy",
+	}
+]
