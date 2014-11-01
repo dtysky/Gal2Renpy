@@ -1,0 +1,6 @@
+<snippet>
+<name>tag key</name>
+<content><![CDATA[key.]]></content>
+<scope>source.Gal2Renpy</scope>
+<tabTrigger>key</tabTrigger>
+</snippet>

@@ -1,0 +1,6 @@
+<snippet>
+<name>tag view</name>
+<content><![CDATA[view.]]></content>
+<scope>source.Gal2Renpy</scope>
+<tabTrigger>view</tabTrigger>
+</snippet>

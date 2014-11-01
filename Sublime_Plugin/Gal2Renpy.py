@@ -13,31 +13,77 @@ class Gal2RenpyCommand(sublime_plugin.TextCommand):
 		EditLast=pickle.load(codecs.open(game_path+'Gal2Renpy/EditLast','r','utf-8'))
 	else:
 		EditLast={
-			'sc':('None','None'),
-			'sw':'None',
+			'sc':(
+					(),
+					(('cp','None'),('sc':'None'))
+				),
+			'sw':(
+					(),
+					(('s','None'))
+				),
 			'ch':{},
-			'bg':{},
-			'cg':{},
-			'bgm':'None',
-			'sound':'None',
-			'date':'None',
-			'vd':'None',
-			'ef':'None',
-			'gf':{'m':'None','l':'None'},
-			'key':{},
-			'mode':'',
-			'view':'',
-			'chc':('None','None'),
-			'renpy':''
+			'bg':(
+					(('l','None'),('t','None')),
+					(('m','None'),('s','None'),('w','None'))
+				),
+			'cg':(
+					(('l','None'),('t','None')),
+					(('m','None'),('s','None'))
+				),
+			'bgm':(
+					(),
+					(('m','None'))
+				),
+			'sound':(
+					(),
+					(('m','None'))
+				),
+			'date'::(
+					(),
+					(('m','None'))
+				),
+			'vd'::(
+					(),
+					(('m','None'))
+				),
+			'ef':(
+					(('e':'None'),('args':'None')),
+					(('m':'None'))
+				),
+			'gf':(
+					(('l':'None')),
+					(('m':'None'))
+				),
+			'key':(
+					(('k':'None')),
+					(('m':'None'),('n':'None'))
+				),
+			'mode':(
+					(),
+					(('m','None'))
+				),
+			'view':(
+					(),
+					(('m','None'))
+				),
+			'chc':(
+					(),
+					(('a','None'),('b':'None'))
+				),
+			'renpy':(
+					(),
+					(('m','None'))
+				),
+			'test':(
+					(),
+					(('m','None'))
+				)
 		}
-		for key in US.BgKeyword:
-			EditLast['bg'][key]='None'
-		for key in US.CgKeyword:
-			EditLast['cg'][key]='None'
 		for ch in US.ChrName:
-			EditLast['ch'][ch]={}
-			for key in US.ChrKeyword:
-				EditLast['ch'][ch][key]='None'
+			EditLast['ch'][ch]=(
+					(('l','None'),('t','None')),
+					(('n','None'),('p','None'),('c','None'),('f','None'),('d':'None'))
+					)
 	ArgRange={
 		'ch':US.ChrKeyword,
 		'bg':US.BgKeyword,

@@ -1,0 +1,6 @@
+<snippet>
+<name>tag renpy</name>
+<content><![CDATA[renpy.]]></content>
+<scope>source.Gal2Renpy</scope>
+<tabTrigger>renpy</tabTrigger>
+</snippet>
