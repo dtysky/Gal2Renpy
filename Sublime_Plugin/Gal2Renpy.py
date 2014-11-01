@@ -1,7 +1,7 @@
 import sublime, sublime_plugin
 import json,os,pickle,codecs
 import sys
-game_path=json.load(open(__file_path__+'/'+'Gal2Renpy.sublime-settings'))['game_gal2renpy_path']
+game_path=json.load(open(os.path.split(__file__)[0]+'/'+'Gal2Renpy.sublime-settings'))['game_gal2renpy_path']
 sys.path.append(game_path+'Gal2Renpy')
 from Class import *
 from Keyword import *
