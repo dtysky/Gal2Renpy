@@ -1,6 +1,6 @@
 <snippet>
 <name>tag bg</name>
-<content><![CDATA[bg.]]></content>
+<content><![CDATA[bg]]></content>
 <scope>source.Gal2Renpy</scope>
 <tabTrigger>bg</tabTrigger>
 </snippet>

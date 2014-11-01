@@ -1,6 +1,6 @@
 <snippet>
 <name>tag gf</name>
-<content><![CDATA[gf.]]></content>
+<content><![CDATA[gf]]></content>
 <scope>source.Gal2Renpy</scope>
 <tabTrigger>gf</tabTrigger>
 </snippet>

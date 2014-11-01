@@ -1,6 +1,6 @@
 <snippet>
 <name>tag date</name>
-<content><![CDATA[date.]]></content>
+<content><![CDATA[date]]></content>
 <scope>source.Gal2Renpy</scope>
 <tabTrigger>date</tabTrigger>
 </snippet>

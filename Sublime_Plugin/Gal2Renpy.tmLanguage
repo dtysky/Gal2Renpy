@@ -141,6 +141,8 @@
 						</dict>
 					</dict>
 				</array>
+				<key>name</key>
+				<string>head.Gal2Renpy</string>
 			</dict>
 
 			<dict>
@@ -211,6 +213,8 @@
 						</dict>
 					</dict>
 				</array>
+				<key>name</key>
+				<string>text.Gal2Renpy</string>
 			</dict>
 
 		</array>

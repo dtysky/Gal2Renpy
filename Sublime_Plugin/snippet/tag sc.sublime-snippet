@@ -1,6 +1,6 @@
 <snippet>
 <name>tag sc</name>
-<content><![CDATA[sc.]]></content>
+<content><![CDATA[sc]]></content>
 <scope>source.Gal2Renpy</scope>
 <tabTrigger>sc</tabTrigger>
 </snippet>
