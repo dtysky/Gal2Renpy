@@ -14,76 +14,76 @@ def EditInit():
 	else:
 		tmp={
 				'sc':(
-						(),
+						0,(),
 						(('cp','None'),('sc','None'))
 					),
 				'sw':(
-						(),
-						(('s','None'))
+						0,(),
+						(('s','None'),)
 					),
 				'chlast':'',
 				'ch':{},
 				'bg':(
-						(('l','None'),('t','None')),
+						0,(('l','None'),('t','None')),
 						(('m','None'),('s','None'),('w','None'))
 					),
 				'cg':(
-						(('l','None'),('t','None')),
+						0,(('l','None'),('t','None')),
 						(('m','None'),('s','None'))
 					),
 				'bgm':(
-						(),
-						(('m','None'))
+						0,(),
+						(('m','None'),)
 					),
 				'sound':(
-						(),
-						(('m','None'))
+						0,(),
+						(('m','None'),)
 					),
 				'date':(
-						(),
-						(('m','None'))
+						0,(),
+						(('m','None'),)
 					),
 				'vd':(
-						(),
-						(('m','None'))
+						0,(),
+						(('m','None'),)
 					),
 				'ef':(
-						(('e','None'),('args','None')),
-						(('m','None'))
+						1,(('e','None'),('args','None')),
+						(('m','None'),)
 					),
 				'gf':(
-						(('l','None')),
-						(('m','None'))
+						0,(('l','None'),),
+						(('m','None'),)
 					),
 				'key':(
-						(('k','None')),
+						0,(('k','None'),),
 						(('m','None'),('n','None'))
 					),
 				'mode':(
-						(),
-						(('m','None'))
+						0,(),
+						(('m','None'),)
 					),
 				'view':(
-						(),
-						(('m','None'))
+						0,(),
+						(('m','None'),)
 					),
 				'chc':(
-						(),
+						0,(),
 						(('a','None'),('b','None'))
 					),
 				'renpy':(
-						(),
-						(('m','None'))
+						0,(),
+						(('m','None'),)
 					),
 				'test':(
-						(),
-						(('m','None'))
+						0,(),
+						(('m','None'),)
 					)
 			}
 		for ch in US.ChrName:
 			tmp['ch'][ch]=(
-					(('l','None'),('t','None')),
-					(('n','None'),('p','None'),('c','None'),('f','None'),('d','None'))
+					1,(('l','None'),('t','None')),
+					(('n',ch),('p','None'),('c','None'),('f','None'),('d','None'))
 					)
 	return tmp
 
@@ -99,12 +99,12 @@ def RangeInit():
 		'key':US.KeyWord
 	}
 
-class Gal2RenpyTagCompletions(sublime_plugin.EventListener):
+class Gal2RenpyCompletions(sublime_plugin.EventListener):
 	def __init__(self):
 		self.ArgsRange=RangeInit()
 
 	def on_query_completions(self, view, prefix, locations):
-		pass
+		return ['1','2']
 
 class Gal2RenpyCommand(sublime_plugin.TextCommand):
 	EditLast=EditInit()
@@ -125,6 +125,11 @@ class Gal2RenpyCommand(sublime_plugin.TextCommand):
 			return self.view.rowcol(pt)
 		def SetPointRC(r,c):
 			return self.view.text_point(r,c)
+		def SetAllFront(s):
+			#for line in self.view.sel():
+			lines = self.view.lines(self.view.sel()[0])
+			for line in lines:
+				self.view.replace(edit, line, s+self.view.substr(line))
 		def SetViewCursor(pt):
 			self.view.sel().clear()
 			self.view.sel().add(sublime.Region(pt))
@@ -132,13 +137,65 @@ class Gal2RenpyCommand(sublime_plugin.TextCommand):
 		#Run
 		pt = GetNowPoint()
 		line = GetNowLine()
-		if GetLineText(line)=='bg':
-			so='<bg'
-			for t in self.EditLast['bg'][0]:
-				so+=' '+t[0]+':'+t[1]
-			so+='>'
-			for t in self.EditLast['bg'][1]:
-				so+=' '+t[0]+':'+t[1]
-			so+='</bg>'
-			Replace(line,so)
-		SetViewCursor(pt)
+		lt = GetLineText(line)
+		if lt not in Keywords:
+			if re.match(r'\s*ch\.\S+',lt):
+				ch=lt.split('.')[1]
+				Replace(line,self.CreatInsertCh(ch))
+			else:
+				SetAllFront('\t')	
+		elif lt=='hpc':
+			pass
+		elif lt=='ef':
+			pass
+		elif lt=='ch':
+			Replace(line,self.CreatInsertCh(self.EditLast['chlast']))
+		else:
+			Replace(line,self.CreatInsertNormal(lt))
+
+	def CreatInsertNormal(self,lt):
+		def IsEmpty(tup):
+			if len(tup)==0:
+				return True
+			return False
+
+		so ='<' + lt+' '
+		for t in self.EditLast[lt][1]:
+			if not IsEmpty(t):
+				so+=t[0]+':'+t[1]+' '
+		so=so[:-1]+'>'
+		if self.EditLast[lt][0]==1:
+			so+='\n\t'
+		for t in self.EditLast[lt][2]:
+			if not IsEmpty(t):
+				so+=t[0]+':'+t[1]+' '
+		so=so[:-1]
+		if self.EditLast[lt][0]==1:
+			so+='\n'
+		so+='</'+lt+'>'
+		return so
+
+	def CreatInsertCh(self,ch):
+		def IsEmpty(tup):
+			if len(tup)==0:
+				return True
+			return False
+		if IsEmpty(ch):
+			pass
+		else:
+			so ='<ch '
+			for t in self.EditLast['ch'][ch][1]:
+				if not IsEmpty(t):
+					so+=t[0]+':'+t[1]+' '
+			so=so[:-1]+'>'
+			if self.EditLast['ch'][ch][0]==1:
+				so+='\n\t'
+			for t in self.EditLast['ch'][ch][2]:
+				if not IsEmpty(t):
+					so+=t[0]+':'+t[1]+' '
+			so=so[:-1]
+			if self.EditLast['ch'][ch][0]==1:
+				so+='\n'
+			so+='</ch>'
+			return so
+		return 'This ch does not exits or init !'

@@ -76,7 +76,7 @@
 			<dict>
 				<key>begin</key>
 				<string>(?x)
-					(&lt;(sc|sw|ch|bg|bgm|sound|data|cg|vd|ef|gf|key|mode|view|chc|hpc|renpy|messadd|chr|test)(?=&gt;))
+					(&lt;(sc|sw|ch|bg|bgm|sound|date|cg|vd|ef|gf|key|mode|view|chc|hpc|renpy|messadd|chr|test)(?=&gt;))
 				</string>
 				<key>beginCaptures</key>
 				<dict>
@@ -101,7 +101,7 @@
 			<dict>
 				<key>begin</key>
 				<string>(?x)
-					(&lt;(sc|sw|ch|bg|bgm|sound|data|cg|vd|ef|gf|key|mode|view|chc|hpc|renpy|messadd|chr|test)\s+)
+					(&lt;(sc|sw|ch|bg|bgm|sound|date|cg|vd|ef|gf|key|mode|view|chc|hpc|renpy|messadd|chr|test)\s+)
 				</string>
 				<key>beginCaptures</key>
 				<dict>
@@ -148,7 +148,7 @@
 			<dict>
 				<key>begin</key>
 				<string>(?x)
-					(&lt;/(sc|sw|ch|bg|bgm|sound|data|cg|vd|ef|gf|key|mode|view|chc|hpc|renpy|messadd|chr|test)(?=&gt;))
+					(&lt;/(sc|sw|ch|bg|bgm|sound|date|cg|vd|ef|gf|key|mode|view|chc|hpc|renpy|messadd|chr|test)(?=&gt;))
 				</string>
 				<key>beginCaptures</key>
 				<dict>

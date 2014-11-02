@@ -1,4 +1,12 @@
 [
 	{ "keys": ["alt+s"], "command": "build" },
-	{ "keys": ["tab"], "command": "gal2_renpy" }
+	{	"keys": ["tab"],
+	 	"command": "gal2_renpy",
+	 	"context": [{
+      		"operand": "source.Gal2Renpy",
+      		"operator": "equal",
+      		"match_all": true,
+       		"key": "selector"      		
+    	}] 
+    }
 ]
