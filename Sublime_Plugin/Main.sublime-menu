@@ -24,10 +24,10 @@
                             {
                                 "command": "open_file",
                                 "args": {
-                                    "file": "${packages}/Gal2Renpy/Gal2Renpy.sublime-settings",
+                                    "file": "${packages}/Gal2Renpy/Path.json",
                                     "platform": "Windows"
                                 },
-                                "caption": "Settings"
+                                "caption": "Path"
                             },
                             {
                                 "command": "open_file",

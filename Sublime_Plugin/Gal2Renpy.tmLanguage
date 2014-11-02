@@ -38,8 +38,6 @@
 						</dict>
 					</dict>
 				</array>
-				<key>name</key>
-				<string>meta.function.Gal2Renpy</string>
 			</dict>
 			<dict>
 				<key>begin</key>
@@ -69,8 +67,6 @@
 						</dict>
 					</dict>
 				</array>
-				<key>name</key>
-				<string>meta.function.Gal2Renpy</string>
 			</dict>
 
 			<dict>
@@ -83,7 +79,12 @@
 					<key>1</key>
 					<dict>
 						<key>name</key>
-						<string>keyword.control.Gal2Renpy</string>
+						<string>keyword.mate.Gal2Renpy</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>name</key>
+						<string>keyword.tag.Gal2Renpy</string>
 					</dict>
 				</dict>
 				<key>end</key>
@@ -93,7 +94,7 @@
 					<key>1</key>
 					<dict>
 						<key>name</key>
-						<string>keyword.control.Gal2Renpy</string>
+						<string>keyword.mate.Gal2Renpy</string>
 					</dict>
 				</dict>
 			</dict>
@@ -108,7 +109,12 @@
 					<key>1</key>
 					<dict>
 						<key>name</key>
-						<string>keyword.control.Gal2Renpy</string>
+						<string>keyword.mate.Gal2Renpy</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>name</key>
+						<string>keyword.tag.Gal2Renpy</string>
 					</dict>
 				</dict>
 				<key>end</key>
@@ -118,22 +124,27 @@
 					<key>1</key>
 					<dict>
 						<key>name</key>
-						<string>keyword.control.Gal2Renpy</string>
+						<string>keyword.mate.Gal2Renpy</string>
 					</dict>
 				</dict>
 				<key>patterns</key>
 				<array>
 					<dict>
 						<key>match</key>
-						<string>([a-z]+:)(.*?)(?=&gt;|[a-z]+:)</string>
+						<string>(([a-z]+:)(.*?))(?=&gt;|[a-z]+:)</string>
 						<key>captures</key>
 						<dict>
 							<key>1</key>
 							<dict>
 								<key>name</key>
-								<string>storage.type.Gal2Renpy</string>
+								<string>storage.pair.Gal2Renpy</string>
 							</dict>
 							<key>2</key>
+							<dict>
+								<key>name</key>
+								<string>storage.type.Gal2Renpy</string>
+							</dict>
+							<key>3</key>
 							<dict>
 								<key>name</key>
 								<string>string.Gal2Renpy</string>
@@ -141,7 +152,7 @@
 						</dict>
 					</dict>
 				</array>
-				<key>name</key>
+				<key>scopeName</key>
 				<string>head.Gal2Renpy</string>
 			</dict>
 
@@ -155,7 +166,12 @@
 					<key>1</key>
 					<dict>
 						<key>name</key>
-						<string>keyword.control.Gal2Renpy</string>
+						<string>keyword.mate.Gal2Renpy</string>
+					</dict>
+					<key>2</key>
+					<dict>
+						<key>name</key>
+						<string>keyword.tag.Gal2Renpy</string>
 					</dict>
 				</dict>
 				<key>end</key>
@@ -165,7 +181,7 @@
 					<key>1</key>
 					<dict>
 						<key>name</key>
-						<string>keyword.control.Gal2Renpy</string>
+						<string>keyword.mate.Gal2Renpy</string>
 					</dict>
 				</dict>
 			</dict>
@@ -180,7 +196,7 @@
 					<key>1</key>
 					<dict>
 						<key>name</key>
-						<string>keyword.control.Gal2Renpy</string>
+						<string>keyword.mate.Gal2Renpy</string>
 					</dict>
 				</dict>
 				<key>end</key>
@@ -190,22 +206,27 @@
 					<key>1</key>
 					<dict>
 						<key>name</key>
-						<string>entity.name.function.Gal2Renpy</string>
+						<string>keyword.mate.Gal2Renpy</string>
 					</dict>
 				</dict>
 				<key>patterns</key>
 				<array>
 					<dict>
 						<key>match</key>
-						<string>([a-z]+:)(.*?)(?=&lt;|\n|[a-z]+:)</string>
+						<string>(([a-z]+:)(.*?))(?=&lt;|\n|[a-z]+:)</string>
 						<key>captures</key>
 						<dict>
 							<key>1</key>
 							<dict>
 								<key>name</key>
-								<string>storage.type.Gal2Renpy</string>
+								<string>storage.pair.Gal2Renpy</string>
 							</dict>
 							<key>2</key>
+							<dict>
+								<key>name</key>
+								<string>storage.type.Gal2Renpy</string>
+							</dict>
+							<key>3</key>
 							<dict>
 								<key>name</key>
 								<string>string.Gal2Renpy</string>
@@ -213,10 +234,9 @@
 						</dict>
 					</dict>
 				</array>
-				<key>name</key>
+				<key>scopeName</key>
 				<string>text.Gal2Renpy</string>
 			</dict>
-
 		</array>
 		<key>scopeName</key>
 		<string>source.Gal2Renpy</string>

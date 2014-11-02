@@ -1,5 +1,11 @@
 {
 	"font_size": 12,
-	"tab_completion": "enabled",
-	"game_gal2renpy_path":"E:/Follow_wings/FW/game/Gal2Renpy/" 
+	"tab_completion": "enable",
+	"word_wrap": false,
+	
+	// Set to false to stop auto pairing quotes, brackets etc
+	"auto_match_enabled": false,
+
+	// Additional situations to trigger auto complete
+	"auto_complete_triggers": [ {"selector": "source.Gal2Renpy", "characters": "."}]
 }
