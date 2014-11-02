@@ -14,78 +14,78 @@ def EditInit():
 		tmp=pickle.load(codecs.open(game_path+'Gal2Renpy/EditLast','r','utf-8'))
 	else:
 		tmp={
-				'sc':(
+				'sc':[
 						0,(),
 						(('cp','None'),('sc','None'))
-					),
-				'sw':(
+					],
+				'sw':[
 						0,(),
 						(('s','None'),)
-					),
+					],
 				'chlast':'',
 				'ch':{},
-				'bg':(
+				'bg':[
 						0,(('l','None'),('t','None')),
 						(('m','None'),('s','None'),('w','None'))
-					),
-				'cg':(
+					],
+				'cg':[
 						0,(('l','None'),('t','None')),
 						(('m','None'),('s','None'))
-					),
-				'bgm':(
+					],
+				'bgm':[
 						0,(),
 						(('m','None'),)
-					),
-				'sound':(
+					],
+				'sound':[
 						0,(),
 						(('m','None'),)
-					),
-				'date':(
+					],
+				'date':[
 						0,(),
 						(('m','None'),)
-					),
-				'vd':(
+					],
+				'vd':[
 						0,(),
 						(('m','None'),)
-					),
-				'ef':(
+					],
+				'ef':[
 						1,(('e','None'),('args','None')),
 						(('m','None'),)
-					),
-				'gf':(
+					],
+				'gf':[
 						0,(('l','None'),),
 						(('m','None'),)
-					),
-				'key':(
+					],
+				'key':[
 						0,(('k','None'),),
 						(('m','None'),('n','None'))
-					),
-				'mode':(
+					],
+				'mode':[
 						0,(),
 						(('m','None'),)
-					),
-				'view':(
+					],
+				'view':[
 						0,(),
 						(('m','None'),)
-					),
-				'chc':(
+					],
+				'chc':[
 						0,(),
 						(('a','None'),('b','None'))
-					),
-				'renpy':(
+					],
+				'renpy':[
 						0,(),
 						(('m','None'),)
-					),
-				'test':(
+					],
+				'test':[
 						0,(),
 						(('m','None'),)
-					)
+					]
 			}
 		for ch in US.ChrName:
-			tmp['ch'][ch]=(
+			tmp['ch'][ch]=[
 					1,(('l','None'),('t','None')),
 					(('n',ch),('p','None'),('c','None'),('f','None'),('d','None'))
-					)
+					]
 	return tmp
 
 def RangeInit():
@@ -104,6 +104,8 @@ def RangeInit():
 class Gal2RenpyCompletions(sublime_plugin.EventListener):
 	def __init__(self):
 		self.ArgsRange=RangeInit()
+		if 'Saying' in self.ArgsRange['chrname']:
+			del  self.ArgsRange['chrname']['Saying']
 
 	def on_query_completions(self, view, prefix, locations):
 		def GetNowLine():
@@ -119,7 +121,6 @@ class Gal2RenpyCompletions(sublime_plugin.EventListener):
 		if not view.match_selector(locations[0],"source.Gal2Renpy"):
 			return []
 		if re.match(r'\s*ch\.',GetLineText(GetNowLine())):
-			#tmp=self.ArgsRange
 			return (ToList(self.ArgsRange['chrname']),sublime.INHIBIT_EXPLICIT_COMPLETIONS | sublime.INHIBIT_WORD_COMPLETIONS)
 		
 		return []
@@ -152,9 +153,17 @@ class Gal2RenpyCommand(sublime_plugin.TextCommand):
 		line = GetNowLine()
 		lt = GetLineText(line)
 		if lt not in Keywords:
-			if re.match(r'\s*ch\.\S+',lt):
+			if re.match(r'\s*ch\.\S+\.\d',lt):
+				ch=lt.split('.')[1]
+				self.EditLast['ch'][ch][0]=int(lt.split('.')[2])
+				Replace(line,self.CreatInsertCh(ch))
+			elif re.match(r'\s*ch\.\S+',lt):
 				ch=lt.split('.')[1]
 				Replace(line,self.CreatInsertCh(ch))
+			elif re.match(r'\s*\S+\.\d',lt):
+				tag=lt.split('.')[0]
+				self.EditLast[tag][0]=int(lt.split('.')[1])
+				Replace(line,self.CreatInsertNormal(tag))
 			else:
 				Insert(pt,'\t')	
 		elif lt=='hpc':
