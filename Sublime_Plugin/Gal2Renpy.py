@@ -1,5 +1,6 @@
+#coding utf-8
 import sublime, sublime_plugin
-import json,os,pickle,codecs
+import json,os,pickle,codecs,locale
 import sys
 game_path=json.load(open(os.path.split(__file__)[0]+'/'+'Path.json'))['game_gal2renpy_path']
 sys.path.append(game_path+'Gal2Renpy')
@@ -112,13 +113,13 @@ class Gal2RenpyCompletions(sublime_plugin.EventListener):
 		def ToList(ds):
 			tmp=[]
 			for d in sorted(ds):
-				sublime.message_dialog(d)
-				tmp.append(d)
+				tmp.append((d,d))
 			return tmp
 		# Only trigger within Gal2Renpy
 		if not view.match_selector(locations[0],"source.Gal2Renpy"):
 			return []
 		if re.match(r'\s*ch\.',GetLineText(GetNowLine())):
+			#tmp=self.ArgsRange
 			return (ToList(self.ArgsRange['chrname']),sublime.INHIBIT_EXPLICIT_COMPLETIONS | sublime.INHIBIT_WORD_COMPLETIONS)
 		
 		return []
