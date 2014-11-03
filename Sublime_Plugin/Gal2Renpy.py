@@ -2,10 +2,14 @@
 import sublime, sublime_plugin
 import json,os,pickle,codecs,locale
 import sys
+sys.path.append(os.path.split(__file__)[0])
 game_path=json.load(open(os.path.split(__file__)[0]+'/'+'Path.json'))['game_gal2renpy_path']
 sys.path.append(game_path+'Gal2Renpy')
 from Class import *
 from Keyword import *
+from xpinyin import Pinyin
+Py=Pinyin()
+
 US=User(game_path)
 
 def EditInit():
@@ -115,7 +119,7 @@ class Gal2RenpyCompletions(sublime_plugin.EventListener):
 		def ToList(ds):
 			tmp=[]
 			for d in sorted(ds):
-				tmp.append((d,d))
+				tmp.append((Py.get_pinyin(d, '')+' '+d,d))
 			return tmp
 		# Only trigger within Gal2Renpy
 		if not view.match_selector(locations[0],"source.Gal2Renpy"):
