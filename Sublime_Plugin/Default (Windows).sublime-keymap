@@ -1,7 +1,7 @@
 [
 	{ "keys": ["alt+s"], "command": "build" },
 	{	"keys": ["tab"],
-	 	"command": "gal2_renpy",
+	 	"command": "gal2_renpy_tab",
 	 	"context": [{
       		"operand": "source.Gal2Renpy",
       		"operator": "equal",

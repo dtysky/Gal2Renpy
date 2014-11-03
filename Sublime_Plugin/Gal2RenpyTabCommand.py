@@ -92,52 +92,13 @@ def EditInit():
 					]
 	return tmp
 
-def RangeInit():
-	return {
-		'ch':US.ChrKeyword,
-		'bg':US.BgKeyword,
-		'cg':US.CgKeyword,
-		'bgm':US.Bgm,
-		'sound':US.SoundE,
-		'ef':US.EffectSp,
-		'gf':US.Graph,
-		'key':US.KeyWord,
-		'chrname':US.ChrName
-	}
-
-class Gal2RenpyCompletions(sublime_plugin.EventListener):
-	def __init__(self):
-		self.ArgsRange=RangeInit()
-		if 'Saying' in self.ArgsRange['chrname']:
-			del  self.ArgsRange['chrname']['Saying']
-
-	def on_query_completions(self, view, prefix, locations):
-		def GetNowLine():
-			return view.line(view.sel()[0])
-		def GetLineText(line):
-			return view.substr(line)
-		def ToList(ds):
-			tmp=[]
-			for d in sorted(ds):
-				tmp.append((Py.get_pinyin(d, '')+' '+d,d))
-			return tmp
-		# Only trigger within Gal2Renpy
-		if not view.match_selector(locations[0],"source.Gal2Renpy"):
-			return []
-		if re.match(r'\s*ch\.',GetLineText(GetNowLine())):
-			return (ToList(self.ArgsRange['chrname']),sublime.INHIBIT_EXPLICIT_COMPLETIONS | sublime.INHIBIT_WORD_COMPLETIONS)
-		
-		return []
-
-class Gal2RenpyCommand(sublime_plugin.TextCommand):
+class Gal2RenpyTabCommand(sublime_plugin.TextCommand):
 	EditLast=EditInit()
 
 	def run(self, edit):
 		#Functions
 		def Insert(pt,s):
 			self.view.insert(edit,pt,s)
-		def Replace(reg,s):
-			self.view.replace(edit,reg,s)
 		def GetNowLine():
 			return self.view.line(self.view.sel()[0])
 		def GetLineText(line):
@@ -148,36 +109,63 @@ class Gal2RenpyCommand(sublime_plugin.TextCommand):
 			return self.view.rowcol(pt)
 		def SetPointRC(r,c):
 			return self.view.text_point(r,c)
-		def SetViewCursor(pt):
+		def CreatReg(pt1,pt2):
+			return sublime.Region(pt1,pt2)
+		def SetViewSelect(reg):
 			self.view.sel().clear()
-			self.view.sel().add(sublime.Region(pt))
-			self.view.show(pt)
+			self.view.sel().add(reg)
+			self.view.show(reg)
+		def FindNextPair(pt):
+			pair = self.view.find('[a-z]+:.*?(?=&lt;|\n|\s+[a-z]+:)',pt)
+			pairt = self.view.substr(pair)
+			return {'pair':pair,'tag':pairt.split(':')[0],'attr':pairt.split(':')[1]}
 		#Run
 		pt = GetNowPoint()
 		line = GetNowLine()
 		lt = GetLineText(line)
+		if not self.Complete(edit,line,lt):
+			Insert(pt,'\t')
+			return
+		ptrc=GetPointRC(pt)
+		pt=SetPointRC(ptrc[0],0)
+		pair=FindNextPair(pt)
+		ptrc=GetPointRC(pair['pair'].a)
+		pt1=SetPointRC(ptrc[0],ptrc[1]+len(pair['tag'])+1)
+		pt2=SetPointRC(ptrc[0],ptrc[1]+len(pair['tag'])+1+len(pair['attr']))
+		reg=CreatReg(pt1,pt2)
+		SetViewSelect(reg)
+
+
+	def Complete(self,edit,reg,lt):
+		def Replace(reg,s):
+			self.view.replace(edit,reg,s)
 		if lt not in Keywords:
+			#ch.xx.0/ch.xx.1
 			if re.match(r'\s*ch\.\S+\.\d',lt):
 				ch=lt.split('.')[1]
 				self.EditLast['ch'][ch][0]=int(lt.split('.')[2])
-				Replace(line,self.CreatInsertCh(ch))
+				Replace(reg,self.CreatInsertCh(ch))
+			#ch.xx
 			elif re.match(r'\s*ch\.\S+',lt):
 				ch=lt.split('.')[1]
-				Replace(line,self.CreatInsertCh(ch))
+				Replace(reg,self.CreatInsertCh(ch))
+			#xx.0/xx.1
 			elif re.match(r'\s*\S+\.\d',lt):
 				tag=lt.split('.')[0]
 				self.EditLast[tag][0]=int(lt.split('.')[1])
-				Replace(line,self.CreatInsertNormal(tag))
+				Replace(reg,self.CreatInsertNormal(tag))
 			else:
-				Insert(pt,'\t')	
+				return False
 		elif lt=='hpc':
 			pass
 		elif lt=='ef':
 			pass
 		elif lt=='ch':
-			Replace(line,self.CreatInsertCh(self.EditLast['chlast']))
+			Replace(reg,self.CreatInsertCh(self.EditLast['chlast']))
 		else:
-			Replace(line,self.CreatInsertNormal(lt))
+			Replace(reg,self.CreatInsertNormal(lt))
+		return True
+
 
 	def CreatInsertNormal(self,lt):
 		def IsEmpty(tup):
