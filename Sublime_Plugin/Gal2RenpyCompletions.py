@@ -59,7 +59,7 @@ class Gal2RenpyCompletions(sublime_plugin.EventListener):
 			i=0
 			ptrc=GetPointRC(GetNowPoint())
 			while(i<10):
-				line=GetLineText(GetPointLine(SetPointRC(ptrc[0]-i,ptrc[1])))
+				line=GetLineText(GetPointLine(SetPointRC(ptrc[0]-i,0)))
 				tmp=re.match(r'<(\S+?)[\s+>]',line)
 				if tmp:
 					return (tmp.group(1),tag)
@@ -70,14 +70,14 @@ class Gal2RenpyCompletions(sublime_plugin.EventListener):
 			i=0
 			ptrc=GetPointRC(GetNowPoint())
 			while(i<10):
-				line=GetLineText(GetPointLine(SetPointRC(ptrc[0]-i,ptrc[1])))
+				line=GetLineText(GetPointLine(SetPointRC(ptrc[0]-i,0)))
 				tmp=re.match(r'.*m:(.*?)(?=<|\n|\s+[a-z]+:)',line)
 				if tmp:
 					return d.get(tmp.group(1))
 				else:
 					i+=1
 			while(i>0):
-				line=GetLineText(GetPointLine(SetPointRC(ptrc[0]+i,ptrc[1])))
+				line=GetLineText(GetPointLine(SetPointRC(ptrc[0]+i,0)))
 				tmp=re.match(r'.*m:(.*?)(?=<|\n|\s+[a-z]+:)',line)
 				if tmp:
 					return d.get(tmp.group(1))
@@ -97,7 +97,7 @@ class Gal2RenpyCompletions(sublime_plugin.EventListener):
 			if flag not in ['ch','bg','cg']:
 				ds=ds[tag]
 			else:
-				if tag in ['m','l','t']:
+				if tag in ['m','l','t','d']:
 					ds=ds[tag]
 				else:
 					ds=GetSpecial(ds[tag])
