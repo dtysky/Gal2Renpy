@@ -17,7 +17,7 @@ def RangeInit():
 		'ch':US.ChrKeyword,
 		'bg':US.BgKeyword,
 		'cg':US.CgKeyword,
-		'bgm':US.Bgm,
+		'bgm':{'m':US.Bgm},
 		'sound':US.SoundE,
 		'ef':US.EffectSp,
 		'gf':US.Graph,
@@ -60,7 +60,7 @@ class Gal2RenpyCompletions(sublime_plugin.EventListener):
 			ptrc=GetPointRC(GetNowPoint())
 			while(i<10):
 				line=GetLineText(GetPointLine(SetPointRC(ptrc[0]-i,ptrc[1])))
-				tmp=re.match(r'<(\S+)\s+',line)
+				tmp=re.match(r'<(\S+?)[\s+>]',line)
 				if tmp:
 					return (tmp.group(1),tag)
 				else:
