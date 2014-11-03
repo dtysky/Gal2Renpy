@@ -3,7 +3,8 @@ import sublime, sublime_plugin
 import json,os,pickle,codecs,locale
 import sys
 sys.path.append(os.path.split(__file__)[0])
-game_path=json.load(open(os.path.split(__file__)[0]+'/'+'Path.json'))['game_gal2renpy_path']
+path=os.path.split(__file__)[0]+'/'+'User.json'
+game_path=json.load(open(path,'r'))['game_gal2renpy_path']
 sys.path.append(game_path+'Gal2Renpy')
 from Class import *
 from Keyword import *
@@ -14,8 +15,8 @@ US=User(game_path)
 
 def EditInit():
 	tmp=None
-	if os.path.exists(os.path.split(__file__)[0]+'/'+'EditLast'):
-		tmp=pickle.load(codecs.open(game_path+'Gal2Renpy/EditLast','r','utf-8'))
+	if os.path.exists(game_path+'/User/'+'EditLast'):
+		tmp=pickle.load(codecs.open(game_path+'/User/'+'EditLast','r','utf-8'))
 	else:
 		tmp={
 				'sc':[
@@ -88,7 +89,7 @@ def EditInit():
 		for ch in US.ChrName:
 			tmp['ch'][ch]=[
 					1,(('l','None'),('t','None')),
-					(('n',ch),('p','None'),('c','None'),('f','None'),('d','None'))
+					(('m',ch),('p','None'),('c','None'),('f','None'),('d','None'))
 					]
 	return tmp
 

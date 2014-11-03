@@ -152,7 +152,7 @@
 						</dict>
 					</dict>
 				</array>
-				<key>scopeName</key>
+				<key>Name</key>
 				<string>head.Gal2Renpy</string>
 			</dict>
 
@@ -234,7 +234,7 @@
 						</dict>
 					</dict>
 				</array>
-				<key>scopeName</key>
+				<key>Name</key>
 				<string>text.Gal2Renpy</string>
 			</dict>
 		</array>
