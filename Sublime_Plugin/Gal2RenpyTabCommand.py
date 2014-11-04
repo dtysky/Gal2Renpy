@@ -149,12 +149,12 @@ class Gal2RenpyTabCommand(sublime_plugin.TextCommand):
 		def SetEditLast(flag,buf,ch=None):
 			flag_tmp=flag
 			if flag=='chrlast':
-				buf=re.findall(r'[\S\s]*<'+'ch'+r'[\S\s]*?>[\S\s]*?</'+'ch'+'>',buf)
+				buf=re.findall(r'<'+'ch'+r'[\S\s]*?>[\S\s]*?</'+'ch'+'>',buf)
 			elif flag=='ch':
-				buf=re.findall(r'[\S\s]*<ch[\S\s]*?>\s*'+'m:'+ch+r'[\S\s]*?</ch>',buf)
+				buf=re.findall(r'<ch[\S\s]*?>\s*'+'m:'+ch+r'[\S\s]*?</ch>',buf)
 				flag_tmp='ch-'+ch
 			else:
-				buf=re.findall(r'[\S\s]*<'+flag+r'[\S\s]*?>[\S\s]*?</'+flag+'>',buf)
+				buf=re.findall(r'<'+flag+r'[\S\s]*?>[\S\s]*?</'+flag+'>',buf)
 			if not buf:
 				return
 			tmp={}

@@ -24,7 +24,7 @@ def RangeInit():
 		'bgm':{'m':US.Bgm},
 		'sound':US.SoundE,
 		'ef':US.EffectSp,
-		'gf':US.Graph,
+		'gf':{'m':US.Graph,'l':US.BgPosition},
 		'key':US.KeyWord,
 		'chc':{'m':US.ChrName,'s':US.ChrName},
 		'view':{'m':US.ChrName},
