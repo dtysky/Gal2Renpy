@@ -28,6 +28,7 @@ def RangeInit():
 		'key':US.KeyWord,
 		'chc':{'m':US.ChrName,'s':US.ChrName},
 		'view':{'m':US.ChrName},
+		'key':{'k':US.KeyWord,'m':('No Preview!',)},
 		'chrname':US.ChrName
 	}
 

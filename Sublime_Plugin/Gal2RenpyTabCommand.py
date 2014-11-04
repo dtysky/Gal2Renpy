@@ -64,7 +64,7 @@ def EditInit():
 				],
 			'key':[
 					0,('k'),{'k':'None'},
-					(('m','None'),('n','None'))
+					('m','n'),{'m':'None','n':'None'}
 				],
 			'mode':[
 					0,(),{},
