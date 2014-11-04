@@ -34,6 +34,15 @@ class Gal2RenpySelectCommand(sublime_plugin.TextCommand):
 			return {'pair':pair,'pairt':pairt,'tag':pairt.split(':')[0],'attr':pairt.split(':')[1]}
 		def InBlock():
 			return re.match(r'.*[a-z]+:',GetLineText(GetNowLine()))
+		def IsBlockEnd():
+			c=self.view.substr(GetNowPoint())
+			ptrc=GetPointRC(GetNowPoint())
+			c+=self.view.substr((SetPointRC(ptrc[0],ptrc[1]+1)))
+			return c=='</'
+		def IsLineEnd():
+			return self.view.substr(GetNowPoint())=='\n'
+		def IsWholeHead():
+			return GetPointRC(GetNowPoint())==(0,0)
 		def MoveOne(right):
 			self.view.run_command('move',args={"by": "characters", "forward": right})
 		def MoveWord(right):
@@ -45,6 +54,10 @@ class Gal2RenpySelectCommand(sublime_plugin.TextCommand):
 			pt2=SetPointRC(ptrc[0],ptrc[1]+len(pair['tag'])+1+len(pair['attr']))
 			reg=CreatReg(pt1,pt2)
 			SetViewSelect(reg)
+		def ViewNextLine():
+			ptrc=GetPointRC(GetNowPoint())
+			reg=CreatReg(SetPointRC(ptrc[0]+1,0),SetPointRC(ptrc[0]+1,0))
+			SetViewSelect(reg)
 		#Run
 		if not InBlock():
 			if action=='left':
@@ -55,29 +68,44 @@ class Gal2RenpySelectCommand(sublime_plugin.TextCommand):
 		if action=='left':
 			if not FindNextPair(GetNowPoint()):
 				if NoSelected():
-					tagnow='None'
+					tagnow=None
 				else:
-					MoveWord(False)
-					MoveWord(False)
-					tagnow=FindNextPair(GetNowPoint())['pairt']
+					taglast=FindNextPair(GetNowPoint())
+					while FindNextPair(GetNowPoint())==taglast :
+						MoveWord(False)
+						if IsWholeHead():
+							break
+					tagnow=FindNextPair(GetNowPoint())
 			else:
-				MoveWord(False)
-				MoveWord(False)
-				tagnow=FindNextPair(GetNowPoint())['pairt']
+				taglast=FindNextPair(GetNowPoint())
+				while FindNextPair(GetNowPoint())==taglast :
+					MoveWord(False)
+					if IsWholeHead():
+							break
+				tagnow=FindNextPair(GetNowPoint())
 			while 1:
 				MoveWord(False)
 				tagnext=FindNextPair(GetNowPoint())
+				#sublime.message_dialog(str(tagnow)+'\n'+str(tagnext))
 				if tagnext:
-					if FindNextPair(GetNowPoint())['pairt']!=tagnow:
+					if FindNextPair(GetNowPoint())!=tagnow:
 						break
 					elif not InBlock():
+						return
+					elif IsWholeHead():
 						break
 			ViewSelect()
 			return
-		MoveOne(True)
-		MoveOne(True)
-		if not InBlock():
+		if not NoSelected():
+			MoveOne(True)
+		if IsBlockEnd():
+			ViewNextLine()
 			return
+		if IsLineEnd():
+			MoveOne(True)
+			if IsBlockEnd():
+				ViewNextLine()
+				return
 		MoveOne(False)
 		ViewSelect()
 
