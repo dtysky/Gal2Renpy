@@ -63,8 +63,10 @@ class Gal2RenpyCompletions(sublime_plugin.EventListener):
 				tmp=re.match(r'<(\S+?)[\s+>]',line)
 				if tmp:
 					return (tmp.group(1),tag)
-				else:
+				elif re.match(r'\s*[a-z]+:',line):
 					i+=1
+				else:
+					break
 			return None
 		def GetSpecial(d):
 			i=0
@@ -74,15 +76,19 @@ class Gal2RenpyCompletions(sublime_plugin.EventListener):
 				tmp=re.match(r'.*m:(.*?)(?=<|\n|\s+[a-z]+:)',line)
 				if tmp:
 					return d.get(tmp.group(1))
-				else:
+				elif re.match(r'\s*[a-z]+:',line):
 					i+=1
+				else:
+					break
 			while(i>0):
 				line=GetLineText(GetPointLine(SetPointRC(ptrc[0]+i,0)))
 				tmp=re.match(r'.*m:(.*?)(?=<|\n|\s+[a-z]+:)',line)
 				if tmp:
 					return d.get(tmp.group(1))
-				else:
+				elif re.match(r'\s*[a-z]+:',line):
 					i-=1
+				else:
+					break
 			return None
 		def CreatList(FlagTag):
 			flag,tag=FlagTag

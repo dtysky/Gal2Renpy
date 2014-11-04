@@ -3,10 +3,30 @@
 	{	"keys": ["tab"],
 	 	"command": "gal2_renpy_tab",
 	 	"context": [{
-      		"operand": "source.Gal2Renpy",
+      		"operand": "sorce.Gal2Renpy",
       		"operator": "equal",
       		"match_all": true,
        		"key": "selector"      		
     	}] 
-    }
+  },
+  { "keys": ["left"],
+  "command": "gal2_renpy_select",
+  "context": [{
+        "operand": "sorce.Gal2Renpy",
+        "operator": "equal",
+        "match_all": true,
+        "key": "selector"         
+    }] ,
+    "args": {"action": "left"}
+  },
+  { "keys": ["right"],
+  "command": "gal2_renpy_select",
+  "context": [{
+        "operand": "sorce.Gal2Renpy",
+        "operator": "equal",
+        "match_all": true,
+        "key": "selector"         
+    }] ,
+    "args": {"action": "right"}
+  }
 ]

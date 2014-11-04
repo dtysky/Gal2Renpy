@@ -234,7 +234,7 @@
 						</dict>
 					</dict>
 				</array>
-				<key>Name</key>
+				<key>name</key>
 				<string>text.Gal2Renpy</string>
 			</dict>
 		</array>
