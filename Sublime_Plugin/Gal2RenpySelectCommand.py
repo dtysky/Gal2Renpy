@@ -1,4 +1,7 @@
-#coding utf-8
+#coding:utf-8
+
+#Copyright(c) 2014 dtysky
+
 import sublime, sublime_plugin
 import re
 
