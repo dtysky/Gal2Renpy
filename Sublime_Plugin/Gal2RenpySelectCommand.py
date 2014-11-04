@@ -41,7 +41,7 @@ class Gal2RenpySelectCommand(sublime_plugin.TextCommand):
 			return c=='</'
 		def IsLineEnd():
 			return self.view.substr(GetNowPoint())=='\n'
-		def IsWholeHead():
+		def IsBlockHead():
 			c=[self.view.substr(GetNowPoint())]
 			ptrc=GetPointRC(GetNowPoint())
 			c.append(self.view.substr((SetPointRC(ptrc[0],ptrc[1]+1))))
@@ -78,7 +78,7 @@ class Gal2RenpySelectCommand(sublime_plugin.TextCommand):
 				taglast=FindNextPair(GetNowPoint())
 				while FindNextPair(GetNowPoint())==taglast :
 					MoveWord(False)
-					if IsWholeHead():
+					if IsBlockHead():
 						return
 				tagnow=FindNextPair(GetNowPoint())
 			while 1:
@@ -90,7 +90,7 @@ class Gal2RenpySelectCommand(sublime_plugin.TextCommand):
 						break
 					elif not InBlock():
 						return
-					elif IsWholeHead():
+					elif IsBlockHead():
 						return
 			ViewSelect()
 			return

@@ -117,7 +117,7 @@ class Gal2RenpyTabCommand(sublime_plugin.TextCommand):
 			self.view.sel().add(reg)
 			self.view.show(reg)
 		def FindNextPair(pt):
-			pair = self.view.find('[a-z]+:.*?(?=&lt;|\n|\s+[a-z]+:)',pt)
+			pair = self.view.find('[a-z]+:.*?(?=<|>|\n|\s+[a-z]+:)',pt)
 			pairt = self.view.substr(pair)
 			return {'pair':pair,'tag':pairt.split(':')[0],'attr':pairt.split(':')[1]}
 		#Run

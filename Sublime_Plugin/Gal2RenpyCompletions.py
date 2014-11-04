@@ -107,6 +107,8 @@ class Gal2RenpyCompletions(sublime_plugin.EventListener):
 					ds=ds[tag]
 				else:
 					ds=GetSpecial(ds[tag])
+					if not ds:
+						return []
 			return ToShow(ds)
 
 		# Only trigger within Gal2Renpy
