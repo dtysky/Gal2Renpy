@@ -42,7 +42,10 @@ class Gal2RenpySelectCommand(sublime_plugin.TextCommand):
 		def IsLineEnd():
 			return self.view.substr(GetNowPoint())=='\n'
 		def IsWholeHead():
-			return GetPointRC(GetNowPoint())==(0,0)
+			c=[self.view.substr(GetNowPoint())]
+			ptrc=GetPointRC(GetNowPoint())
+			c.append(self.view.substr((SetPointRC(ptrc[0],ptrc[1]+1))))
+			return c[0]=='<' and c[1]!='/'
 		def MoveOne(right):
 			self.view.run_command('move',args={"by": "characters", "forward": right})
 		def MoveWord(right):
@@ -66,22 +69,17 @@ class Gal2RenpySelectCommand(sublime_plugin.TextCommand):
 				MoveOne(True)
 			return
 		if action=='left':
-			if not FindNextPair(GetNowPoint()):
-				if NoSelected():
+			if NoSelected():
+				if not FindNextPair(GetNowPoint()):
 					tagnow=None
 				else:
-					taglast=FindNextPair(GetNowPoint())
-					while FindNextPair(GetNowPoint())==taglast :
-						MoveWord(False)
-						if IsWholeHead():
-							break
 					tagnow=FindNextPair(GetNowPoint())
 			else:
 				taglast=FindNextPair(GetNowPoint())
 				while FindNextPair(GetNowPoint())==taglast :
 					MoveWord(False)
 					if IsWholeHead():
-							break
+						return
 				tagnow=FindNextPair(GetNowPoint())
 			while 1:
 				MoveWord(False)
@@ -93,7 +91,7 @@ class Gal2RenpySelectCommand(sublime_plugin.TextCommand):
 					elif not InBlock():
 						return
 					elif IsWholeHead():
-						break
+						return
 			ViewSelect()
 			return
 		if not NoSelected():
