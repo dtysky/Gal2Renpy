@@ -51,16 +51,16 @@ class MyFS():
 
 #User's source
 class User():
-	def __init__(self):
+	def __init__(self,path=''):
 		#Effect
-		jtmp=json.load(open('User/Effect.json','r'))
+		jtmp=json.load(codecs.open(path+'User/Effect.json','r','utf-8'))
 		self.EffectSp=jtmp['EffectSp']
 		self.Trans=jtmp['Trans']
 		self.Graph=jtmp['Graph']
 		for gr in self.Graph:
 			self.Graph[gr]['Pause']=0
 		#Bg
-		jtmp=json.load(open('User/Bg.json','r'))
+		jtmp=json.load(codecs.open(path+'User/Bg.json','r','utf-8'))
 		self.BgMain=jtmp['BgMain']
 		self.BgSub=jtmp['BgSub']
 		self.BgWeather=jtmp['BgWeather']
@@ -74,9 +74,9 @@ class User():
 			"l": self.BgPosition
 		}
 		#ChrFace
-		self.ChrFace=json.load(open('User/ChrFace.json','r'))
+		self.ChrFace=json.load(codecs.open(path+'User/ChrFace.json','r','utf-8'))
 		#ChrOther
-		jtmp=json.load(open('User/ChrOther.json','r'))
+		jtmp=json.load(codecs.open(path+'User/ChrOther.json','r','utf-8'))
 		self.ChrWindow=jtmp['ChrWindow']
 		self.ChrName=jtmp['ChrName']
 		for ch in sorted(self.ChrName):
@@ -87,11 +87,11 @@ class User():
 		self.ChrDistance=jtmp['ChrDistance']
 		self.ChrPosition=jtmp['ChrPosition']
 		#Sound
-		jtmp=json.load(open('User/Sound.json','r'))
+		jtmp=json.load(codecs.open(path+'User/Sound.json','r','utf-8'))
 		self.Bgm=jtmp['Bgm']
 		self.SoundE=jtmp['SoundE']
 		#Cg
-		jtmp=json.load(open('User/Cg.json','r'))
+		jtmp=json.load(codecs.open(path+'User/Cg.json','r','utf-8'))
 		self.Cg=jtmp['Cg']
 		self.CgSub={}
 		for cg in self.Cg:
@@ -109,7 +109,7 @@ class User():
 			"l": self.BgPosition
 		}
 		#Path,Mode
-		jtmp=json.load(open('User/PathMode.json','r'))
+		jtmp=json.load(codecs.open(path+'User/PathMode.json','r','utf-8'))
 		self.GamePath=jtmp['GamePath']
 		self.ScriptPath=jtmp['ScriptPath']
 		self.ChrPath=jtmp['ChrPath']
@@ -135,10 +135,11 @@ class User():
 			"c": self.ChrClothes,
 			"p": self.ChrPose,
 			"d": self.ChrDistance,
-			"l": self.ChrPosition
+			"l": self.ChrPosition,
+			"m": self.ChrName
 		}
 		#Keywords
-		jtmp=json.load(open('User/KeyWord.json','r'))['KeyWord']
+		jtmp=json.load(codecs.open(path+'User/KeyWord.json','r','utf-8'))['KeyWord']
 		self.KeyWord={}
 		for k in jtmp:
 			self.KeyWord[k]={'l':[]}
