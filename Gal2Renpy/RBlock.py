@@ -1,7 +1,7 @@
-#-*-coding:utf-8-*- 
-
+#coding:utf-8
+#################################
 #Copyright(c) 2014 dtysky
-
+#################################
 import re
 import codecs
 import sys   
@@ -56,7 +56,7 @@ def SpLineSyntax(line):
 def RBlock(FS,US):
 	Block=[]
 	def RefBlock(sr):
-		B={'head':None,'flag':None,'attrs1':None,'attrs2':None}
+		B={'head':None,'flag':[],'attrs1':[],'attrs2':[]}
 		if not sr:
 			return
 		for s in sr:
