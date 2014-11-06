@@ -8,92 +8,118 @@ import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-#Return hash for a dict which may contain a dict as its value or others
-	
-#Return next block
-def RBlock(Fs,US):
-	def PairJudge(f1,f2,Fs):
-		if f1!=f2:
-			Fs.Error('Error flag pair '+f1+'and '+f2+' !')
-	def RefBlock(Block,sr):
-		for s in sr:
-			if s in Block:
-				Block[s]=sr[s]
-	Block={'head':None,'flag':None,'attrs1':None,'attrs2':None}
+#A stack class
+class Stack():
+	def __init__(self):
+		self.list=[]
+	def Push(self,s):
+		self.list.append(s)
+	def Pop(self):
+		return self.list.pop()
+	def Check(self,s):
+		return self.list[len(self.list)-1]==s
+	def IsEmpty(self):
+		return len(self.list)==0
+	#A speical function!
+	def AddLast(self,s):
+		if isinstance(self.list[len(self.list)-1],Stack):
+			self.list[len(self.list)-1].Push(s)
+	def GetAll(self):
+		return list(self.list)
+	def Clear(self):
+		self.list=[]
+
+#Return a dict from one line depend on its syntax
+def SpLineSyntax(line):
 	sr=None
-	s=Fs.readline()
-	#comment
+	#</x>
+	if re.match(r'\s*</\S+>',line):
+		sr=re.match(r'\s*</(?P<flag2>\S+?)>',line).groupdict()
+	#<x y>z</x>
+	elif re.match(r'\s*<\S+\s+.+>.*</.+>',line):
+		sr=re.match(r'<(?P<flag>\S+?)\s+(?P<attrs1>.+)>(?P<attrs2>.*)</(?P<flag2>\S+)>',line).groupdict()
+	#<x>z</x>
+	elif re.match(r'\s*<\S+>.*</\S+>',line):
+		sr=re.match(r'\s*<(?P<flag>\S+?)>(?P<attrs2>.*)</(?P<flag2>\S+)>',line).groupdict()
+	#<x y>
+	elif re.match(r'\s*<\S+\s+.+>',line):
+		sr=re.match(r'\s*<(?P<flag>\S+?)\s+(?P<attrs1>.+)>',line).groupdict()
+	#<x>
+	elif re.match(r'\s*<\S+>',line):
+		sr=re.match(r'\s*<(?P<flag>\S+?)>',line).groupdict()
+	#z
+	else:
+		sr={'attrs2':line}
+	return sr
+
+#Return next block
+def RBlock(FS,US):
+	Block=[]
+	def RefBlock(sr):
+		B={'head':None,'flag':None,'attrs1':None,'attrs2':None}
+		if not sr:
+			return
+		for s in sr:
+			if s in B:
+				B[s]=sr[s]
+		Block.append(B)
+
+	s=FS.ReadLine()
+	#Comment
 	comment=re.search(r'.*\\#.*',s)
 	if comment:
 		s=s[comment.start():]
 	#End of this file
-	elif Fs.End():
-		Block['head']='end'
+	if FS.IsEnd():
+		sr={'head':'end'}
+		RefBlock(sr)
 	#Null or comment
-	elif s=='' or s[0]=='#':
-		Block['head']='skip'
+	elif s=='':
+		sr={'head':'skip'}
+		RefBlock(sr)
 	#<*>*
 	elif re.match(r'\s*<.*>',s):
-		#<x y>z</x>
-		if re.match(r'\s*<\S+\s+\S+>.*</\S+>',s):
-			sr=re.match(r'<(?P<flag>\S+?)\s+(?P<attrs1>.+)>(?P<attrs2>.*)</(?P<flag2>\S+)>',s).groupdict()
-			ErrorPair(sr['flag'],sr['flag2'],Fs)
-		#<x>z</x>
-		elif re.match(r'\s*<\S+>.*</\S+>',s):
-			sr=re.match(r'\s*<(?P<flag>\S+?)>(?P<attrs2>.*)</(?P<flag2>\S+)>',s)
-			ErrorPair(sr['flag'],sr['flag2'],Fs)
-		#<x y>
-		#z
-		#</x>
-		elif re.match(r'\s*<\S+\s+\S+>',s):
-			sr=re.match(r'\s*<(?P<flag>\S+?)\s+(?P<attrs1>.+)>',s)
-			sr['attrs2']=''
-			while 1:
-				sl=Fs.readline()
-				slr=re.match(r'\s*</(?P<flag2>\S+)>',s)
-				if slr:
-					ErrorPair(sr['flag'],slr['flag2'],Fs)
-					break
-				elif s[0]=='<':
-					Fs.error("Error! Please check the '</' tag !")
+		stack={'flag':Stack(),'attrs1':Stack(),'attrs2':Stack()}
+		while  1:
+			sr=SpLineSyntax(s)
+			for attr in ['flag','attrs1']:
+				if attr in sr:
+					stack[attr].Push(sr[attr])
+			if 'flag' in sr:
+				stack['attrs2'].Push(Stack())
+			if 'attrs2' in sr:
+				stack['attrs2'].AddLast(sr['attrs2'])
+			if 'flag2' in sr:
+				if stack['flag'].Check(sr['flag2']):
+					for attr in ['flag','attrs1']:
+						if not stack[attr].IsEmpty():
+							sr[attr]=stack[attr].GetAll()
+							stack[attr].Pop()
+					sr['attrs2']=stack['attrs2'].Pop().GetAll()
+					sr['head']='sp'
+					RefBlock(sr)
 				else:
-					sr['attrs2']+=re.match(r'\s*(\S[.*]+)',s).group(1)+'\r\n'
-		#<x>
-		#z
-		#</x>
-		elif re.match(r'\s*<\S+>',s):
-			sr=re.match(r'<(?P<flag>\S+?)>',s)
-			sr['attrs2']=''
-			while 1:
-				sl=Fs.readline()
-				slr=re.match(r'\s*</(?P<flag2>\S+)>',s)
-				if slr:
-					ErrorPair(sr['flag'],slr['flag2'],Fs)
+					FS.Error("This pair '"+stack['flag'].Pop()+"' and '"+sr['flag2']+"' are error !")
+				if stack['flag'].IsEmpty():
 					break
-				elif s[0]=='<':
-					Fs.error("Error! Please check the '</' tag !")
-				else:
-					sr['attrs2']+=re.match(r'\s*(\S[.*]+)',s).group(1)+'\n'
-		else:
-			Fs.error("Error! Please check the '<>' tag !")
-		sr['head']='sp'
+			s=FS.ReadLine()
+			if FS.IsEnd():
+				FS.Error("This flag '"+stack['flag'].Pop()+"' is not complete!")
 	else:
+		sr=None
 		if re.match(ur'\S+\s+【.*】',s):
-			sr=re.match(ur'(?P<flag>\S+)\s+?P<attrs2>【(.*)】',s)
+			sr=re.match(ur'(?P<flag>\S+)\s+【(?P<attrs2>.*)',s).groupdict()
 			if sr['flag'] not in US.args['ch']:
-				Fs.error('This charecter '+sr['flag']+' doen not exist !')
+				FS.Error('This charecter '+sr['flag']+' doen not exist !')
 			sr['head']='words'
 			sr['attrs1']='say'
 		elif re.match(ur'【.*】',s):
-			sr=re.match(ur'【?P<attrs2>(.*)】',s)
-			if sr:
-				sr['head']='words'
-				sr['attrs1']='think'
-				if not US.ChrName['Saying']:
-					Fs.error('No speaker !')
-				sr['flag']=US.args['Saying']
-			else:
-				sr['head']='text'
-				sr['attrs2']="n '"+s.strip()+"'\n"
-	RefBlock(Block,sr)
+			sr=re.match(ur'【(?P<attrs2>.*)】',s).groupdict()
+			sr['head']='words'
+			sr['attrs1']='think'
+			sr['flag']='Saying'
+		else:
+			sr={'head':'text'}
+			sr['attrs2']="n '"+s.strip()}
+		RefBlock(sr)
 	return Block

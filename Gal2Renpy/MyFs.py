@@ -8,6 +8,7 @@ import os
 from ctypes import *
 import codecs
 import hashlib
+import locale
 user32 = windll.LoadLibrary('user32.dll')
 MessageBox = lambda x:user32.MessageBoxA(0, x, 'Error', 0) 
 
@@ -21,11 +22,10 @@ class MyFS():
 		if not os.path.exists(path):
 			self.Error('The file '+path+' does not exist !')
 		self.fs=codecs.open(path,mode,'utf-8').read().splitlines()
-	def FromText(self,s):
-		self.linepos=0
-		self.fs=s.splitlines()
 	def ReadLine(self):
 		self.linepos+=1
+		if self.linepos>len(self.fs):
+			return ''
 		return self.fs[self.linepos-1]
 	def IsEnd(self):
 		if self.linepos==len(self.fs):
