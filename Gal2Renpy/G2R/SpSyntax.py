@@ -10,7 +10,7 @@ class SpSyntax():
 		self.attrs={}
 	#Refresh attributes
 	#attrs1 is a list content all attributes,attrs2 is a line
-	def Refresh(self,attrs1,attrs2):
+	def Refresh(self,Attrs1,Attrs2):
 		def Syntax(attrs):
 			r={}
 			attrs=re.findall(r'[a-z]+:.*',attrs)

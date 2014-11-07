@@ -1,0 +1,15 @@
+{
+	"ch":{
+
+		"Tag":{
+
+			"p":"Pose",
+			"c":"Clothes",
+			"f":"Face",
+			"d":"Distance",
+			"l":"Position",
+			"t":"Transtion"
+		}
+	}
+
+}

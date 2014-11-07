@@ -1,0 +1,22 @@
+{
+	"cg":{
+
+		"Common":{
+
+			"Transition":{
+
+			"隐藏":"hide",
+			"默认":"dissolve",
+			"栅栏":"blinds",
+			"睁眼":"TransEyeOpen",
+			"闭眼":"TransEyeClose",
+			"旋转":"TransCircle",
+			"线性":"TransLinear",
+			"线性-斜":"TransLinearSt",
+			"无":"None"
+			}
+		}
+
+	}
+
+}

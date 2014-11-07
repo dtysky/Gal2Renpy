@@ -1,0 +1,25 @@
+{
+	"gf":{
+
+		"纸飞机-来":{
+			"Name":"PlaneA",
+			"Source":"Dir",
+			"Type":"Frame",
+			"Delay":"0.01"
+		},
+
+		"纸飞机-去":{
+			"Name":"PlaneB",
+			"Source":"Dir",
+			"Type":"Frame",
+			"Delay":"0.02"
+		},
+
+		"纸飞机":{
+			"Name":"Plane1",
+			"Source":"File",
+			"Type":"Image"
+		}
+
+	}
+}

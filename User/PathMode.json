@@ -3,7 +3,7 @@
 
 	"Comment1":"//Seting True when you want to use TestMode, if not , seting False", 
 	"TestMode":"True" ,
-	"HPCSystem":"False",
+	"HPCSystem":"True",
 
 	"Comment2":"//Your '.rpy' Script path, please use absolute path",
 	"ScriptPath":"E:/Follow_wings/FW/game/script/" ,
@@ -12,7 +12,7 @@
 	"TextPath":"E:/Follow_wings/FW/game/TXT" ,
 
 	"Comment4":"//Your game data path, you can use absolute path or a path which relative to your game dir",
-	"ChrPath":"data/char/" ,
+	"ChPath":"data/char/" ,
 	"BgPath":"data/bg/" ,
 	"BgmPath":"data/bgm/" ,
 	"CgPath":"data/cg/",
@@ -20,3 +20,4 @@
 	"WinPath":"data/window/",
 	"EfPath":"data/effect/"
 }
+

@@ -30,30 +30,30 @@ class Stack():
 		self.list=[]
 
 #Return a dict from one line depend on its syntax
-def SpLineSyntax(line):
+def SpLineSyntax(Line):
 	sr=None
 	#</x>
-	if re.match(r'\s*</\S+>',line):
-		sr=re.match(r'\s*</(?P<flag2>\S+?)>',line).groupdict()
+	if re.match(r'\s*</\S+>',Line):
+		sr=re.match(r'\s*</(?P<flag2>\S+?)>',Line).groupdict()
 	#<x y>z</x>
-	elif re.match(r'\s*<\S+\s+.+>.*</.+>',line):
-		sr=re.match(r'<(?P<flag>\S+?)\s+(?P<attrs1>.+)>(?P<attrs2>.*)</(?P<flag2>\S+)>',line).groupdict()
+	elif re.match(r'\s*<\S+\s+.+>.*</.+>',Line):
+		sr=re.match(r'<(?P<flag>\S+?)\s+(?P<attrs1>.+)>(?P<attrs2>.*)</(?P<flag2>\S+)>',Line).groupdict()
 	#<x>z</x>
-	elif re.match(r'\s*<\S+>.*</\S+>',line):
-		sr=re.match(r'\s*<(?P<flag>\S+?)>(?P<attrs2>.*)</(?P<flag2>\S+)>',line).groupdict()
+	elif re.match(r'\s*<\S+>.*</\S+>',Line):
+		sr=re.match(r'\s*<(?P<flag>\S+?)>(?P<attrs2>.*)</(?P<flag2>\S+)>',Line).groupdict()
 	#<x y>
-	elif re.match(r'\s*<\S+\s+.+>',line):
-		sr=re.match(r'\s*<(?P<flag>\S+?)\s+(?P<attrs1>.+)>',line).groupdict()
+	elif re.match(r'\s*<\S+\s+.+>',Line):
+		sr=re.match(r'\s*<(?P<flag>\S+?)\s+(?P<attrs1>.+)>',Line).groupdict()
 	#<x>
-	elif re.match(r'\s*<\S+>',line):
-		sr=re.match(r'\s*<(?P<flag>\S+?)>',line).groupdict()
+	elif re.match(r'\s*<\S+>',Line):
+		sr=re.match(r'\s*<(?P<flag>\S+?)>',Line).groupdict()
 	#z
 	else:
-		sr={'attrs2':line}
+		sr={'attrs2':Line}
 	return sr
 
 #Return next block
-def RBlock(FS,US):
+def RBlock(FS):
 	Block=[]
 	def RefBlock(sr):
 		B={'head':None,'flag':[],'attrs1':[],'attrs2':[]}
@@ -108,18 +108,16 @@ def RBlock(FS,US):
 	else:
 		sr=None
 		if re.match(ur'\S+\s+【.*】',s):
-			sr=re.match(ur'(?P<flag>\S+)\s+【(?P<attrs2>.*)',s).groupdict()
-			if sr['flag'] not in US.args['ch']:
-				FS.Error('This charecter '+sr['flag']+' doen not exist !')
+			sr=re.match(ur'(?P<attrs1>\S+)\s+【(?P<attrs2>.*)',s).groupdict()
 			sr['head']='words'
-			sr['attrs1']='say'
+			sr['flag']='say'
 		elif re.match(ur'【.*】',s):
 			sr=re.match(ur'【(?P<attrs2>.*)】',s).groupdict()
 			sr['head']='words'
-			sr['attrs1']='think'
-			sr['flag']='Saying'
+			sr['flag']='think'
 		else:
-			sr={'head':'text'}
+			sr={'head':'words'}
+			sr['flag']='text'
 			sr['attrs2']="n '"+s.strip()}
 		RefBlock(sr)
 	return Block

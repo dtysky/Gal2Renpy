@@ -1,0 +1,18 @@
+{
+	"ch":{
+
+		"Common":{
+
+			"Transition":{
+
+			"隐藏":"hide",
+			"默认":"Dissolve(0.2)",
+			"移动":"move",
+			"移动-慢":"MoveTransition(2.0)",
+			"移动-快":"MoveTransition(0.2)"
+			}
+		}
+
+	}
+
+}
