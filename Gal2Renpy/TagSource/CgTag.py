@@ -9,9 +9,10 @@ class CgTag(G2R.TagSource):
 		tags=G2R.TagSource.Get(self,Flag,US)
 		tags['s']={}
 		for cg in tags['m']:
-			tags['s'][cg]=[]
+			tags['s'][cg]={}
 			for k in US.Args[Flag][cg]['Kind']:
 				for knum in range(k[1]):
 					for bg in US.Args[Flag][cg]['Bg']:
-						tags['s'][cg].append(k[0]+str(knum)+bg)
+						n=k[0]+str(knum)+bg
+						tags['s'][cg][n]=n
 		return tags
