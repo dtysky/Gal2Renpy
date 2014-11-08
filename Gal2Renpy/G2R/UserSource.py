@@ -41,15 +41,3 @@ class UserSource():
 		for flag in tags:
 			Args[flag]['Tag']=tags[flag]
 		self.Args=Args
-		
-		#Keywords
-		jtmp=json.load(codecs.open(path+'User/KeyWord.json','r','utf-8'))['KeyWord']
-		self.KeyWord={}
-		for k in jtmp:
-			self.KeyWord[k]={'l':[]}
-			for l in jtmp[k]:
-				self.KeyWord[k]['l'].append(l[0])
-				self.KeyWord[k][l[0]]=l[1:]
-
-
-		self.Date='None'
