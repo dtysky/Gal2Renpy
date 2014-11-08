@@ -5,3 +5,4 @@ from MyFs import *
 from ReadBlock import *
 from UserSource import *
 from UserTag import *
+from DefinSyntax import *
