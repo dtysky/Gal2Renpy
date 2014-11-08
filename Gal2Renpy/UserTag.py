@@ -15,6 +15,7 @@ class UserTag():
 			return True
 		def IsSubOfTag(d):
 			return issubclass(d,G2R.TagSource)
+
 		path=TagSourcePath+'/TagSource'
 		Tags={}
 		sys.path.add(TagSourcePath)
@@ -36,6 +37,6 @@ class UserTag():
 					continue
 				Mds.append(d)
 		for c in Cls:
-			
-
+			obj=c()
+			Tags[obj.GetFlag()]=obj.Get()
 		self.Tags=Tags
