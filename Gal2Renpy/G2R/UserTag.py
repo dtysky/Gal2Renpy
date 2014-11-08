@@ -36,7 +36,7 @@ class UserSource():
 		for flag in Args:
 			if 'Common' in Args[flag]:
 				for arg in Args[flag]:
-					Args[flag][arg].update(Args[flag]['Common'])
+					Args[flag][arg].append(Args[flag]['Common'])
 				del Args[flag]['Common']
 		for flag in tags:
 			Args[flag]['Tag']=tags[flag]

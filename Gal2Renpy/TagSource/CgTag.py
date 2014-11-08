@@ -14,3 +14,4 @@ class CgTag(G2R.TagSource):
 				for knum in range(k[1]):
 					for bg in US.Args[Flag][cg]['Bg']:
 						tags['s'][cg].append(k[0]+str(knum)+bg)
+		return tags

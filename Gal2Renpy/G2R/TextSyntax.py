@@ -11,7 +11,7 @@ class TextSyntax():
 	def Refresh(self,Mode,Type,Text,Name=None):
 		#say/think/text
 		self.say['mode']=Mode
-		#adv/nvl
+		#ADV/NVL
 		self.say['type']=Type
 		#Speaker/Thinker
 		self.say['name']=Name
@@ -26,9 +26,9 @@ class TextSyntax():
 		if self.say['mode']=='text':
 			rn+=self.say['text']
 		elif self.say['mode']=='say':
-			rn+=self.say['name']+self.say['mode']+' '
+			rn+=self.say['name']+self.say['type']+' '
 			n+="'"+self.say['text']+"'\n"
 		elif self.say['mode']=='think':
-			rn+=self.say['name']+self.say['mode']+' '
+			rn+=self.say['name']+self.say['type']+' '
 			rn+="'（"+self.say['Text']+"）'\n"
 		return '    '+rn
