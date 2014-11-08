@@ -6,6 +6,9 @@ import re
 
 #The special-text-syntax super class
 class SpSyntax():
+	"""
+	Creat ren'py script by flag and tags
+	"""
 	def __init__(self):
 		self.attrs={}
 	#Refresh attributes

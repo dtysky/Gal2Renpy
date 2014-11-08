@@ -21,7 +21,10 @@ class MyFS():
 		self.linepos=0
 		if not os.path.exists(path):
 			self.Error('The file '+path+' does not exist !')
-		self.fs=codecs.open(path,mode,'utf-8').read().splitlines()
+		if mode=='r':
+			self.fs=codecs.open(path,mode,'utf-8').read().splitlines()
+		else:
+			self.fs=codecs.open(path,mode,'utf-8')
 	def ReadLine(self):
 		self.linepos+=1
 		if self.linepos>len(self.fs):
@@ -46,5 +49,7 @@ class MyFS():
 		hash=md5obj.hexdigest() 
 		self.fs.seek(0)
 		return hash
+	def Write(self,s):
+		self.fs.write(s)
 	def Close(self):
 		self.fs.close()

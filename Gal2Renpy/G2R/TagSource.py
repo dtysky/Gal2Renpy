@@ -5,6 +5,9 @@
 
 #A super class for user's tag by flag
 class TagSource():
+	"""
+	Creat tags for flag from user's source
+	"""
 	def __init__(self):
 		pass
 	def GetFlag(self):

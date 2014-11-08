@@ -3,40 +3,19 @@
 #Copyright(c) 2014 dtysky
 #################################
 import sys
-import TagSource
+from TagSource import *
+from GetAllClass import *
+
 
 #A class for storing user's tags
 class UserTag():
-	def __init__(self,TagSourcePath=''):
-		def IsMyDefine(d):
-			if len(d)>1:
-					if d[0:1]=='__':
-						return False
-			return True
-		def IsSubOfTag(d):
-			return issubclass(d,TagSource)
-
-		path=TagSourcePath+'/TagSource'
+	"""
+	A class for storing all tags
+	"""
+	def __init__(self,US,TagSourcePath='../TagSource'):
 		Tags={}
-		sys.path.add(TagSourcePath)
-		Mds=[]
-		Cls=[]
-		#Import all modules from TagSorce dir
-		for root,dirs,files in os.walk(TagSourcePath):
-			for f in files:
-				n,e=os.path.splitext(f)
-				if e=='.py':
-					Mds.append(__import__(n))
-		#Get all classes which are children of TagSource
-		for m in Mds:
-			for d in dir(m):
-				if not IsMyDefine(d):
-					continue
-				d=getattr(m,d)
-				if not IsSubOfTag(d):
-					continue
-				Mds.append(d)
+		Cls=GetAllClass(TagSourcePath,TagSource)
 		for c in Cls:
 			obj=c()
-			Tags[obj.GetFlag()]=obj.Get()
+			Tags[obj.GetFlag()]=obj.Get(obj.GetFlag(),US)
 		self.Tags=Tags
