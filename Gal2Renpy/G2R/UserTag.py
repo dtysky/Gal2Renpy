@@ -3,7 +3,7 @@
 #Copyright(c) 2014 dtysky
 #################################
 import sys
-import G2R
+import TagSource
 
 #A class for storing user's tags
 class UserTag():
@@ -14,7 +14,7 @@ class UserTag():
 						return False
 			return True
 		def IsSubOfTag(d):
-			return issubclass(d,G2R.TagSource)
+			return issubclass(d,TagSource)
 
 		path=TagSourcePath+'/TagSource'
 		Tags={}
