@@ -15,8 +15,8 @@ class BgmDefine(G2R.DefineSyntax):
 		so=''
 		for ele in Args:
 			so+='define bgm_'+Args[ele]+' = '
-			so+="'"bgmpath+Args[ele]+"'\n"
-		FS.Open(bgmpath,'w')
+			so+="'"elepath+Args[ele]+"'\n"
+		FS.Open(path,'w')
 		FS.Write(so)
 		FS.Close()
 		return DictHash

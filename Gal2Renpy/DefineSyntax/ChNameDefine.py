@@ -6,8 +6,8 @@ import G2R
 
 class ChNameDefine(G2R.DefineSyntax):
 	def Creat(self,Flag,US,FS):
-		DictHash=G2R.DefineSyntax.Creat(self,Flag,US,FS,DictHash)
-		if DictHash[Flag]==G2R.DHash(US.Args[Flag]):
+		DictHash=G2R.DefineSyntax.Creat(self,'ch',US,FS,DictHash)
+		if DictHash['cg']==G2R.DHash(US.Args['ch']):
 			return DictHash
 		path=US.Args['pathmode']['ScriptPath']+'define/chname.rpy'
 		Args=US.Args['ch']
