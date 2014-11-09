@@ -18,11 +18,14 @@ class TagSource():
 		if Flag in US.Args:
 			tags['m']={}
 			#If top-level key's value is not a dict or list,'m' tag's value will be as it's original set
-			for m in US.Args[Flag]:
-				if isinstance(US.Args[Flag][m],dict) or isinstance(US.Args[Flag][m],list):
-					tags['m'][m]=m
-				else:
-					tags['m']=US.Args[Flag][m]
+			if isinstance(US.Args[Flag],list):
+				tags['m']=list(US.Args[Flag])
+			else:
+				for m in US.Args[Flag]:
+					if isinstance(US.Args[Flag][m],dict) or isinstance(US.Args[Flag][m],list):
+						tags['m'][m]=m
+					else:
+						tags['m']=US.Args[Flag][m]
 		if 'Tag' in US.Args[flag]:
 			tmp=dict(US.Args[Flag]['Tag'])
 			for arg in tmp:

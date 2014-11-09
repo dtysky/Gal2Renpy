@@ -2,6 +2,7 @@
 #################################
 #Copyright(c) 2014 dtysky
 #################################
+from DHash import *
 
 #The define-creat-syntax super class
 class DefineSyntax():
@@ -12,5 +13,7 @@ class DefineSyntax():
 		pass
 	def GetFlag(self):
 		return self.__class__.__name__.replace('Define').lower()
-	def Creat(self,Flag,US,FS):
-		return ''
+	def Creat(self,Flag,US,FS,DictHash):
+		if Flag not in DictHash:
+			DictHash[Flag]=DHash(US.Args[Flag])
+		return DictHash

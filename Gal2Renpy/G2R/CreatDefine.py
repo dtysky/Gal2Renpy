@@ -7,11 +7,12 @@ from DefineSyntax import *
 from GetAllClass import *
 
 #A function for storing user's tags
-def CreatDefine(US,FS,DefineSyntaxPath='../DefineSyntax'):
+def CreatDefine(US,FS,DictHash,DefineSyntaxPath='../DefineSyntax'):
 	"""
 	Creat all definitions
 	"""
 	Cls=GetAllClass(DefineSyntaxPath,DefineSyntax)
 	for c in Cls:
 		obj=c()
-		obj.Creat(obj.GetFlag(),US,FS)
+		DictHash=obj.Creat(obj.GetFlag(),US,FS,DictHash)
+	return DictHash
