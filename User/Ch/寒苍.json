@@ -5,7 +5,17 @@
 
 			"Name":"Dream",
 
-			"Color":"#aaaaaa",
+			"N_Color":"#ffffff",
+
+			"T_Color":"#ffffff",
+
+			"N_OutLineColor":"#aaaaaa",
+
+			"T_OutLineColor":"#aaaaaa",
+
+			"N_Bold":"False",
+
+			"T_Bold":"False",
 
 			"WindowADV":"Dream1",
 
