@@ -3,6 +3,7 @@
 #Copyright(c) 2014 dtysky
 #################################
 import G2R
+import os
 
 class BgDefine(G2R.DefineSyntax):
 	def Creat(self,Flag,US,FS):
@@ -14,7 +15,7 @@ class BgDefine(G2R.DefineSyntax):
 		Args=US.Args[Flag]
 		so=''
 		for ele in Args:
-			so+='define sound_'+Args[ele]+' = '
+			so+='define sound_'+os.splitext(Args[ele])[0]+' = '
 			so+="'"elepath+Args[ele]+"'\n"
 		FS.Open(path,'w')
 		FS.Write(so)

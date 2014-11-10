@@ -4,8 +4,8 @@
 #################################
 import G2R
 
-class ChSp(G2R.SpSyntax):
-	def Show(self,Flag,Attrs,US,UT,Tmp):
+class HpcChSp(G2R.SpSyntax):
+	def Show(self,Flag,Attrs,UT,Tmp):
 		sw=''
 		name,Attrs=self.Check(Flag,Attrs,UT)
 		if Attrs['t']=='hide':

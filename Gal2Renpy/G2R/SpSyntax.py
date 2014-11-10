@@ -3,6 +3,7 @@
 #Copyright(c) 2014 dtysky
 #################################
 from Error import *
+import re
 
 #The special-text-syntax super class
 class SpSyntax():
@@ -65,5 +66,5 @@ class SpSyntax():
 			Attrs[tag]=Ut[Flag][tag][Attrs['m']][Attrs[tag]]
 		return name,Attrs
 	#Creat scripts which are related to charecters
-	def Show(self,Flag,Attrs,UT,Tmp):
+	def Show(self,Flag,Attrs,US,UT,Tmp):
 		return ''

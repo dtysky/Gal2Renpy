@@ -5,4 +5,8 @@
 import G2R
 
 class EfTag(G2R.TagSource):
-	pass
+	def Get(self,Flag,US):
+		tags={'e':{}}
+		for e in US.Args[Flag]:
+			tags['e'][e]=US.Args[Flag][e]
+		return tags

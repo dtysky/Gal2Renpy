@@ -5,7 +5,7 @@
 import G2R
 
 class DateSp(G2R.SpSyntax):
-	def Show(self,Flag,Attrs,UT,Tmp):
+	def Show(self,Flag,Attrs,US,UT,Tmp):
 		sw=''
 		if 'm' not in Attrs:
 			G2R.TagError("This flag '"+Flag+"' must have tag 'm' !")

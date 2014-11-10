@@ -14,7 +14,7 @@ class BgmDefine(G2R.DefineSyntax):
 		Args=US.Args[Flag]
 		so=''
 		for ele in Args:
-			so+='define bgm_'+Args[ele]+' = '
+			so+='define bgm_'+os.splitext(Args[ele])[0]+' = '
 			so+="'"elepath+Args[ele]+"'\n"
 		FS.Open(path,'w')
 		FS.Write(so)

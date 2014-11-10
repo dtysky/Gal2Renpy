@@ -5,5 +5,5 @@
 import G2R
 
 class ModeTag(G2R.TagSource):
-	tags={'m':['ADV','NVL']}
+	tags={'m':{'ADV':'ADV','NVL':'NVL'}}
 	return tags
