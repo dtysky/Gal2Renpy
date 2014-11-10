@@ -4,7 +4,7 @@
 #################################
 
 #The normal-text-syntax super class
-class TextSyntax():
+class TextCreat():
 	def __init__(self):
 		self.say={}
 	#Refresh text

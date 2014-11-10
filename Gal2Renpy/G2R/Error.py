@@ -13,3 +13,8 @@ def SourceError(e,exit=True):
 	MessageBox('Source error!\r\n'+e.encode(locale.getdefaultlocale()[1]))
 	if exit:
 		sys.exit(0)
+
+def TagError(e,exit=True):
+	MessageBox('Tag error!\r\n'+e.encode(locale.getdefaultlocale()[1]))
+	if exit:
+		sys.exit(0)

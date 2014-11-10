@@ -11,7 +11,11 @@ class TagSource():
 	def __init__(self):
 		pass
 	def GetFlag(self):
-		return self.__class__.__name__.replace('Tag').lower()
+		s=self.__class__.__name__.replace('Define')
+		tmp=''
+		for _s_ in s:
+			tmp+=_s_ if _s_.islower() else '_'+_s_.lower()
+		return tmp[1:]
 	def Get(self,Flag,US):
 		tags={}
 		#'m' tag is a special tag which content all top-level attributes
@@ -19,18 +23,20 @@ class TagSource():
 			tags['m']={}
 			#If top-level key's value is not a dict or list,'m' tag's value will be as it's original set
 			if isinstance(US.Args[Flag],list):
-				tags['m']=list(US.Args[Flag])
+				for m in US.Args[Flag]:
+					tags['m']=m
 			else:
 				for m in US.Args[Flag]:
 					if isinstance(US.Args[Flag][m],dict) or isinstance(US.Args[Flag][m],list):
 						tags['m'][m]=m
 					else:
-						tags['m']=US.Args[Flag][m]
+						tags['m'][m]=US.Args[Flag][m]
 		if 'Tag' in US.Args[flag]:
 			tmp=dict(US.Args[Flag]['Tag'])
+			dtmp={}
 			for arg in tmp:
-				tmp[arg]={}
+				dtmp[arg]={}
 				for m in tags['m']:
-					tmp[arg][m]=dict(US.Args[Flag][m][US.Args[Flag]['Tag']])
-			tags.update(tmp)
+					dtmp[arg][m]=US.Args[Flag][m][tmp[m]]
+			tags.update(dtmp)
 		return tags

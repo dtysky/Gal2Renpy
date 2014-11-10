@@ -4,5 +4,6 @@
 #################################
 import G2R
 
-class BgmTag(G2R.TagSource):
-	pass
+class HpcBgTag(G2R.TagSource):
+	def Get(self,Flag,US):
+		return G2R.TagSource.Get(self,'bg',US)

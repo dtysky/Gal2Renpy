@@ -4,5 +4,5 @@
 #################################
 import G2R
 
-class BgmTag(G2R.TagSource):
+class VdSp(G2R.SpSyntax):
 	pass

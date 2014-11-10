@@ -2,7 +2,7 @@
 #################################
 #Copyright(c) 2014 dtysky
 #################################
-import re
+from Error import *
 
 #The special-text-syntax super class
 class SpSyntax():
@@ -31,42 +31,39 @@ class SpSyntax():
 		attrs1=re.findall(r'[a-z]+:.*',attrs1)
 		if tmp:
 			self.attrs.update(tmp)
-		return self.attrs
-	#Check whether the attributes completely
-	def Check(self):
-		if self.attrs['new']:
-			if self.complete==False:
-				for attr in self.attrs:
-					if self.attrs[attr]==None:
-						self.fs.error("This charecter's attributes are not complete !")
+	#Return flag by class name 
+	def GetFlag(self):
+		s=self.__class__.__name__.replace('Sp')
+		tmp=''
+		for _s_ in s:
+			tmp+=_s_ if _s_.islower() else '_'+_s_.lower()
+		return tmp[1:]
 	#A interface
 	def Get(self):
-		rn=self.attrs
-		rn.update({'name':self.name})
-		return rn
-
+		return dict(self.attrs)
+	#Check all attributes and return a dict depended on flag
+	def Check(self,Flag,Attrs,UT):
+		Attrs=dict(Attrs)
+		for tag in Attrs:
+			if tag not in UT[Flag]:
+				TagError("This flag '"+Flag+"' does not have tag '"+tag+"' !")
+		for tag in UT[Flag]:
+			if tag not in Attrs:
+				TagError("This flag '"+Flag+"' must have tag '"+tag+"' !")
+		name=None
+		if 'm' in Attrs:
+			if Attrs['m'] not in UT[Flag]['m']:
+				SourceError("This flag '"+Flag+"' does not have '"+Attrs['m']+"' !")
+			name=UT[Flag]['m'][Attrs['m']]
+			del Attrs['m']
+		for tag in Attrs:
+			if isinstance(Ut[Flag][tag][Attrs[tag]],str):
+				Attrs[tag]=Ut[Flag][tag][Attrs[tag]]
+				continue
+			if Attrs[tag] not in Ut[Flag][tag][Attrs['m']]:
+				SourceError("This tag '"+tag+"' in flag '"+Flag+"' have no value named '"+Attrs[tag]+"' !") 
+			Attrs[tag]=Ut[Flag][tag][Attrs['m']][Attrs[tag]]
+		return name,Attrs
 	#Creat scripts which are related to charecters
-	def Show(self):
-		rn=''
-		if self.attrs['new']:
-			self.complete==True
-			if self.attrs['t']=='hide':
-				self.attrs['t']='dissolve'
-				rn='    hide '+self.name+'\n'#+' '+self.attrs['c']+self.attrs['p']+self.attrs['f']+self.attrs['d']+'\n'
-			else:
-				rn+='    show '+self.name+' '+self.attrs['p']+self.attrs['c']+self.attrs['f']+self.attrs['d']+' '
-				rn+='at '+self.attrs['l']+'\n'
-				rn+='    with '+self.attrs['t']+'\n'
-			self.attrs['new']=False
-			self.attrs['t']=self.tDefault
-			return rn
-		elif self.say['new']:
-			rn+=self.name+self.say['Mode']+' '
-			if self.say['Style']=='Say':
-				rn+="'"+self.say['Text']+"'\n"
-			else:
-				rn+="'（"+self.say['Text']+"）'\n"
-			self.say['new']=False
-			return '    '+rn
-		else:
-			self.fs.error('This charecter does not be created !')
+	def Show(self,Flag,Attrs,UT,Tmp):
+		return ''
