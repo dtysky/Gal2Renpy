@@ -9,9 +9,8 @@ class ViewSp(G2R.SpSyntax):
 		sw=''
 		Tmp[Flag]=Attrs['m']
 		orgname=Attrs['m']
-		self.Check(Flag,Attrs,UT)
-		soa='define '+US.Args['ch'][orgname]['Name']+'A = Character('
-		son='define '+US.Args['ch'][orgname]['Name']+'V = Character('
+		soa='$ n = Character('
+		son='$ nV = Character('
 		sot="who_color="+US.Args['ch'][orgname]['N_Color']+"',what_color="+US.Args['ch'][orgname]['T_Color']
 		sot+="',who_bold="+US.Args['ch'][orgname]['N_Bold']+"',what_bold="+US.Args['ch'][orgname]['T_Bold']
 		sot+="',who_outlines=[ (2, '"+US.Args['ch'][orgname]['N_OutLineColor']+"') ],what_outlines=[ (1,'"+US.Args['ch'][orgname]['T_OutLineColor']+"') ]"
@@ -27,5 +26,5 @@ class ViewSp(G2R.SpSyntax):
 			son+=')'
 		soa+='\n'
 		son+='\n'
-		sw+=soa+son
+		sw+=soa
 		return sw

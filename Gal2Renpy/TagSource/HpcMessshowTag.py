@@ -4,13 +4,10 @@
 #################################
 import G2R
 
-class HpcMessaddTag(G2R.TagSource):
+class HpcMessshowTag(G2R.TagSource):
 	def Get(self,Flag,US):
-		tags={'n':{}}
+		tags={'ch':{}}
 		for m in US.Args['ch']:
 			if m not in ['Common','Tag']:
-				tags['n'][m]=US.Args['ch'][m]['Name']
-		tags['ch']=dict(tags['n'])
-		tags['p']=None
-		tags['t']=None
+				tags['ch'][m]=US.Args['ch'][m]['Name']
 		return tags

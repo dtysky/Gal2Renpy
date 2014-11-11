@@ -22,9 +22,10 @@ class TextCreat():
 		if self.say['name']:
 			if not US.Args['ch'].get(self.say['name']):
 				FS.Error('This character name '+self.say['name']+' does not exit !')
+			self.say['name']=US.Args['ch'][self.say['name']]['Name']
 		rn=''
 		if self.say['mode']=='text':
-			rn+=self.say['text']
+			rn+="n '"+self.say['text']+"'\n"
 		elif self.say['mode']=='say':
 			rn+=self.say['name']+self.say['type']+' '
 			n+="'"+self.say['text']+"'\n"

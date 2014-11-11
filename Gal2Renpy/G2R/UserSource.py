@@ -26,6 +26,9 @@ class UserSource():
 		for fp in fps:
 			ji=ReadJson(fp)
 			for flag in ji:
+				if flag=='Keywords':
+					Keywords=ji[flag]
+					continue
 				if flag not in Args:
 					Args[flag]={}
 				for t in ji[flag]:
@@ -41,3 +44,4 @@ class UserSource():
 		for flag in tags:
 			Args[flag]['Tag']=tags[flag]
 		self.Args=Args
+		self.Keywords=Keywords

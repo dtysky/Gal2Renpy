@@ -1,3 +1,3 @@
-cd E:\Follow_wings\FW\game\Gal2Renpy
+cd E:\Follow_wings\FW\game\Gal2Renpy\Gal2Renpy
 E:
-python GalMain.py
+python Main.py

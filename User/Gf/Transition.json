@@ -1,0 +1,16 @@
+{
+	"gf":{
+
+		"Common":{
+
+			"Transition":{
+
+			"隐藏":"hide",
+			"默认":"dissolve",
+			"无":"None"
+			}
+		}
+
+	}
+
+}

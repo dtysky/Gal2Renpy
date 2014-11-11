@@ -2,7 +2,6 @@
 #################################
 #Copyright(c) 2014 dtysky
 #################################
-import sys
 from DefineSyntax import *
 from GetAllClass import *
 

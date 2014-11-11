@@ -2,17 +2,17 @@
 #################################
 #Copyright(c) 2014 dtysky
 #################################
-import sys
-from DefineSyntax import *
+from SpSyntax import *
 from GetAllClass import *
 
 #A function for storing user's tags
-def DefineCreat(US,FS,DictHash,DefineSyntaxPath='../DefineSyntax'):
+def SpCreat(SpSyntaxPath='../SpSyntax'):
 	"""
-	Creat all definitions
+	Return a dict which content all script-creater objects 
 	"""
-	Cls=GetAllClass(DefineSyntaxPath,DefineSyntax)
+	Cls=GetAllClass(SpSyntaxPath,SpSyntax)
+	Objs={}
 	for c in Cls:
 		obj=c()
-		DictHash=obj.Creat(obj.GetFlag(),US,FS,DictHash)
-	return DictHash
+		Objs[obj.GetFlag()]=obj
+	return Objs

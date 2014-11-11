@@ -82,9 +82,13 @@ def ReadBlock(FS):
 		stack={'flag':Stack(),'attrs1':Stack(),'attrs2':Stack()}
 		while  1:
 			sr=SpLineSyntax(s)
-			for attr in ['flag','attrs1']:
-				if attr in sr:
-					stack[attr].Push(sr[attr])
+			#'flag' stack and 'attrs1' stack must be sync
+			if 'flag' in sr:
+				stack['flag'].Push(sr['flag'])
+				if 'attrs1' in sr:
+					stack['attrs1'].Push(sr['attrs1'])
+				else:
+					stack['attrs1'].Push(None)
 			if 'flag' in sr:
 				stack['attrs2'].Push(Stack())
 			if 'attrs2' in sr:
@@ -118,6 +122,6 @@ def ReadBlock(FS):
 		else:
 			sr={'head':'words'}
 			sr['flag']='text'
-			sr['attrs2']="n '"+s.strip()}
+			sr['attrs2']=s.strip()}
 		RefBlock(sr)
 	return Block

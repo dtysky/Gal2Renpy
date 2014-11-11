@@ -3,8 +3,8 @@ from MyFs import *
 from DHash import *
 from ReadBlock import *
 from UserSource import *
-from SpSyntax import *
-from TagSource import *
-from TextSyntax import *
+from TextCreat import *
 from UserTag import *
-from DefinSyntax import *
+from DefineCreat import *
+from SpCreat import *
+from TmpC import *

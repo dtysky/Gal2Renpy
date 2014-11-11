@@ -4,14 +4,19 @@
 #################################
 import G2R
 
-class HpcChSp(G2R.SpSyntax):
+class HpcBgSp(G2R.SpSyntax):
 	def Show(self,Flag,Attrs,UT,Tmp):
 		sw=''
-		name,Attrs=self.Check(Flag,Attrs,UT)
-		if Attrs['t']=='hide':
-			sw+='    hide '+name+'\n'
+		nameHpc,AttrsHpc=self.Check(Flag['hpc'],Attrs['hpc'],UT)
+		nameBg,AttrsBg=self.Check(Flag,Attrs[Flag],UT)
+		if Attrs['t']=='Hide':
+			Attrs['t']='True'
+		sw='    call HPC('
+		sw+="ModeM='"+AttrsHpc['mm']+"',ModeS='"+AttrsHpc['ms']+"',Hide="+AttrsHpc['hide']+','
+		sw+="Owner='"+AttrsHpc['o']+"',Pos="+AttrsHpc['l']+',Trans='+AttrsHpc['t']+','
+		sw+='Bg=('+nameBg+AttrsBg['s']+AttrsBg['w']+'HPC,'+AttrsBg['l']+','
+		if AttrsHpc['mm']=='PC':
+			sw+=AttrsBg['l']+',0.9)\n'
 		else:
-			sw+='    show '+name+' '+Attrs['p']+Attrs['c']+Attrs['f']+Attrs['d']+' '
-			sw+='at '+Attrs['l']+'\n'
-			sw+='    with '+Attrs['t']+'\n'
+			sw+=AttrsBg['l']+',0.8)\n'
 		return sw

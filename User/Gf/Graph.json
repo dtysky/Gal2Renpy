@@ -1,6 +1,20 @@
 {
 	"gf":{
 
+		"第一章":{
+			"Name":"Cp1",
+			"Source":"Dir",
+			"Type":"Chapter",
+			"Delay":"0.05"
+		},
+
+		"第二章":{
+			"Name":"Cp2",
+			"Source":"Dir",
+			"Type":"Chapter",
+			"Delay":"0.05"
+		},
+
 		"纸飞机-来":{
 			"Name":"PlaneA",
 			"Source":"Dir",

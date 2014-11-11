@@ -4,9 +4,10 @@
 #################################
 import G2R
 
-class ModeSp(G2R.SpSyntax):
+class CpSp(G2R.SpSyntax):
 	def Show(self,Flag,Attrs,US,UT,Tmp):
 		sw=''
-		name,Attrs=self.Check(Flag,Attrs,UT)
-		Tmp[Flag]=name
+		if 'm' not in Attrs:
+			G2R.TagError("This flag '"+Flag+"' must have tag 'm' !")
+		sw+="    $ store.chapter = '"+Attrs['m']+"'\n"
 		return sw

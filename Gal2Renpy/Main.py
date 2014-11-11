@@ -10,124 +10,246 @@ Don't care it now...
 
 """
 
-
-
-
-
-
-import re
 import sys
 import os
-import codecs
 import pickle
-from ctypes import *
-from Gal2Renpy.Class import *
-from Gal2Renpy.Fun import *
+import re
+from G2R import *
 
-Begin=None
-
-Mode='A'
-
-Fs=MyFS()
-
-ChrNow=[]
-FileNow=[]
 FileAll=[]
-ChrTmp=[]
+Files=[]
 
-US=User()
-BgC=Bg(US,Fs)
-CgC=Cg(US,Fs)
-HPCC=HPC(US,Fs)
-CreatDefine(US)
+FS=MyFS()
+FO=MyFS()
+US=UserSource()
+UT=UserTag(US)
+TxtC=TextCreat()
+SpC=SpCreat()
+Tmp=TmpC()
+DefineCreat(US)
 
 
-FileHash=open('Gal2Renpy/HashFile','r')
-HashFile=pickle.load(FileHash)
-FileHash.close()
-FileList=open('Gal2Renpy/ListFile','r')
-ListFile=pickle.load(FileList)
-FileList.close()
+"""
+Files/Dicts prepare begin
+"""
+def CheckSpFile(fp):
+	if not os.path.exists(fp):
+	FH=open(fp,'w')
+	pickle.dump({},FH)
+	FH.close()
 
-#Ensure HashFile and ListFile are synchronous
-if len(HashFile)==len(ListFile):
-	pass
-else:
-	HashFile.clear()
-	ListFile.clear()
+#Creat all definitions and refresh DictHash
+#Only a dict had been changed will re-creat it
+CheckSpFile('DictHash')
+FH=open('DictHash','r')
+DictHash=pickle.load(FH)
+FH.close()
+DictHash=DefineCreat(US)
+FH=open('DictHash','w')
+pickle.dump(DictHash,FH)
+FH.close()
+
+#FileList: A dict for storing scenes in all files
+CheckSpFile('FileHash')
+CheckSpFile('FileList')
+FH=open('FileHash','r')
+FileHash=pickle.load(FH)
+FH.close()
+FH=open('FileList','r')
+FileList=pickle.load(FH)
+FH.close()
+
+#Ensure FileHash and FileList are synchronous
+if len(FileHash)>len(FileList):
+	for f in FileHash:
+		if f not in FileList:
+			FileList[f]=[]
+if len(FileHash)<len(FileList):
+	for f in FileList:
+		if f not in FileHash:
+			FileList[f]=0
 
 #Add all '.gal' files
-for root,dirs,files in os.walk(US.TextPath):
+for root,dirs,files in os.walk(US.Args['pathmode']['TextPath']):
     for f in files:
-        if os.path.splitext(f)[1]!='.gal':
-        	pass
-        else:
+        if os.path.splitext(f)[1]=='.gal':
         	FileAll.append(root+'/'+f)
 
 #Only a file had been changed will process it
 for f in FileAll:
-	Fs.open(f,'rb')
-	if HashFile.get(f)==None:
-		FileNow.append(f)
-	else:
-		if Fs.hash()==HashFile[f]:
-			pass
-		else:
-			FileNow.append(f)
-	Fs.close()
+	FS.Open(f,'rb')
+	if not FileHash.get(f):
+		Files.append(f)
+	elif FS.hash()!=FileHash[f]:
+		Files.append(f)
+	FS.Close()
 
-#Delete some invailed keys in HashFile and ListFile 
-for f in sorted(HashFile):
-	if f in FileAll:
-		pass
-	else:
-		del HashFile[f]
-		del ListFile[f]
+#Delete all invailed files in FileHash and FileList 
+for f in FileHash:
+	if f not in FileAll:
+		del FileHash[f]
+		del FileList[f]
 
-if US.TestMode==True:
-	if os.path.exists(US.ScriptPath+'script.rpy'):
-		os.remove(US.ScriptPath+'script.rpy')
-		if os.path.exists(US.ScriptPath+'script.rpyc'):
-			os.remove(US.ScriptPath+'script.rpyc')
-	Fo=codecs.open(US.ScriptPath+'test.rpy','w','utf-8')
-	Fo.write('label start:\n'+"    $ chapter='Chapter.test'\n    $ date='10.09'\n    $ InitMyKey()\n")
-	if US.HPCSystem:
-		Fo.write('    $ HPCMessInit()\n')
-	for path in FileNow:
-		Fs.open(path,'r')
-		ListFile[f]=[]
+"""
+Files/Dicts prepare end
+"""
 
-	Fo.close()
+#Format line for using
+def ChangeSp(Line):
+	rn={'flag':'','attrs1':{},'attrs2':Line['attrs2']}
+	f=''
+	i=0
+	for flag in Line['flag']:
+		f+='_'flag
+		rn['attrs1'][f[1:]]=Line['attrs1'][i]
+		i+=1
+	Line['flag']=f[1:]
+	return rn
 
+ScriptPath=US.Args['pathmode']['ScriptPath']
+if US.Args['pathmode']['TestMode']:
+	#In test mode, remove start.rpy first
+	if os.path.exists(ScriptPath+'start.rpy'):
+		os.remove(ScriptPath+'start.rpy')
+		if os.path.exists(ScriptPath+'start.rpyc'):
+			os.remove(ScriptPath+'start.rpyc')
+	#Creat the only script in this mode
+	FO.Open(ScriptPath+'test.rpy','w')
+	FO.Write('label start:\n')
+	if US.Args['pathmode']['KeySystem']:
+		FO.Write("    $ InitMyKey()\n")
+	if US.Args['pathmode']['HPCSystem']:
+		FO.Write('    $ HPCMessInit()\n')
+	#Begin
+	for fp in FileNow:
+		FS.Open(fp,'r')
+		FS.Close()
+		FileList[fp]=[]
+		FrameEnd=False
+		TestBegin=False
+		while not FrameEnd:
+			block=ReadBlock(FS)
+			for line in block:
+				#Check whether test had begined
+				if TestBegin:
+					if line['head']=='words':
+						if not Tmp.Args['mode']:
+							FS.Error("You must define a mode with 'mode' tag first !")
+						if line['flag']=='text':
+							TxtC.Refresh(line['flag'],Tmp.Args['mode'],line['attrs2'])
+						elif line['flag']=='say':
+							TxtC.Refresh(line['flag'],Tmp.Args['mode'],line['attrs2'],line['attrs1'])
+						elif line['flag']=='think':
+							if not Tmp.Args['view']:
+								FS.Error("You must define a view with 'view' tag first !")
+							TxtC.Refresh(line['flag'],Tmp.Args['mode'],line['attrs2'],line['attrs1'])
+						FO.Write(TxtC.Show(US,FS))
+					elif line['head']=='sp':
+						line=ChangeSp[line]
+						if flag not in US.Keywords:
+							FS.Error("This flag '"+flag+"' does not be supported !")
+						SpCNow=SpC[line['flag']]
+						SpCNow.Refresh(line['attrs1'],line['attrs2'])
+						if line['flag']='sc' and SpCNow.Get()['k']=='Main':
+							sc=(int(SpCNow.Get()['sc'].replace('Sc','')),int(SpCNow.Get()['cp'].replace('Cp','')))
+							FlieList[fp].append(sc))
+						FO.Write(SpCNow.Show(SpCNow.GetFlag(),SpCNow.Get(),US,UT,Tmp))
+					elif line['head']=='skip':
+						pass
+					elif line['head']=='end':
+						Tmp['test']='End'
+						FrameEnd=True
+				else:
+					if line['head']=='sp' and line['flag']==['test']:
+						SpC['test'].Refresh(line['attrs1'],line['attrs2'])
+						SpC['test'].Show(SpC['test'].GetFlag(),SpC['test'].Get(),US,UT,Tmp)
+					if Tmp['test']=='Begin':
+						TestBegin=True
+	FO.Close()
 
 else:
 
-			
-	if os.path.exists(US.ScriptPath+'test.rpy'):
-		os.remove(US.ScriptPath+'test.rpy')
-		if os.path.exists(US.ScriptPath+'test.rpyc'):
-			os.remove(US.ScriptPath+'test.rpyc')
-	Fo=codecs.open(US.ScriptPath+'script.rpy','w','utf-8')
-	Fo.write("label start:\n    $ date='10.09'\n    $ InitMyKey()\n")
-	for f in sorted(ListFile):
-		if len(f)==0:
-			pass
-		else:
-			for Sc in ListFile[f]:
-				Fo.write('    call '+Sc+'\n')
+	#In normal mode, remove test.rpy first
+	if os.path.exists(ScriptPath+'test.rpy'):
+		os.remove(ScriptPath+'test.rpy')
+		if os.path.exists(ScriptPath+'test.rpyc'):
+			os.remove(ScriptPath+'test.rpyc')
+	FO.Open(ScriptPath+'start.rpy','w')
+	FO.Write('label start:\n')
+	if US.Args['pathmode']['KeySystem']:
+		FO.Write("    $ InitMyKey()\n")
+	if US.Args['pathmode']['HPCSystem']:
+		FO.Write('    $ HPCMessInit()\n')
+	#Begin
+	for fp in FileNow:
+		FS.Open(fp,'r')
+		FS.Close()
+		FileList[fp]=[]
+		CanWrite=False
+		FrameEnd=False
+		while not FrameEnd:
+			block=ReadBlock(FS)
+			for line in block:
+				#Check whether a scene had been defined
+				if not CanWrite:
+					sc=ChangeSp[line]
+					SpCNow=SpC['sc']
+					SpCNow.Refresh(sc['attrs1'],sc['attrs2'])
+					if sc['flag']='sc':
+						FO.Open(ScriptPath+'test/'+SpCNow.Get()['sc']+SpCNow.Get()['cp']+'.rpy')
+						CanWrite=True
+					else:
+						FS.Error("You must define a scene with 'sc' tag first !")
+				if line['head']=='words':
+					if not Tmp.Args['mode']:
+						FS.Error("You must define a mode with 'mode' tag first !")
+					if line['flag']=='text':
+						TxtC.Refresh(line['flag'],Tmp.Args['mode'],line['attrs2'])
+					elif line['flag']=='say':
+						TxtC.Refresh(line['flag'],Tmp.Args['mode'],line['attrs2'],line['attrs1'])
+					elif line['flag']=='think':
+						if not Tmp.Args['view']:
+							FS.Error("You must define a view with 'view' tag first !")
+						TxtC.Refresh(line['flag'],Tmp.Args['mode'],line['attrs2'],line['attrs1'])
+					FO.Write(TxtC.Show(US,FS))
+				elif line['head']=='sp':
+					line=ChangeSp[line]
+					if flag not in US.Keywords:
+						FS.Error("This flag '"+flag+"' does not be supported !")
+					SpCNow=SpC[line['flag']]
+					SpCNow.Refresh(line['attrs1'],line['attrs2'])
+					if line['flag']='sc' and SpCNow.Get()['k']=='Main':
+						sc=(int(SpCNow.Get()['sc'].replace('Sc','')),int(SpCNow.Get()['cp'].replace('Cp','')))
+						FlieList[fp].append(sc))
+					FO.Write(SpCNow.Show(SpCNow.GetFlag(),SpCNow.Get(),US,UT,Tmp))
+				elif line['head']=='skip':
+					pass
+				elif line['head']=='end':
+					FrameEnd=True
+	FO.Close()
+	
+	FileListAll=[]
+	for l in FileList:
+		FileListAll.extend(l)
+	FileListDict={}
+	for i in range(len(FileListAll)):
+		if FileListAll[i][0] not in FileListDict:
+			FileListDict[FileListAll[i][0]]=[]
+		FileListDict[FileListAll[i][0]].append(FileListAll[i][1])
+	FO.Open(ScriptPath+'start.rpy')
+	for sc in sorted(FileListDict)
+		for cp in sorted(FileListDict[sc]):
+			sccp='Sc'+str(sc)+'Cp'+str(cp)
+			Fo.write('    call '+sccp+'\n')
+	FO.Close()
 
-	Fo.close()
+FH=open('FileList','w')
+pickle.dump(FileList,FH)
+FH.close()
 
-	FileList=open('Gal2Renpy/ListFile','w')
-	pickle.dump(ListFile,FileList)
-	FileList.close()
-
-FileHash=open('Gal2Renpy/HashFile','w')
-pickle.dump(HashFile,FileHash)
-FileHash.close()
-
-
-
-
-
-
+for f in FileNow:
+	FS.Open(f,'rb')
+	FileHash[f]=FS.hash()
+FH=open('FileHash','w')
+pickle.dump(FileHash,FH)
+FH.close()

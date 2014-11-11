@@ -13,7 +13,8 @@ class SpSyntax():
 	def __init__(self):
 		self.attrs={}
 	#Refresh attributes
-	#attrs1 is a list content all attributes,attrs2 is a line
+	#Attrs1 is a dict content all attributes,attrs2 is a line
+	#Attrs1:{flag1:attrs11,flag2:attrs12}
 	def Refresh(self,Attrs1,Attrs2):
 		def Syntax(attrs):
 			r={}
@@ -24,14 +25,16 @@ class SpSyntax():
 				attr=attr.split(':')
 				r[attr[0]]=r[attr[1]]
 			return r
-		for attrs in attrs1:
-			tmp=Syntax(attrs)
+		for flag in Attrs1:
+			tmp=Syntax(Attrs1['flag'])
 			if tmp:
-				self.attrs.update(tmp)
-		tmp=Syntax(attrs1)
-		attrs1=re.findall(r'[a-z]+:.*',attrs1)
+				self.attrs[flag]=tmp
+		tmp=Syntax(Attrs2)
 		if tmp:
-			self.attrs.update(tmp)
+			self.attrs[self.GetFlag()].update(tmp)
+		#If no nesting, attrs will be a 1-level dict which content all attributes
+		if len(self.attrs)==1:
+			self.attrs=self.attrs[self.GetFlag()]
 	#Return flag by class name 
 	def GetFlag(self):
 		s=self.__class__.__name__.replace('Sp')
@@ -43,6 +46,7 @@ class SpSyntax():
 	def Get(self):
 		return dict(self.attrs)
 	#Check all attributes and return a dict depended on flag
+	#Only support one flag
 	def Check(self,Flag,Attrs,UT):
 		Attrs=dict(Attrs)
 		for tag in Attrs:
@@ -52,18 +56,24 @@ class SpSyntax():
 			if tag not in Attrs:
 				TagError("This flag '"+Flag+"' must have tag '"+tag+"' !")
 		name=None
+		#If 'm' tag enable, change it to 'name'
 		if 'm' in Attrs:
 			if Attrs['m'] not in UT[Flag]['m']:
 				SourceError("This flag '"+Flag+"' does not have '"+Attrs['m']+"' !")
 			name=UT[Flag]['m'][Attrs['m']]
 			del Attrs['m']
 		for tag in Attrs:
-			if isinstance(Ut[Flag][tag][Attrs[tag]],str):
-				Attrs[tag]=Ut[Flag][tag][Attrs[tag]]
+			#If no 'm' tag
+			if not name:
+				#If tag's value in UT is None, don't care it
+				if UT[Flag][tag]):
+					if not UT[Flag][tag].get(Attrs[tag]):
+						SourceError("This flag '"+Flag+"' does not have tag'"+tag+"' valued '"+Attrs[tag]+"'' !")
+					Attrs[tag]=UT[Flag][tag][Attrs[tag]]
 				continue
-			if Attrs[tag] not in Ut[Flag][tag][Attrs['m']]:
+			if Attrs[tag] not in UT[Flag][tag][name]:
 				SourceError("This tag '"+tag+"' in flag '"+Flag+"' have no value named '"+Attrs[tag]+"' !") 
-			Attrs[tag]=Ut[Flag][tag][Attrs['m']][Attrs[tag]]
+			Attrs[tag]=UT[Flag][tag][name][Attrs[tag]]
 		return name,Attrs
 	#Creat scripts which are related to charecters
 	def Show(self,Flag,Attrs,US,UT,Tmp):

@@ -2,10 +2,8 @@
 #################################
 #Copyright(c) 2014 dtysky
 #################################
-import sys
 from TagSource import *
 from GetAllClass import *
-
 
 #A class for storing user's tags
 class UserTag():

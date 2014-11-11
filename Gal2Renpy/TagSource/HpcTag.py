@@ -11,8 +11,8 @@ class HpcTag(G2R.TagSource):
 			if m not in ['Common','Tag']:
 				chs[m]=US.Args['ch'][m]['Name']
 		tags={}
-		tags['mm']=['PC','Phone']
-		tags['ms']=['Call','Message','Web']
+		tags['mm']={'PC':'PC','Phone':'Phone'}
+		tags['ms']={'Call':'Call','Message':'Message','Web':'Web'}
 		tags['o']=chs
 		tags['l']=US.Args['hpc']['Position']
 		tags['t']=US.Args['hpc']['Transtion']
