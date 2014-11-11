@@ -63,17 +63,23 @@ def ReadBlock(FS):
 			if s in B:
 				B[s]=sr[s]
 		Block.append(B)
-
+	#For sp mode only
+	def DeBlock():
+		rn=[]
+		for B in Block:
+			for attr in B['attrs2']:
+				rn.append({'head':B['head'],'flag':B['flag'],'attrs1':B['attrs1'],'attrs2':attr})
+		return rn
 	s=FS.ReadLine()
 	#Comment
-	comment=re.search(r'.*\\#.*',s)
+	comment=re.search(r'.*#.*',s)
 	if comment:
 		s=s[comment.start():]
 	#End of this file
 	if FS.IsEnd():
 		sr={'head':'end'}
 		RefBlock(sr)
-	#Null or comment
+	#Null
 	elif s=='':
 		sr={'head':'skip'}
 		RefBlock(sr)
@@ -86,13 +92,13 @@ def ReadBlock(FS):
 			if 'flag' in sr:
 				stack['flag'].Push(sr['flag'])
 				if 'attrs1' in sr:
-					stack['attrs1'].Push(sr['attrs1'])
+					stack['attrs1'].Push(sr['attrs1']+'\n')
 				else:
 					stack['attrs1'].Push(None)
 			if 'flag' in sr:
 				stack['attrs2'].Push(Stack())
 			if 'attrs2' in sr:
-				stack['attrs2'].AddLast(sr['attrs2'])
+				stack['attrs2'].AddLast(sr['attrs2']+'\n')
 			if 'flag2' in sr:
 				if stack['flag'].Check(sr['flag2']):
 					for attr in ['flag','attrs1']:
@@ -105,6 +111,7 @@ def ReadBlock(FS):
 				else:
 					FS.Error("This pair '"+stack['flag'].Pop()+"' and '"+sr['flag2']+"' are error !")
 				if stack['flag'].IsEmpty():
+					Block=DeBlock()
 					break
 			s=FS.ReadLine()
 			if FS.IsEnd():
@@ -112,7 +119,7 @@ def ReadBlock(FS):
 	else:
 		sr=None
 		if re.match(ur'\S+\s+【.*】',s):
-			sr=re.match(ur'(?P<attrs1>\S+)\s+【(?P<attrs2>.*)',s).groupdict()
+			sr=re.match(ur'(?P<attrs1>\S+)\s+【(?P<attrs2>.*)】',s).groupdict()
 			sr['head']='words'
 			sr['flag']='say'
 		elif re.match(ur'【.*】',s):
@@ -122,6 +129,6 @@ def ReadBlock(FS):
 		else:
 			sr={'head':'words'}
 			sr['flag']='text'
-			sr['attrs2']=s.strip()}
+			sr['attrs2']=s
 		RefBlock(sr)
 	return Block

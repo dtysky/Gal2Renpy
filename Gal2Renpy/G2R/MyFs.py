@@ -19,25 +19,23 @@ class MyFS():
 	def Open(self,path,mode):
 		self.path=path
 		self.linepos=0
-		if not os.path.exists(path):
-			self.Error('The file '+path+' does not exist !')
+		self.end=False
 		if mode=='r':
-			self.fs=codecs.open(path,mode,'utf-8').read().splitlines()
-		else:
-			self.fs=codecs.open(path,mode,'utf-8')
+			if not os.path.exists(path):
+				self.Error('The file '+path+' does not exist !')
+		self.fs=codecs.open(path,mode,'utf-8')
 	def ReadLine(self):
 		self.linepos+=1
-		if self.linepos>len(self.fs):
-			return ''
-		return self.fs[self.linepos-1]
-	def IsEnd(self):
-		if self.linepos==len(self.fs):
-			return True
-		return False
+		tmp=self.fs.readline()
+		if tmp=='':
+			self.end=True
+		return tmp.strip()
 	def Error(self,e,exit=True):
-		MessageBox(e.encode(locale.getdefaultlocale()[1])+'\r\n'+'file : '+self.path.encode(locale.getdefaultlocale()[1])+'\r\n'+'line : '+str(self.linepos))
+		MessageBox(e.encode(locale.getdefaultlocale()[1])+'\r\n'+'Path : '+self.path.encode(locale.getdefaultlocale()[1])+'\r\n'+'Line : '+str(self.linepos))
 		if exit:
 			sys.exit(0)
+	def IsEnd(self):
+		return self.end
 	def hash(self):
 		md5obj=hashlib.md5()
 		while 1:
@@ -51,5 +49,6 @@ class MyFS():
 		return hash
 	def Write(self,s):
 		self.fs.write(s)
+		self.fs.flush()
 	def Close(self):
 		self.fs.close()

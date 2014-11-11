@@ -6,7 +6,7 @@ from DefineSyntax import *
 from GetAllClass import *
 
 #A function for storing user's tags
-def DefineCreat(US,FS,DictHash,DefineSyntaxPath='../DefineSyntax'):
+def DefineCreat(US,FS,DictHash,DefineSyntaxPath='DefineSyntax'):
 	"""
 	Creat all definitions
 	"""

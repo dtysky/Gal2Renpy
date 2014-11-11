@@ -5,9 +5,9 @@
 import G2R
 
 class CpSp(G2R.SpSyntax):
-	def Show(self,Flag,Attrs,US,UT,Tmp):
+	def Show(self,Flag,Attrs,US,UT,Tmp,FS):
 		sw=''
 		if 'm' not in Attrs:
-			G2R.TagError("This flag '"+Flag+"' must have tag 'm' !")
+			FS.Error("This flag '"+Flag+"' must have tag 'm' !")
 		sw+="    $ store.chapter = '"+Attrs['m']+"'\n"
 		return sw

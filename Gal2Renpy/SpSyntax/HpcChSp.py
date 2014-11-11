@@ -5,10 +5,10 @@
 import G2R
 
 class HpcChSp(G2R.SpSyntax):
-	def Show(self,Flag,Attrs,UT,Tmp):
+	def Show(self,Flag,Attrs,UT,Tmp,FS):
 		sw=''
-		nameHpc,AttrsHpc=self.Check(Flag['hpc'],Attrs['hpc'],UT)
-		nameCh,AttrsCh=self.Check(Flag,Attrs[Flag],UT)
+		nameHpc,AttrsHpc=self.Check(Flag['hpc'],Attrs['hpc'],UT,FS)
+		nameCh,AttrsCh=self.Check(Flag,Attrs[Flag],UT,FS)
 		if Attrs['t']=='Hide':
 			Attrs['t']='True'
 		sw='    call HPC('

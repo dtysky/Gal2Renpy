@@ -5,10 +5,10 @@
 import G2R
 
 class HpcMessshowSp(G2R.SpSyntax):
-	def Show(self,Flag,Attrs,US,UT,Tmp):
+	def Show(self,Flag,Attrs,US,UT,Tmp,FS):
 		sw=''
-		name,Attrs=self.Check('hpc',Attrs['hpc'],UT)
-		Attrs.update(self.Check(Flag,Attrs[Flag],UT))[1]
+		name,Attrs=self.Check('hpc',Attrs['hpc'],UT,FS)
+		Attrs.update(self.Check(Flag,Attrs[Flag],UT,FS))[1]
 		if Attrs['t']=='Hide':
 			Attrs['t']='True'
 		sw='    call HPC('

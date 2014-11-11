@@ -3,17 +3,10 @@
 #Copyright(c) 2014 dtysky
 #################################
 
-"""
-
-Wait for rewriting...
-Don't care it now...
-
-"""
 
 import sys
 import os
 import pickle
-import re
 from G2R import *
 
 FileAll=[]
@@ -21,22 +14,20 @@ Files=[]
 
 FS=MyFS()
 FO=MyFS()
-US=UserSource()
+US=UserSource('../User')
 UT=UserTag(US)
 TxtC=TextCreat()
 SpC=SpCreat()
 Tmp=TmpC()
-DefineCreat(US)
+
+sys.path.append(US.Args['pathmode']['Gal2RenpyPath']+'Gal2Renpy')
 
 
-"""
-Files/Dicts prepare begin
-"""
 def CheckSpFile(fp):
 	if not os.path.exists(fp):
-	FH=open(fp,'w')
-	pickle.dump({},FH)
-	FH.close()
+		FH=open(fp,'w')
+		pickle.dump({},FH)
+		FH.close()
 
 #Creat all definitions and refresh DictHash
 #Only a dict had been changed will re-creat it
@@ -44,7 +35,7 @@ CheckSpFile('DictHash')
 FH=open('DictHash','r')
 DictHash=pickle.load(FH)
 FH.close()
-DictHash=DefineCreat(US)
+DictHash=DefineCreat(US,FO,DictHash)
 FH=open('DictHash','w')
 pickle.dump(DictHash,FH)
 FH.close()
@@ -100,10 +91,10 @@ def ChangeSp(Line):
 	f=''
 	i=0
 	for flag in Line['flag']:
-		f+='_'flag
+		f+='_'+flag
 		rn['attrs1'][f[1:]]=Line['attrs1'][i]
 		i+=1
-	Line['flag']=f[1:]
+	rn['flag']=f[1:]
 	return rn
 
 ScriptPath=US.Args['pathmode']['ScriptPath']
@@ -120,10 +111,11 @@ if US.Args['pathmode']['TestMode']:
 		FO.Write("    $ InitMyKey()\n")
 	if US.Args['pathmode']['HPCSystem']:
 		FO.Write('    $ HPCMessInit()\n')
+	FO.Write("    $ chapter='Chapter.test'\n")
 	#Begin
-	for fp in FileNow:
+	j=0
+	for fp in Files:
 		FS.Open(fp,'r')
-		FS.Close()
 		FileList[fp]=[]
 		FrameEnd=False
 		TestBegin=False
@@ -142,28 +134,32 @@ if US.Args['pathmode']['TestMode']:
 						elif line['flag']=='think':
 							if not Tmp.Args['view']:
 								FS.Error("You must define a view with 'view' tag first !")
-							TxtC.Refresh(line['flag'],Tmp.Args['mode'],line['attrs2'],line['attrs1'])
+							TxtC.Refresh(line['flag'],Tmp.Args['mode'],line['attrs2'],Tmp.Args['view'])
 						FO.Write(TxtC.Show(US,FS))
 					elif line['head']=='sp':
-						line=ChangeSp[line]
-						if flag not in US.Keywords:
+						line=ChangeSp(line)
+						if line['flag'] not in US.Keywords:
 							FS.Error("This flag '"+flag+"' does not be supported !")
 						SpCNow=SpC[line['flag']]
 						SpCNow.Refresh(line['attrs1'],line['attrs2'])
-						if line['flag']='sc' and SpCNow.Get()['k']=='Main':
-							sc=(int(SpCNow.Get()['sc'].replace('Sc','')),int(SpCNow.Get()['cp'].replace('Cp','')))
-							FlieList[fp].append(sc))
-						FO.Write(SpCNow.Show(SpCNow.GetFlag(),SpCNow.Get(),US,UT,Tmp))
+						if line['flag']=='sc' and SpCNow.Get()['k']=='Main':
+							sc=(int(SpCNow.Get()['cp'].replace('Cp','')),int(SpCNow.Get()['sc'].replace('Sc','')))
+							FileList[fp].append(sc)
+						FO.Write(SpCNow.Show(SpCNow.GetFlag(),SpCNow.Get(),US,UT,Tmp,FS))
 					elif line['head']=='skip':
 						pass
 					elif line['head']=='end':
-						Tmp['test']='End'
+						if Tmp.Args['test']=='Begin':
+							FS.Error('Test mode does not end until this file end !')
 						FrameEnd=True
 				else:
+					if line['head']=='end':
+						FrameEnd=True
 					if line['head']=='sp' and line['flag']==['test']:
+						line=ChangeSp(line)
 						SpC['test'].Refresh(line['attrs1'],line['attrs2'])
-						SpC['test'].Show(SpC['test'].GetFlag(),SpC['test'].Get(),US,UT,Tmp)
-					if Tmp['test']=='Begin':
+						SpC['test'].Show(SpC['test'].GetFlag(),SpC['test'].Get(),US,UT,Tmp,FS)
+					if 'test' in Tmp.Args and Tmp.Args['test']=='Begin':
 						TestBegin=True
 	FO.Close()
 
@@ -181,9 +177,8 @@ else:
 	if US.Args['pathmode']['HPCSystem']:
 		FO.Write('    $ HPCMessInit()\n')
 	#Begin
-	for fp in FileNow:
+	for fp in Files:
 		FS.Open(fp,'r')
-		FS.Close()
 		FileList[fp]=[]
 		CanWrite=False
 		FrameEnd=False
@@ -192,10 +187,10 @@ else:
 			for line in block:
 				#Check whether a scene had been defined
 				if not CanWrite:
-					sc=ChangeSp[line]
+					sc=ChangeSp(line)
 					SpCNow=SpC['sc']
 					SpCNow.Refresh(sc['attrs1'],sc['attrs2'])
-					if sc['flag']='sc':
+					if sc['flag']=='sc':
 						FO.Open(ScriptPath+'test/'+SpCNow.Get()['sc']+SpCNow.Get()['cp']+'.rpy')
 						CanWrite=True
 					else:
@@ -213,15 +208,15 @@ else:
 						TxtC.Refresh(line['flag'],Tmp.Args['mode'],line['attrs2'],line['attrs1'])
 					FO.Write(TxtC.Show(US,FS))
 				elif line['head']=='sp':
-					line=ChangeSp[line]
-					if flag not in US.Keywords:
+					line=ChangeSp(line)
+					if line['flag'] not in US.Keywords:
 						FS.Error("This flag '"+flag+"' does not be supported !")
 					SpCNow=SpC[line['flag']]
 					SpCNow.Refresh(line['attrs1'],line['attrs2'])
-					if line['flag']='sc' and SpCNow.Get()['k']=='Main':
-						sc=(int(SpCNow.Get()['sc'].replace('Sc','')),int(SpCNow.Get()['cp'].replace('Cp','')))
-						FlieList[fp].append(sc))
-					FO.Write(SpCNow.Show(SpCNow.GetFlag(),SpCNow.Get(),US,UT,Tmp))
+					if line['flag']=='sc' and SpCNow.Get()['k']=='Main':
+						sc=(int(SpCNow.Get()['cp'].replace('Cp','')),int(SpCNow.Get()['sc'].replace('Sc','')))
+						FileList[fp].append(sc)
+					FO.Write(SpCNow.Show(SpCNow.GetFlag(),SpCNow.Get(),US,UT,Tmp,FS))
 				elif line['head']=='skip':
 					pass
 				elif line['head']=='end':
@@ -237,7 +232,7 @@ else:
 			FileListDict[FileListAll[i][0]]=[]
 		FileListDict[FileListAll[i][0]].append(FileListAll[i][1])
 	FO.Open(ScriptPath+'start.rpy')
-	for sc in sorted(FileListDict)
+	for sc in sorted(FileListDict):
 		for cp in sorted(FileListDict[sc]):
 			sccp='Sc'+str(sc)+'Cp'+str(cp)
 			Fo.write('    call '+sccp+'\n')
@@ -247,7 +242,7 @@ FH=open('FileList','w')
 pickle.dump(FileList,FH)
 FH.close()
 
-for f in FileNow:
+for f in Files:
 	FS.Open(f,'rb')
 	FileHash[f]=FS.hash()
 FH=open('FileHash','w')

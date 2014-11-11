@@ -5,7 +5,7 @@
 import G2R
 
 class CgDefine(G2R.DefineSyntax):
-	def Creat(self,Flag,US,FS):
+	def Creat(self,Flag,US,FS,DictHash):
 		DictHash=G2R.DefineSyntax.Creat(self,Flag,US,FS,DictHash)
 		if DictHash[Flag]==G2R.DHash(US.Args[Flag]):
 			return DictHash
@@ -15,8 +15,8 @@ class CgDefine(G2R.DefineSyntax):
 		so=''
 		for ele in Args:
 			for e in ['Name','Background','Scene']:
-				if e in Args[ele]:
-				G2R.SourceError("This cg '"+ele+"' must have child '"+e+"' !")
+				if e not in Args[ele]:
+					G2R.SourceError("This cg '"+ele+"' must have child '"+e+"' !")
 			for s in Args[ele]['Scene']:
 				for knum in range(s[1]):
 					for bg in Args[ele]['Background']:

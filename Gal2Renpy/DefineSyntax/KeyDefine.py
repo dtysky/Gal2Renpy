@@ -5,7 +5,7 @@
 import G2R
 
 class KeyDefine(G2R.DefineSyntax):
-	def Creat(self,Flag,US,FS):
+	def Creat(self,Flag,US,FS,DictHash):
 		DictHash=G2R.DefineSyntax.Creat(self,Flag,US,FS,DictHash)
 		if DictHash[Flag]==G2R.DHash(US.Args[Flag]):
 			return DictHash
@@ -14,12 +14,12 @@ class KeyDefine(G2R.DefineSyntax):
 		so='define mykeyinit={'
 		for ele in Args:
 			l=[]
-			so+="\n    '"+k+"':{\n        'l':["
+			so+="\n    '"+ele+"':{\n        'l':["
 			for s in Args[ele]:
 				so+="'"+s[0]+"',"
 			so=so[:-1]+'],\n'
 			for s in Args[ele]:
-				so+="\n        '"+s[0]+"':{'Unlock':'0','New':'False',["
+				so+="\n        '"+s[0]+"':{'Unlock':0,'New':'False','Text':["
 				for sk in s[1:]:
 					so+="'"+sk+"',"
 				so=so[:-1]+']},'
@@ -29,7 +29,7 @@ class KeyDefine(G2R.DefineSyntax):
 		so+='init python:\n'
 		so+='    def SetMyKey(kn,k,i):\n'
 		so+="        if i>persistent.mykey[kn][k]['Unlock']:\n"
-		so+="           persistent.mykey[kn][k][Unlock]=i\n"
+		so+="            persistent.mykey[kn][k][Unlock]=i\n"
 		so+="            persistent.mykey[kn][k]['New']=True\n"
 		so+='    def InitMyKey():\n'
 		so+='        if persistent.mykey==None:\n'

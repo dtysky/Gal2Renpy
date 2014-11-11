@@ -6,12 +6,12 @@ import G2R
 import os
 
 class GfDefine(G2R.DefineSyntax):
-	def Creat(self,Flag,US,FS):
+	def Creat(self,Flag,US,FS,DictHash):
 		DictHash=G2R.DefineSyntax.Creat(self,Flag,US,FS,DictHash)
 		if DictHash[Flag]==G2R.DHash(US.Args[Flag]):
 			return DictHash
 		path=US.Args['pathmode']['ScriptPath']+'define/gf.rpy'
-		elepath=US.Args['pathmode']['BgPath']
+		elepath=US.Args['pathmode']['GfPath']
 		Args=US.Args[Flag]
 		so=''
 		for ele in Args:
@@ -25,13 +25,12 @@ class GfDefine(G2R.DefineSyntax):
 				so+='image '+Args[ele]['Name']+':\n'
 				if 'Delay' not in Args[ele]:
 					G2R.SourceError("Gf '"+Args[ele]+"'' which source type is 'Dir' must define 'Delay' !")
-				so+='image '+Args[ele]['Name']+':\n'
 				Pause=0.0
-				for root,dirs,files in os.walk(Args['pathmode']['GamePath']+elepath+Args[ele]['Name']):
+				for root,dirs,files in os.walk(US.Args['pathmode']['GamePath']+elepath+Args[ele]['Name']):
 					for f in files:
 						if os.path.splitext(f)[1]=='.png':
 							Pause+=float(Args[ele]['Delay'])
-							so+="    '"+elepath+Args['ele']['Name']+'/'+f+"'\n    pause "+delay+'\n'
+							so+="    '"+elepath+Args[ele]['Name']+'/'+f+"'\n    pause "+Args[ele]['Delay']+'\n'
 				US.Args[Flag][ele]['Pause']=str(Pause)
 			elif Args[ele]['Source']=='File':
 				if Args[ele]['Type'] not in ['Image']:

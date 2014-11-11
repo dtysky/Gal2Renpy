@@ -4,7 +4,7 @@
 #################################
 
 from ctypes import *
-import codecs,locale
+import codecs,locale,sys
 user32 = windll.LoadLibrary('user32.dll')
 MessageBox = lambda x:user32.MessageBoxA(0, x, 'Error', 0) 
 

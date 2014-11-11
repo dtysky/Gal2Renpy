@@ -6,7 +6,7 @@ from SpSyntax import *
 from GetAllClass import *
 
 #A function for storing user's tags
-def SpCreat(SpSyntaxPath='../SpSyntax'):
+def SpCreat(SpSyntaxPath='SpSyntax'):
 	"""
 	Return a dict which content all script-creater objects 
 	"""

@@ -5,15 +5,15 @@
 import G2R
 
 class ViewSp(G2R.SpSyntax):
-	def Show(self,Flag,Attrs,US,UT,Tmp):
+	def Show(self,Flag,Attrs,US,UT,Tmp,FS):
 		sw=''
-		Tmp[Flag]=Attrs['m']
+		Tmp.Args[Flag]=Attrs['m']
 		orgname=Attrs['m']
-		soa='$ n = Character('
-		son='$ nV = Character('
-		sot="who_color="+US.Args['ch'][orgname]['N_Color']+"',what_color="+US.Args['ch'][orgname]['T_Color']
-		sot+="',who_bold="+US.Args['ch'][orgname]['N_Bold']+"',what_bold="+US.Args['ch'][orgname]['T_Bold']
-		sot+="',who_outlines=[ (2, '"+US.Args['ch'][orgname]['N_OutLineColor']+"') ],what_outlines=[ (1,'"+US.Args['ch'][orgname]['T_OutLineColor']+"') ]"
+		soa='    $ n = Character('
+		son='    $ nV = Character('
+		sot="who_color='"+US.Args['ch'][orgname]['N_Color']+"',what_color='"+US.Args['ch'][orgname]['T_Color']
+		sot+="',who_bold="+US.Args['ch'][orgname]['N_Bold']+",what_bold="+US.Args['ch'][orgname]['T_Bold']
+		sot+=",who_outlines=[ (2, '"+US.Args['ch'][orgname]['N_OutLineColor']+"') ],what_outlines=[ (1,'"+US.Args['ch'][orgname]['T_OutLineColor']+"') ]"
 		soa+=sot
 		son+=sot
 		if 'WindowADV' in US.Args['ch'][orgname]:

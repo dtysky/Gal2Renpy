@@ -12,7 +12,10 @@ class TextCreat():
 		#say/think/text
 		self.say['mode']=Mode
 		#ADV/NVL
-		self.say['type']=Type
+		if Type=='ADV':
+			self.say['type']='A'
+		else:
+			self.say['type']='V'
 		#Speaker/Thinker
 		self.say['name']=Name
 		#Text
@@ -20,15 +23,16 @@ class TextCreat():
 	#Creat scripts
 	def Show(self,US,FS):
 		if self.say['name']:
-			if not US.Args['ch'].get(self.say['name']):
-				FS.Error('This character name '+self.say['name']+' does not exit !')
+			if self.say['name'] not in US.Args['ch']:
+				print self.say['name']
+				#FS.Error('This character name '+self.say['name']+' does not exit !')
 			self.say['name']=US.Args['ch'][self.say['name']]['Name']
 		rn=''
 		if self.say['mode']=='text':
 			rn+="n '"+self.say['text']+"'\n"
 		elif self.say['mode']=='say':
 			rn+=self.say['name']+self.say['type']+' '
-			n+="'"+self.say['text']+"'\n"
+			rn+="'"+self.say['text']+"'\n"
 		elif self.say['mode']=='think':
 			rn+=self.say['name']+self.say['type']+' '
 			rn+="'（"+self.say['Text']+"）'\n"

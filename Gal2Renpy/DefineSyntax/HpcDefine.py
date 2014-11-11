@@ -20,8 +20,12 @@ class BgDefine(G2R.DefineSyntax):
 					if e in Args[ele]:
 						continue
 					G2R.SourceError("This bg '"+ele+"' must have child '"+e+"' !")
-				so+='define '+Args[ele]['Name']+Args[ele]['Sub']+Args[ele]['Weather']+'HPC = '
-				so+="'"+elepath+Args[ele]['Name']+Args[ele]['Sub']+Args[ele]['Weather']+".png'\n"
+				for s in Args[ele]['Sub']:
+					s=Args[ele]['Sub'][s]
+					for w in Args[ele]['Weather']:
+						w=Args[ele]['Weather'][w]
+						so+='define '+Args[ele]['Name']+s+w+'HPC = '
+						so+="'"+elepath+Args[ele]['Name']+s+w+".png'\n"
 			FS.Open(path,'w')
 			FS.Write(so)
 			FS.Close()
@@ -29,7 +33,7 @@ class BgDefine(G2R.DefineSyntax):
 		DictHash=G2R.DefineSyntax.Creat(self,'ch',US,FS,DictHash)
 		if DictHash['ch']==G2R.DHash(US.Args['ch']):
 			return DictHash
-		path=US.Args['pathmode']['ScriptPath']+'define/ch.rpy'
+		path=US.Args['pathmode']['ScriptPath']+'define/hpcch.rpy'
 		elepath=US.Args['pathmode']['ChPath']
 		Args=US.Args['ch']
 		so=''
@@ -38,8 +42,16 @@ class BgDefine(G2R.DefineSyntax):
 				if e in Args[ele]:
 					continue
 				G2R.SourceError("This ch '"+ele+"' must have child '"+e+"' !")
-			so+='define '+Args[ele]['Name']+Args[ele]['Pose']+Args[ele]['Clothes']+Args[ele]['Face']++Args[ele]['Distance']+'HPC = '
-			so+="'"+elepath+Args[ele]['Name']+Args[ele]['Pose']+Args[ele]['Clothes']+Args[ele]['Face']++Args[ele]['Distance']+".png'\n"
+			for p in Args[ele]['Pose']:
+				p=Args[ele]['Pose'][p]
+				for c in Args[ele]['Clothes']:
+					c=Args[ele]['Clothes'][c]
+					for f in Args[ele]['Face']:
+						f=Args[ele]['Face'][f]
+						for d in Args[ele]['Distance']:
+							d=Args[ele]['Distance'][d]
+							so+='image '+Args[ele]['Name']+' '+p+c+f+d+'HPC = '
+							so+="'"+elepath+Args[ele]['Name']+p+c+f+d+".png'\n"
 		FS.Open(path,'w')
 		FS.Write(so)
 		FS.Close()

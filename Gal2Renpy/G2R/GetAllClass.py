@@ -2,21 +2,18 @@
 #################################
 #Copyright(c) 2014 dtysky
 #################################
-import sys
+import sys,os
 
 #A function for getting all class from a dir depend on path
 def GetAllClass(Path,ParentClass):
 	"""
 	Return a list contents all class
 	"""
-	def IsMyDefine(d):
-		if len(d)>1:
-				if d[0:1]=='__':
-					return False
-		return True
+	def IsClass(d):
+		return type(d)==type(ParentClass)
 	def IsSubOfTag(d):
 		return issubclass(d,ParentClass)
-	sys.path.add(Path)
+	sys.path.append(Path)
 	Mds=[]
 	Cls=[]
 	#Import all modules from TagSorce dir
@@ -28,9 +25,9 @@ def GetAllClass(Path,ParentClass):
 	#Get all classes which are children of Path
 	for m in Mds:
 		for d in dir(m):
-			if not IsMyDefine(d):
-				continue
 			d=getattr(m,d)
+			if not IsClass(d):
+				continue
 			if not IsSubOfTag(d):
 				continue
 			Cls.append(d)

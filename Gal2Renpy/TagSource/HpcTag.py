@@ -15,5 +15,5 @@ class HpcTag(G2R.TagSource):
 		tags['ms']={'Call':'Call','Message':'Message','Web':'Web'}
 		tags['o']=chs
 		tags['l']=US.Args['hpc']['Position']
-		tags['t']=US.Args['hpc']['Transtion']
+		tags['t']=US.Args['hpc']['Transition']
 		return tags

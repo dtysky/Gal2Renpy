@@ -11,7 +11,7 @@ class TagSource():
 	def __init__(self):
 		pass
 	def GetFlag(self):
-		s=self.__class__.__name__.replace('Define')
+		s=self.__class__.__name__.replace('Tag','')
 		tmp=''
 		for _s_ in s:
 			tmp+=_s_ if _s_.islower() else '_'+_s_.lower()
@@ -28,16 +28,18 @@ class TagSource():
 			else:
 				for m in US.Args[Flag]:
 					if isinstance(US.Args[Flag][m],dict) or isinstance(US.Args[Flag][m],list):
-						tags['m'][m]=m
+						if m!='Tag':
+							tags['m'][m]=m
 					else:
 						tags['m'][m]=US.Args[Flag][m]
 		#'m' tag can be replace here
-		if 'Tag' in US.Args[flag]:
+		if 'Tag' in US.Args[Flag]:
 			tmp=dict(US.Args[Flag]['Tag'])
+			del US.Args[Flag]['Tag']
 			dtmp={}
-			for arg in tmp:
-				dtmp[arg]={}
+			for tag in tmp:
+				dtmp[tag]={}
 				for m in tags['m']:
-					dtmp[arg][m]=US.Args[Flag][m][tmp[m]]
+					dtmp[tag][m]=US.Args[Flag][m][tmp[tag]]
 			tags.update(dtmp)
 		return tags

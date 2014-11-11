@@ -5,11 +5,11 @@
 import G2R
 
 class TestSp(G2R.SpSyntax):
-	def Show(self,Flag,Attrs,US,UT,Tmp):
+	def Show(self,Flag,Attrs,US,UT,Tmp,FS):
 		sw=''
-		name,Attrs=self.Check(Flag,Attrs,UT)
-		if Tmp[Flag]:
-			if Tmp[Flag]==name:
-				G2R.TagError('Last test does not'+name+' !')
-		Tmp[Flag]=name
+		name,Attrs=self.Check(Flag,Attrs,UT,FS)
+		if Tmp.Args.get(Flag):
+			if Tmp.Args[Flag]==name:
+				FS.Error('Last test does not'+name+' !')
+		Tmp.Args[Flag]=name
 		return sw

@@ -6,5 +6,5 @@ import G2R
 
 class TestTag(G2R.TagSource):
 	def Get(self,Flag,US):
-		tags={'m':['Begin','End']}
+		tags={'m':{'Begin':'Begin','End':'End'}}
 		return tags

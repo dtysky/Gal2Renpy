@@ -8,5 +8,5 @@ class HpcChTag(G2R.TagSource):
 	def Get(self,Flag,US):
 		tags=G2R.TagSource.Get(self,'ch',US)
 		for m in tags['m']:
-			tags['m'][m]=US.Args[Flag][m]['Name']
+			tags['m'][m]=US.Args['ch'][m]['Name']
 		return tags

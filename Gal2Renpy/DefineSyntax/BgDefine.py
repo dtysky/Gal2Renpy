@@ -18,8 +18,12 @@ class BgDefine(G2R.DefineSyntax):
 				if e in Args[ele]:
 					continue
 				G2R.SourceError("This bg '"+ele+"' must have child '"+e+"' !")
-			so+='image bg '+Args[ele]['Name']+Args[ele]['Sub']+Args[ele]['Weather']+' = '
-			so+="'"+elepath+Args[ele]['Name']+Args[ele]['Sub']+Args[ele]['Weather']+".png'\n"
+			for s in Args[ele]['Sub']:
+				s=Args[ele]['Sub'][s]
+				for w in Args[ele]['Weather']:
+					w=Args[ele]['Weather'][w]
+					so+='image bg '+Args[ele]['Name']+s+w+' = '
+					so+="'"+elepath+Args[ele]['Name']+s+w+".png'\n"
 		FS.Open(path,'w')
 		FS.Write(so)
 		FS.Close()

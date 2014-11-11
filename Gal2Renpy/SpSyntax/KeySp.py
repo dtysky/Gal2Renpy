@@ -5,9 +5,9 @@
 import G2R
 
 class KeySp(G2R.SpSyntax):
-	def Show(self,Flag,Attrs,US,UT,Tmp):
+	def Show(self,Flag,Attrs,US,UT,Tmp,FS):
 		sw=''
-		name,Attrs=self.Check(Flag,Attrs,UT)
+		name,Attrs=self.Check(Flag,Attrs,UT,FS)
 		rn+="    $ SetMyKey('"+Attrs['m']+"','"+Attrs['s']+"',"+Attrs['n']+')\n'
 		rn+='    call EfTextKey()\n'
 		return sw

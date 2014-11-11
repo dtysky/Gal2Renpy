@@ -5,13 +5,13 @@
 import G2R
 
 class DateSp(G2R.SpSyntax):
-	def Show(self,Flag,Attrs,US,UT,Tmp):
+	def Show(self,Flag,Attrs,US,UT,Tmp,FS):
 		sw=''
 		if 'm' not in Attrs:
-			G2R.TagError("This flag '"+Flag+"' must have tag 'm' !")
+			FS.Error("This flag '"+Flag+"' must have tag 'm' !")
 		sw+="    $ store.date = '"+Attrs['m']+"'\n"
-		if Flag not in Tmp:
-			Tmp[Flag]={'Data1':Attrs['m'],'Data2':Attrs['m']}
-		Tmp[Flag]['Date1']=Tmp[Flag]['Date2']
-		Tmp[Flag]['Date2']=Attrs['m']
+		if Flag not in Tmp.Args:
+			Tmp.Args[Flag]={'Date1':Attrs['m'],'Date2':Attrs['m']}
+		Tmp.Args[Flag]['Date1']=Tmp.Args[Flag]['Date2']
+		Tmp.Args[Flag]['Date2']=Attrs['m']
 		return sw

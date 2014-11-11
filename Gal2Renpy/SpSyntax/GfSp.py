@@ -7,10 +7,10 @@ import G2R
 #The special-text-syntax super class
 class GfSp(G2R.SpSyntax):
 	#Creat scripts which are related to charecters
-	def Show(self,Flag,Attrs,US,UT,Tmp):
+	def Show(self,Flag,Attrs,US,UT,Tmp,FS):
 		sw=''
 		orgname=Attrs['m']
-		name,Attrs=self.Check(Flag,Attrs,UT)
+		name,Attrs=self.Check(Flag,Attrs,UT,FS)
 		if Attrs['t']=='hide':
 			sw+='    hide '+name+'\n'
 			return sw

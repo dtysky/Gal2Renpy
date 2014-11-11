@@ -5,9 +5,9 @@
 import G2R
 
 class CgSp(G2R.SpSyntax):
-	def Show(self,Flag,Attrs,UT,Tmp):
+	def Show(self,Flag,Attrs,UT,Tmp,FS):
 		sw=''
-		name,Attrs=self.Check(Flag,Attrs,UT)
+		name,Attrs=self.Check(Flag,Attrs,UT,FS)
 		sw+='    scene cg '+name+Attrs['s']+' at '+Attrs['l']+'\n'
 		sw+='    with '+Attrs['t']+'\n'
 		return sw

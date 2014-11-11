@@ -5,10 +5,10 @@
 import G2R
 
 class ChcSp(G2R.SpSyntax):
-	def Show(self,Flag,Attrs,US,UT,Tmp):
+	def Show(self,Flag,Attrs,US,UT,Tmp,FS):
 		sw=''
 		orgname=Attrs['a']
-		name,Attrs=self.Check(Flag,Attrs,UT)
+		name,Attrs=self.Check(Flag,Attrs,UT,FS)
 		sw+='    $ '+Attrs['a']+'A = '+Attrs['b']+'A\n'
 		sw+='    $ '+Attrs['a']+'V = '+Attrs['b']+'V\n'
 		sw+='    $ '+Attrs['a']+"A.name = '"+orgname+"'\n"

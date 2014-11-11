@@ -4,7 +4,7 @@
 #################################
 
 #A class for storing user's tags
-class Tmp():
+class TmpC():
 	"""
 	A class for storing variables defined by user
 	"""
