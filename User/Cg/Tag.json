@@ -2,9 +2,9 @@
 	"cg":{
 
 		"Tag":{
-
+			"m":"Name",
 			"l":"Position",
-			"t":"Transtion"
+			"t":"Transition"
 		}
 	}
 

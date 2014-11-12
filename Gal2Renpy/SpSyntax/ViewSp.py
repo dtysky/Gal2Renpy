@@ -17,11 +17,11 @@ class ViewSp(G2R.SpSyntax):
 		soa+=sot
 		son+=sot
 		if 'WindowADV' in US.Args['ch'][orgname]:
-			soa+=",show_bg="+US.Args['ch'][orgname]['WindowADV']+"S)"
+			soa+=",show_bg="+US.Args['ch'][orgname]['WindowADV']+"N)"
 		else:
 			soa+=')'
 		if 'WindowNVL' in US.Args['ch'][orgname]:
-			son+=",show_bg="+US.Args['ch'][orgname]['WindowNVL']+"S)"
+			son+=",show_bg="+US.Args['ch'][orgname]['WindowNVL']+"N)"
 		else:
 			son+=')'
 		soa+='\n'

@@ -55,7 +55,6 @@ class SpSyntax():
 		Attrs=dict(Attrs)
 		for tag in Attrs:
 			if tag not in UT.Args[Flag]:
-				x
 				FS.Error("This flag '"+Flag+"' does not have tag '"+tag+"' !")
 		for tag in UT.Args[Flag]:
 			if tag not in Attrs:

@@ -33,10 +33,12 @@ class GfDefine(G2R.DefineSyntax):
 							so+="    '"+elepath+Args[ele]['Name']+'/'+f+"'\n    pause "+Args[ele]['Delay']+'\n'
 				US.Args[Flag][ele]['Pause']=str(Pause)
 			elif Args[ele]['Source']=='File':
-				if Args[ele]['Type'] not in ['Image']:
+				if Args[ele]['Type'] not in ['Image','Define']:
 					G2R.SourceError("Gf '"+ele+"' can not have 'Type' which named '"+Args[ele]['Type']+"' !")
 				if Args[ele]['Type']=='Image':
 					so+='image '+Args[ele]['Name']+"='"+elepath+Args[ele]['Name']+".png'\n"
+				if Args[ele]['Type']=='Define':
+					so+='define '+Args[ele]['Name']+"='"+elepath+Args[ele]['Name']+".png'\n"
 		FS.Open(path,'w')
 		FS.Write(so)
 		FS.Close()

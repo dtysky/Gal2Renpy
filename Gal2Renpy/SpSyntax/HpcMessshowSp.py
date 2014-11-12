@@ -7,12 +7,15 @@ import G2R
 class HpcMessshowSp(G2R.SpSyntax):
 	def Show(self,Flag,Attrs,US,UT,Tmp,FS):
 		sw=''
-		name,Attrs=self.Check('hpc',Attrs['hpc'],UT,FS)
-		Attrs.update(self.Check(Flag,Attrs[Flag],UT,FS))[1]
+		AttrsOrg=dict(Attrs)
+		name,AttrsH=self.Check('hpc',Attrs['hpc'],UT,FS)
+		AttrsH.update(self.Check(Flag,Attrs[Flag],UT,FS)[1])
+		Attrs=AttrsH
+		Attrs['hide']='False'
 		if Attrs['t']=='Hide':
-			Attrs['t']='True'
+			Attrs['hide']='True'
 		sw='    call HPC('
-		sw+="ModeM='"+Attrs['mm']+"',ModeS='"+Attrs['ms']+"',Hide="+Attrs['hide']+','
-		sw+="Owner='"+Attrs['o']+"Chr='"+Attrs['ch']
+		sw+="ModeM='"+Attrs['mm']+"',ModeS='"+Attrs['ms']+"',Hi="+Attrs['hide']+','
+		sw+="Owner='"+AttrsOrg['hpc']['o']+"',Chr='"+AttrsOrg[Flag]['ch']
 		sw+="',Pos="+Attrs['l']+',Trans='+Attrs['t']+')\n'
 		return sw

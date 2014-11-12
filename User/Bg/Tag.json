@@ -2,11 +2,11 @@
 	"bg":{
 
 		"Tag":{
-
+			"m":"Name",
 			"s":"Sub",
 			"w":"Weather",
 			"l":"Position",
-			"t":"Transtion"
+			"t":"Transition"
 		}
 	}
 

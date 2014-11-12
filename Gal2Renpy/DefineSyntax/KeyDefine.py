@@ -29,7 +29,7 @@ class KeyDefine(G2R.DefineSyntax):
 		so+='init python:\n'
 		so+='    def SetMyKey(kn,k,i):\n'
 		so+="        if i>persistent.mykey[kn][k]['Unlock']:\n"
-		so+="            persistent.mykey[kn][k][Unlock]=i\n"
+		so+="            persistent.mykey[kn][k]['Unlock']=i\n"
 		so+="            persistent.mykey[kn][k]['New']=True\n"
 		so+='    def InitMyKey():\n'
 		so+='        if persistent.mykey==None:\n'

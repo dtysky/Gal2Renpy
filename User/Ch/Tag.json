@@ -3,12 +3,13 @@
 
 		"Tag":{
 
+			"m":"Name",
 			"p":"Pose",
 			"c":"Clothes",
 			"f":"Face",
 			"d":"Distance",
 			"l":"Position",
-			"t":"Transtion"
+			"t":"Transition"
 		}
 	}
 

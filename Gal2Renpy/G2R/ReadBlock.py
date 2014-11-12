@@ -72,9 +72,12 @@ def ReadBlock(FS):
 		return rn
 	s=FS.ReadLine()
 	#Comment
-	comment=re.search(r'.*#.*',s)
-	if comment:
-		s=s[comment.start():]
+	#Not complete
+	#comment=re.search(r'#',s)
+	#if comment:
+	#	s=s[:comment.start()]
+	if s and s[0]=='#':
+		s=''
 	#End of this file
 	if FS.IsEnd():
 		sr={'head':'end'}

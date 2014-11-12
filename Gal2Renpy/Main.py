@@ -111,7 +111,7 @@ if US.Args['pathmode']['TestMode']:
 		FO.Write("    $ InitMyKey()\n")
 	if US.Args['pathmode']['HPCSystem']:
 		FO.Write('    $ HPCMessInit()\n')
-	FO.Write("    $ chapter='Chapter.test'\n")
+	FO.Write("    $ store.chapter='Chapter.test'\n")
 	#Begin
 	j=0
 	for fp in Files:
@@ -137,9 +137,10 @@ if US.Args['pathmode']['TestMode']:
 							TxtC.Refresh(line['flag'],Tmp.Args['mode'],line['attrs2'],Tmp.Args['view'])
 						FO.Write(TxtC.Show(US,FS))
 					elif line['head']=='sp':
+						for flag in line['flag']:
+							if flag not in US.Keywords:
+								FS.Error("This flag '"+flag+"' does not be supported !")
 						line=ChangeSp(line)
-						if line['flag'] not in US.Keywords:
-							FS.Error("This flag '"+flag+"' does not be supported !")
 						SpCNow=SpC[line['flag']]
 						SpCNow.Refresh(line['attrs1'],line['attrs2'])
 						if line['flag']=='sc' and SpCNow.Get()['k']=='Main':
@@ -195,6 +196,7 @@ else:
 						CanWrite=True
 					else:
 						FS.Error("You must define a scene with 'sc' tag first !")
+					FO.Write(SpCNow.Show(SpCNow.GetFlag(),SpCNow.Get(),US,UT,Tmp,FS))
 				if line['head']=='words':
 					if not Tmp.Args['mode']:
 						FS.Error("You must define a mode with 'mode' tag first !")

@@ -24,8 +24,7 @@ class TextCreat():
 	def Show(self,US,FS):
 		if self.say['name']:
 			if self.say['name'] not in US.Args['ch']:
-				print self.say['name']
-				#FS.Error('This character name '+self.say['name']+' does not exit !')
+				FS.Error('This character name '+self.say['name']+' does not exit !')
 			self.say['name']=US.Args['ch'][self.say['name']]['Name']
 		rn=''
 		if self.say['mode']=='text':
@@ -35,5 +34,5 @@ class TextCreat():
 			rn+="'"+self.say['text']+"'\n"
 		elif self.say['mode']=='think':
 			rn+=self.say['name']+self.say['type']+' '
-			rn+="'（"+self.say['Text']+"）'\n"
+			rn+="'( "+self.say['text']+" )'\n"
 		return '    '+rn
