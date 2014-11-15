@@ -1,101 +1,26 @@
 #coding:utf-8
-
+#################################
 #Copyright(c) 2014 dtysky
+#################################
 
 import sublime, sublime_plugin
-import json,os,pickle,codecs,locale
+import json,os,codecs,locale,re
 import sys
 sys.path.append(os.path.split(__file__)[0])
 path=os.path.split(__file__)[0]+'/'+'User.json'
 game_path=json.load(open(path,'r'))['game_gal2renpy_path']
+sys.path.append(game_path+'Gal2Renpy/G2R')
 sys.path.append(game_path+'Gal2Renpy')
-from Class import *
-from Keyword import *
-from xpinyin import Pinyin
-Py=Pinyin()
+from UserSource import UserSource
+from UserTag import UserTag
+from EditFormat import *
 
-US=User(game_path)
+US=UserSource(game_path)
+UT=UserTag(US,game_path+'Gal2Renpy/TagSource')
 
-def EditInit():
-	tmp={
-			'sc':[
-					0,(),{},
-					('cp','sc'),{'cp':'None','sc':'None'}
-				],
-			'sw':[
-					0,(),{},
-					('s',),{'s':'None'}
-				],
-			'chrlast':[
-				1,('l','t'),{'l':'None','t':'None'},
-				('m','p','c','f','d'),{'m':'None','p':'None','c':'None','f':'None','d':'None'}
-				],
-			'bg':[
-					0,('l','t'),{'l':'None','t':'None'},
-					('m','s','w'),{'m':'None','s':'None','w':'None'}
-				],
-			'cg':[
-					0,('l','t'),{'l':'None','t':'None'},
-					('m','s'),{'m':'None','s':'None'}
-				],
-			'bgm':[
-					0,(),{},
-					('m',),{'m':'None'}
-				],
-			'sound':[
-					0,(),{},
-					('m',),{'m':'None'}
-				],
-			'date':[
-					0,(),{},
-					('m',),{'m':'None'}
-				],
-			'vd':[
-					0,(),{},
-					('m',),{'m':'None'}
-				],
-			'ef':[
-					1,('e','args'),{'e':'None','args':'None'},
-					('m',),{'m':'None'}
-				],
-			'gf':[
-					0,('l'),{'l':'None'},
-					('m',),{'m':'None'}
-				],
-			'key':[
-					0,('k'),{'k':'None'},
-					('m','n'),{'m':'None','n':'None'}
-				],
-			'mode':[
-					0,(),{},
-					('m',),{'m':'None'}
-				],
-			'view':[
-					0,(),{},
-					('m',),{'m':'None'}
-				],
-			'chc':[
-					0,(),{},
-					('a','b'),{'a':'None','b':'None'}
-				],
-			'renpy':[
-					0,(),{},
-					('m',),{'m':'None'}
-				],
-			'test':[
-					0,(),{},
-					('m',),{'m':'None'}
-				]
-		}
-	for ch in US.ChrName:
-		tmp['ch-'+ch]=[
-				1,('l','t'),{'l':'None','t':'None'},
-				('m','p','c','f','d'),{'m':ch,'p':'None','c':'None','f':'None','d':'None'}
-				]
-	return tmp
 
 class Gal2RenpyTabCommand(sublime_plugin.TextCommand):
-	EditLast=EditInit()
+	EditLast=EditFormat(US,UT)
 
 	def run(self, edit):
 		#Functions
@@ -165,11 +90,11 @@ class Gal2RenpyTabCommand(sublime_plugin.TextCommand):
 				elif tag in self.EditLast[flag_tmp][4]:
 					self.EditLast[flag_tmp][4][tag]=attr
 			#sublime.message_dialog(str(buf))
-		if lt not in Keywords:
+		if lt not in self.EditLast:
 			#ch.xx.0/ch.xx.1
 			if re.match(r'\s*ch\.\S+\.\d',lt):
 				ch=lt.split('.')[1]
-				self.EditLast['ch'][ch][0]=int(lt.split('.')[2])
+				self.EditLast['ch-'+ch][0]=int(lt.split('.')[2])
 				SetEditLast('ch',buf,ch)
 				Replace(reg,self.CreatInsertCh(ch))
 			#ch.xx

@@ -1,0 +1,82 @@
+#coding:utf-8
+#########################
+#Copyright(c) 2014 dtysky
+#########################
+
+def EditFormat(US,UT):
+	tmp={
+			'sc':[
+					0,('k'),{'k':'None'},
+					('cp','sc'),{'cp':'None','sc':'None'}
+				],
+			'sw':[
+					0,(),{},
+					('s',),{'s':'None'}
+				],
+			'chrlast':[
+				1,('l','t'),{'l':'None','t':'None'},
+				('m','p','c','f','d'),{'m':'None','p':'None','c':'None','f':'None','d':'None'}
+				],
+			'bg':[
+					0,('l','t'),{'l':'None','t':'None'},
+					('m','s','w'),{'m':'None','s':'None','w':'None'}
+				],
+			'cg':[
+					0,('l','t'),{'l':'None','t':'None'},
+					('m','s'),{'m':'None','s':'None'}
+				],
+			'bgm':[
+					0,(),{},
+					('m',),{'m':'None'}
+				],
+			'sound':[
+					0,(),{},
+					('m',),{'m':'None'}
+				],
+			'date':[
+					0,(),{},
+					('m',),{'m':'None'}
+				],
+			'vd':[
+					0,(),{},
+					('m',),{'m':'None'}
+				],
+			'ef':[
+					1,('e','args'),{'e':'None','args':'None'},
+					('m',),{'m':'None'}
+				],
+			'gf':[
+					0,('l','t'),{'l':'None','t':'None'},
+					('m',),{'m':'None'}
+				],
+			'key':[
+					0,('m',),{'m':'None'},
+					('s','n'),{'s':'None','n':'None'}
+				],
+			'mode':[
+					0,(),{},
+					('m',),{'m':'None'}
+				],
+			'view':[
+					0,(),{},
+					('m',),{'m':'None'}
+				],
+			'chc':[
+					0,(),{},
+					('a','b'),{'a':'None','b':'None'}
+				],
+			'renpy':[
+					0,(),{},
+					('m',),{'m':'None'}
+				],
+			'test':[
+					0,(),{},
+					('m',),{'m':'None'}
+				]
+		}
+	for ch in UT.Args['ch']['m']:
+		tmp['ch-'+ch]=[
+				1,('l','t'),{'l':'None','t':'None'},
+				('m','p','c','f','d'),{'m':ch,'p':'None','c':'None','f':'None','d':'None'}
+				]
+	return tmp
