@@ -7,5 +7,5 @@
 	"auto_match_enabled": false,
 
 	// Additional situations to trigger auto complete
-	"auto_complete_triggers": [ {"selector": "source.Gal2Renpy", "characters": ".。"}]
+	"auto_complete_triggers": [ {"selector": "source.Gal2Renpy", "characters": ".。 "}]
 }

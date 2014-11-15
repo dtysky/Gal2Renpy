@@ -42,7 +42,7 @@ class Gal2RenpyCompletions(sublime_plugin.EventListener):
 				tmp.append((Py.get_pinyin(d, '')+'\t'+d,d))
 			return tmp
 		def GetFlagTag():
-			tmp=re.match(r'.*([a-z]+):[\.。]',GetLineText(GetNowLine()))
+			tmp=re.match(r'.*([a-z]+):[\.。 ]',GetLineText(GetNowLine()))
 			if not tmp:
 				return None
 			tag=tmp.group(1)
@@ -112,7 +112,7 @@ class Gal2RenpyCompletions(sublime_plugin.EventListener):
 				return []
 			if tag not in ds:
 				return []
-			if flag=='m':
+			if tag=='m':
 				return ToShow(ds['m'])
 			if flag not in ['ch','bg','cg','key']:
 				ds=ds[tag]
@@ -125,7 +125,7 @@ class Gal2RenpyCompletions(sublime_plugin.EventListener):
 		# Only trigger within Gal2Renpy
 		if not view.match_selector(locations[0],"source.Gal2Renpy"):
 			return []
-		if re.match(r'\s*ch[\.。]',GetLineText(GetNowLine())):
+		if re.match(r'\s*ch[\.。 ]',GetLineText(GetNowLine())):
 			return (ToShow(UT.Args['ch']['m']),sublime.INHIBIT_EXPLICIT_COMPLETIONS | sublime.INHIBIT_WORD_COMPLETIONS)
 		else:
 			FlagTag=GetFlagTag()
