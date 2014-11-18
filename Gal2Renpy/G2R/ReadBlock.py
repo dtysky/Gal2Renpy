@@ -133,5 +133,5 @@ def ReadBlock(FS):
 			sr={'head':'words'}
 			sr['flag']='text'
 			sr['attrs2']=s
-			RefBlock(sr)
+		RefBlock(sr)
 	return Block
