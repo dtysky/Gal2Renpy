@@ -8,13 +8,14 @@ import sys
 import os
 import pickle
 from G2R import *
+from G2R.ReadBlock import *
 
 FileAll=[]
 Files=[]
 
 FS=MyFS()
 FO=MyFS()
-US=UserSource('../User')
+US=UserSource('../')
 UT=UserTag(US)
 TxtC=TextCreat()
 SpC=SpCreat()
@@ -22,6 +23,10 @@ Tmp=TmpC()
 
 sys.path.append(US.Args['pathmode']['Gal2RenpyPath']+'Gal2Renpy')
 
+
+"""
+Files/Dicts prepare begin
+"""
 
 def CheckSpFile(fp):
 	if not os.path.exists(fp):
@@ -125,7 +130,7 @@ if US.Args['pathmode']['TestMode']:
 				#Check whether test had begined
 				if TestBegin:
 					if line['head']=='words':
-						if not Tmp.Args['mode']:
+						if not Tmp.Args.get('mode'):
 							FS.Error("You must define a mode with 'mode' tag first !")
 						if line['flag']=='text':
 							TxtC.Refresh(line['flag'],Tmp.Args['mode'],line['attrs2'])
@@ -143,7 +148,10 @@ if US.Args['pathmode']['TestMode']:
 						line=ChangeSp(line)
 						SpCNow=SpC[line['flag']]
 						SpCNow.Refresh(line['attrs1'],line['attrs2'])
+						if SpCNow.GetFlag()=='test':
+							TestBegin=False
 						if line['flag']=='sc' and SpCNow.Get()['k']=='Main':
+							SpCNow.Check('sc',SpCNow.Get(),UT,FS)
 							sc=(int(SpCNow.Get()['cp'].replace('Cp','')),int(SpCNow.Get()['sc'].replace('Sc','')))
 							FileList[fp].append(sc)
 						FO.Write(SpCNow.Show(SpCNow.GetFlag(),SpCNow.Get(),US,UT,Tmp,FS))
@@ -216,6 +224,7 @@ else:
 					SpCNow=SpC[line['flag']]
 					SpCNow.Refresh(line['attrs1'],line['attrs2'])
 					if line['flag']=='sc' and SpCNow.Get()['k']=='Main':
+						SpCNow.Check('sc',SpCNow.Get(),UT,FS)
 						sc=(int(SpCNow.Get()['cp'].replace('Cp','')),int(SpCNow.Get()['sc'].replace('Sc','')))
 						FileList[fp].append(sc)
 					FO.Write(SpCNow.Show(SpCNow.GetFlag(),SpCNow.Get(),US,UT,Tmp,FS))

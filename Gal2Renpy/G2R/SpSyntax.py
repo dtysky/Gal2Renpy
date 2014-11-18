@@ -77,9 +77,10 @@ class SpSyntax():
 						FS.Error("This flag '"+Flag+"' does not have tag'"+tag+"' valued '"+Attrs[tag]+"'' !")
 					Attrs[tag]=UT.Args[Flag][tag][Attrs[tag]]
 				continue
-			if Attrs[tag] not in UT.Args[Flag][tag][orgname]:
-				FS.Error("This tag '"+tag+"' in flag '"+Flag+"' have no value named '"+Attrs[tag]+"' !") 
-			Attrs[tag]=UT.Args[Flag][tag][orgname][Attrs[tag]]
+			if UT.Args[Flag][tag][orgname]:
+				if Attrs[tag] not in UT.Args[Flag][tag][orgname]:
+					FS.Error("This tag '"+tag+"' in flag '"+Flag+"' have no value named '"+Attrs[tag]+"' !") 
+				Attrs[tag]=UT.Args[Flag][tag][orgname][Attrs[tag]]
 		return name,Attrs
 	#Creat scripts which are related to charecters
 	def Show(self,Flag,Attrs,US,UT,Tmp,FS):

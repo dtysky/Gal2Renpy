@@ -17,8 +17,10 @@ class UserSource():
 		path=Path+'User'
 		def GetFileList():
 			fps=[]
-			for root,dirs,files in os.walk(Path):
+			for root,dirs,files in os.walk(path):
 				for f in files:
+					if os.path.splitext(f)[1]!='.json':
+						continue
 					fps.append(root+'/'+f)
 			return fps
 		def ReadJson(FileName):

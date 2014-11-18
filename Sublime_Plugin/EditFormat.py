@@ -34,8 +34,8 @@ def EditFormat(US,UT):
 					('m',),{'m':'None'}
 				],
 			'date':[
-					0,(),{},
-					('m',),{'m':'None'}
+					0,('m',),{'m':'None'},
+					('s',),{'s':'None'}
 				],
 			'vd':[
 					0,(),{},

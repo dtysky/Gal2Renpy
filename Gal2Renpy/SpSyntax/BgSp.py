@@ -9,10 +9,24 @@ class BgSp(G2R.SpSyntax):
 		sw=''
 		name,Attrs=self.Check(Flag,Attrs,UT,FS)
 		if Flag not in Tmp.Args:
-			Tmp.Args[Flag]=None
-		if name!='Black' and Tmp.Args[Flag]!=name:
+			Tmp.Args[Flag]={}
+			for tag in ['m','s','w']:
+				Tmp.Args[Flag][tag]=None
+		Changed=False
+		if Tmp.Args[Flag]['m']!=name:
+			Changed=True
+		for tag in ['s','w']:
+			if Tmp.Args[Flag][tag]!=Attrs[tag]:
+				Changed=True
+		if name!='Black' and Changed:
+			if Tmp.Args.get('date') and Tmp.Args['date']['Auto']=='On':
+				sw+='    hide screen '+US.Args['pathmode']['DateScreen']+'\n'
 			sw+='    scene bg Black01A with '+Attrs['t']+'\n'
 		sw+='    scene bg '+name+Attrs['s']+Attrs['w']+' at '+Attrs['l']+'\n'
 		sw+='    with '+Attrs['t']+'\n'
-		Tmp.Args[Flag]=name
+		if Tmp.Args.get('date') and Tmp.Args['date']['Auto']=='On':
+			sw+='    show screen '+US.Args['pathmode']['DateScreen']+'\n'
+		Tmp.Args[Flag]['m']=name
+		for tag in ['s','w']:
+			Tmp.Args[Flag][tag]=Attrs[tag]
 		return sw
