@@ -11,7 +11,7 @@ Gal2Renpy拥有清晰的资源结构，并为剧本提供了一套类xml的语�
 
 插件
 ---
-![](./ZRS/show.gif)
+![](./ZRS/plugin.gif)
 
 
 剧本转换前后
