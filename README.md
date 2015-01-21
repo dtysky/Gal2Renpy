@@ -21,3 +21,14 @@ Gal2Renpy拥有清晰的资源结构，并为剧本提供了一套类xml的语�
 资源文件生成
 ----------
 ![](./ZRS/source.jpg)
+
+作者
+---
+戴天宇(dtysky)   
+[dtysky@outlook.com](dtysky@outlook.com)  
+[http://github.com/dtysky](http://github.com/dtysky)
+
+版权
+---
+Copyright © 2014, 戴天宇(dtysky)。 拥有所有权利。  
+此项目属于自由软件，遵守[MIT License (MIT)](http://mit-license.org/)开源软件协议。
