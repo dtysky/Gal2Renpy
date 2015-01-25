@@ -1,23 +1,32 @@
 {
-	"GamePath":"E:/Follow_wings/FW/game/",
 
-	"Comment1":"//Seting True when you want to use TestMode, if not , seting False", 
-	"TestMode":"True" ,
-	"HPCSystem":"True",
+	"pathmode":{
 
-	"Comment2":"//Your '.rpy' Script path, please use absolute path",
-	"ScriptPath":"E:/Follow_wings/FW/game/script/" ,
+		"GamePath":"E:/Follow_wings/FW/game/",
+		"Gal2RenpyPath":"E:/Follow_wings/FW/game/Gal2Renpy/",
 
-	"Comment3":"//Your '.gal' text path, please use absolute path",
-	"TextPath":"E:/Follow_wings/FW/game/TXT" ,
+		"Comment1":"//Seting True when you want to use TestMode, if not , seting False", 
+		"TestMode":true ,
+		"KeySystem":true,
+		"HPCSystem":true,
+		"DateScreen":"DateShow",
 
-	"Comment4":"//Your game data path, you can use absolute path or a path which relative to your game dir",
-	"ChPath":"data/char/" ,
-	"BgPath":"data/bg/" ,
-	"BgmPath":"data/bgm/" ,
-	"CgPath":"data/cg/",
-	"SoundPath":"data/sound/",
-	"WinPath":"data/window/",
-	"EfPath":"data/effect/"
+		"Comment2":"//Your '.rpy' Script path, please use absolute path",
+		"ScriptPath":"E:/Follow_wings/FW/game/script/" ,
+
+		"Comment3":"//Your '.gal' text path, please use absolute path",
+		"TextPath":"E:/Follow_wings/FW/game/TXT" ,
+
+		"Comment4":"//Your game data path, you can use a path which relative to your game dir",
+		"ChPath":"data/char/" ,
+		"BgPath":"data/bg/" ,
+		"BgmPath":"data/bgm/" ,
+		"MoviePath":"data/movie/" ,
+		"CgPath":"data/cg/",
+		"SoundPath":"data/sound/",
+		"WinPath":"data/window/",
+		"GfPath":"data/graph/",
+		"DatePath":"data/window/date/"
+	}
 }
 

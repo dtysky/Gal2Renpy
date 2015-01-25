@@ -1,0 +1,6 @@
+<snippet>
+<name>tag movie</name>
+<content><![CDATA[movie]]></content>
+<scope>source.Gal2Renpy</scope>
+<tabTrigger>movie</tabTrigger>
+</snippet>

@@ -1,0 +1,6 @@
+<snippet>
+<name>tag pause</name>
+<content><![CDATA[pause]]></content>
+<scope>source.Gal2Renpy</scope>
+<tabTrigger>pause</tabTrigger>
+</snippet>

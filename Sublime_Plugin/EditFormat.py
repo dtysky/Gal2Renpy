@@ -29,6 +29,10 @@ def EditFormat(US,UT):
 					0,(),{},
 					('m',),{'m':'None'}
 				],
+			'movie':[
+					0,(),{},
+					('m','s'),{'m':'None','k':'None'}
+				],
 			'sound':[
 					0,(),{},
 					('m',),{'m':'None'}
@@ -56,6 +60,10 @@ def EditFormat(US,UT):
 			'mode':[
 					0,(),{},
 					('m',),{'m':'None'}
+				],
+			'pause':[
+					0,(),{},
+					('p',),{'p':'None'}
 				],
 			'view':[
 					0,(),{},
