@@ -34,6 +34,10 @@ def CheckSpFile(fp):
 		pickle.dump({},FH)
 		FH.close()
 
+#In test mode, all files will be processed.
+if os.path.exists('FileHash'):
+	os.remove('FileHash')
+
 #Creat all definitions and refresh DictHash
 #Only a dict had been changed will re-creat it
 CheckSpFile('DictHash')

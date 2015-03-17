@@ -24,7 +24,8 @@ Gal2Renpy拥有清晰的资源结构，并为剧本提供了一套类xml的语�
 
 作者
 ---
-戴天宇(dtysky)   
+**戴天宇(dtysky)**   
+[http://dtysky.github.io](http://dtysky.github.io)  
 [dtysky@outlook.com](dtysky@outlook.com)  
 [http://github.com/dtysky](http://github.com/dtysky)
 

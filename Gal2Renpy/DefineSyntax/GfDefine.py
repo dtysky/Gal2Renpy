@@ -22,6 +22,9 @@ class GfDefine(G2R.DefineSyntax):
 			if Args[ele]['Source'] not in ['Dir','File']:
 				G2R.SourceError("Gf has no source type named '"+Args[ele]['Source']+"' !")
 			if Args[ele]['Source']=='Dir':
+				if Args[ele]['Type'] not in ['Frame','Chapter']:
+					G2R.SourceError("Gf has no type type named '"+Args[ele]['Type']+"' !")
+			if Args[ele]['Source']=='Dir' and Args[ele]['Type'] in {'Frame','Chapter'}:
 				so+='image '+Args[ele]['Name']+':\n'
 				if 'Delay' not in Args[ele]:
 					G2R.SourceError("Gf '"+Args[ele]+"'' which source type is 'Dir' must define 'Delay' !")

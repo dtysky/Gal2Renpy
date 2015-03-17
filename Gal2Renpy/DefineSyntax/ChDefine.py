@@ -26,7 +26,7 @@ class ChDefine(G2R.DefineSyntax):
 						for d in Args[ele]['Distance']:
 							d=Args[ele]['Distance'][d]
 							so+='image '+Args[ele]['Name']+' '+p+c+f+d+' = '
-							so+="'"+elepath+Args[ele]['Name']+p+c+f+d+".png'\n"
+							so+="'"+elepath+Args[ele]['Name']+'/'+p+c+f+d+".png'\n"
 		FS.Open(path,'w')
 		FS.Write(so)
 		FS.Close()

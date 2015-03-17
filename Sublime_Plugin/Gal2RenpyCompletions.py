@@ -114,7 +114,7 @@ class Gal2RenpyCompletions(sublime_plugin.EventListener):
 				return []
 			if tag=='m':
 				return ToShow(ds['m'])
-			if flag not in ['ch','bg','cg','key','gf','date']:
+			if flag not in ['ch','bg','cg','key','gf','date','movie','sound']:
 				ds=ds[tag]
 			else:
 				ds=GetSpecial(flag,ds[tag])

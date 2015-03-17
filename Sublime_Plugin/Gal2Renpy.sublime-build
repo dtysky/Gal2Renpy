@@ -1,7 +1,6 @@
 {
-	"windows":
-    {
-        "cmd": ["E:\\Follow_wings\\FW\\game\\Gal2Renpy\\run.bat"]
-    },
+    "shell_cmd": "A:\\Starry_Dream\\Follow_wings\\FW\\game\\Gal2Renpy\\run.bat",
+    "file_regex": "^.+ in (.+) on line ([0-9]+)",
+    "selector": "source.Gal2Renpy",
     "encoding":"cp936"
 }

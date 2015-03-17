@@ -11,8 +11,9 @@ class GfSp(G2R.SpSyntax):
 		sw=''
 		orgname=Attrs['m']
 		name,Attrs=self.Check(Flag,Attrs,UT,FS)
-		if Attrs['t']=='hide':
+		if Attrs['l']=='hide':
 			sw+='    hide '+name+'\n'
+			sw+='    with '+Attrs['t']+'\n'
 			return sw
 		Type=US.Args[Flag][orgname]['Type']
 		if Type=='Frame':

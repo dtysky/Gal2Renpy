@@ -9,5 +9,5 @@ class MovieTag(G2R.TagSource):
 		tags={'m':{},'k':{}}
 		for m in US.Args[Flag]:
 			tags['m'][m]='movie_'+os.path.splitext(US.Args[Flag][m])[0]
-			tags['k'][m]={'special':'special','normal':'normal'}
+			tags['k'][m]={'special':'special','normal':'normal','back':'back'}
 		return tags

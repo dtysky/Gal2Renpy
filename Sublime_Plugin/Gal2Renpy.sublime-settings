@@ -1,8 +1,10 @@
 {
-	"font_size": 12,
+	"font_size": 14,
 	"tab_completion": "enable",
-	"word_wrap": false,
-	
+	"draw_centered": true,
+	"word_wrap": true,
+	"wrap_width": 80,
+	"color_scheme": "Packages/Gal2Renpy/Gal2Renpy.tmTheme",
 	// Set to false to stop auto pairing quotes, brackets etc
 	"auto_match_enabled": false,
 

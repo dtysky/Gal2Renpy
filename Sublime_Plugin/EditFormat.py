@@ -31,11 +31,11 @@ def EditFormat(US,UT):
 				],
 			'movie':[
 					0,(),{},
-					('m','s'),{'m':'None','k':'None'}
+					('m','k'),{'m':'None','k':'None'}
 				],
 			'sound':[
 					0,(),{},
-					('m',),{'m':'None'}
+					('m','k'),{'m':'None','k':'None'}
 				],
 			'date':[
 					0,('m',),{'m':'None'},
@@ -47,7 +47,7 @@ def EditFormat(US,UT):
 				],
 			'ef':[
 					1,('e','args'),{'e':'None','args':'None'},
-					('m',),{'m':'None'}
+					('c',),{'c':'None'}
 				],
 			'gf':[
 					0,('l','t'),{'l':'None','t':'None'},

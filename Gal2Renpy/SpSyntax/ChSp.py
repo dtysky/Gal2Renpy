@@ -9,6 +9,9 @@ class ChSp(G2R.SpSyntax):
 		sw=''
 		name,Attrs=self.Check(Flag,Attrs,UT,FS)
 		if Attrs['t']=='hide':
+			sw+='    show '+name+' '
+			sw+='at '+Attrs['l']+'\n'
+			sw+='    with MoveTransition(0.5)\n'
 			sw+='    hide '+name+'\n'
 		else:
 			sw+='    show '+name+' '+Attrs['p']+Attrs['c']+Attrs['f']+Attrs['d']+' '
